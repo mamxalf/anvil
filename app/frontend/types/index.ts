@@ -10,31 +10,15 @@ export type PageProps<T = Record<string, unknown>> = {
     alert?: string
   }
   errors: Record<string, string>
+  locale?: string
 } & T
 
 // User interface
 export interface User {
-  id: number
+  id: string // UUID
   name: string
   email: string
+  role: 'user' | 'admin'
 }
 
 // Add more types as needed
-export interface Player {
-  id: number
-  name: string
-  team_id: number
-  team_name: string
-  position: 'GK' | 'DEF' | 'MID' | 'FWD'
-  price: number
-  points: number
-  avatar_url: string
-}
-
-export interface Squad {
-  id: number
-  user_id: number
-  budget: number
-  players: Player[]
-  total_points: number
-}

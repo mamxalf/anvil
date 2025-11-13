@@ -23,5 +23,15 @@ module Anvil
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    # Configure UUID as primary key for all models
+    config.generators do |g|
+      g.orm :active_record, primary_key_type: :uuid
+    end
+
+    # Configure i18n
+    config.i18n.available_locales = [ :en, :id ]
+    config.i18n.default_locale = :en
+    config.i18n.fallbacks = true
   end
 end

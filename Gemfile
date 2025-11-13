@@ -44,6 +44,12 @@ gem "htmlbeautifier", "~> 1.4", ">= 1.4.3"
 # inertia
 gem "inertia_rails", "~> 3.12", ">= 3.12.1"
 
+# authentication
+gem "devise", "~> 4.9"
+
+# admin panel
+gem "avo", "~> 3.0"
+
 # logging
 gem "lograge", "~> 0.14.0"
 

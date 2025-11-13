@@ -1,0 +1,43 @@
+id:
+  hello: "Halo dunia"
+  
+  # Authentication
+  auth:
+    login: "Masuk"
+    register: "Daftar"
+    logout: "Keluar"
+    email: "Email"
+    password: "Kata Sandi"
+    password_confirmation: "Konfirmasi Kata Sandi"
+    name: "Nama"
+    remember_me: "Ingat saya"
+    forgot_password: "Lupa kata sandi?"
+    already_have_account: "Sudah punya akun?"
+    dont_have_account: "Belum punya akun?"
+    sign_in: "Masuk"
+    sign_up: "Daftar"
+    sign_out: "Keluar"
+    success:
+      signed_in: "Berhasil masuk"
+      signed_up: "Pendaftaran berhasil"
+      signed_out: "Berhasil keluar"
+    error:
+      invalid_credentials: "Email atau kata sandi salah"
+      unauthorized: "Anda tidak memiliki akses"
+  
+  # Dashboard
+  dashboard:
+    title: "Dasbor"
+    welcome: "Selamat datang"
+    admin_panel: "Panel Admin"
+    
+  # Common
+  common:
+    save: "Simpan"
+    cancel: "Batal"
+    edit: "Edit"
+    delete: "Hapus"
+    create: "Buat"
+    update: "Perbarui"
+    back: "Kembali"
+

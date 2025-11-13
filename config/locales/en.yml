@@ -29,3 +29,43 @@
 
 en:
   hello: "Hello world"
+  
+  # Authentication
+  auth:
+    login: "Login"
+    register: "Register"
+    logout: "Logout"
+    email: "Email"
+    password: "Password"
+    password_confirmation: "Password Confirmation"
+    name: "Name"
+    remember_me: "Remember me"
+    forgot_password: "Forgot password?"
+    already_have_account: "Already have an account?"
+    dont_have_account: "Don't have an account?"
+    sign_in: "Sign In"
+    sign_up: "Sign Up"
+    sign_out: "Sign Out"
+    success:
+      signed_in: "Successfully signed in"
+      signed_up: "Successfully signed up"
+      signed_out: "Successfully signed out"
+    error:
+      invalid_credentials: "Invalid email or password"
+      unauthorized: "You are not authorized"
+  
+  # Dashboard
+  dashboard:
+    title: "Dashboard"
+    welcome: "Welcome"
+    admin_panel: "Admin Panel"
+    
+  # Common
+  common:
+    save: "Save"
+    cancel: "Cancel"
+    edit: "Edit"
+    delete: "Delete"
+    create: "Create"
+    update: "Update"
+    back: "Back"

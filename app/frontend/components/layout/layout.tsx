@@ -19,33 +19,36 @@ export default function Layout({ children }: LayoutProps) {
               FPL Clone
             </Link>
             
-            <div className="flex gap-6">
-              <Link 
-                href="/squad" 
-                className="text-gray-700 hover:text-blue-600 transition"
-              >
-                Squad
-              </Link>
-              <Link 
-                href="/transfers" 
-                className="text-gray-700 hover:text-blue-600 transition"
-              >
-                Transfers
-              </Link>
-              <Link 
-                href="/leagues" 
-                className="text-gray-700 hover:text-blue-600 transition"
-              >
-                Leagues
-              </Link>
-            </div>
+            {auth.user && (
+              <div className="flex gap-6">
+                <Link 
+                  href="/dashboard" 
+                  className="text-gray-700 hover:text-blue-600 transition"
+                >
+                  Dashboard
+                </Link>
+              </div>
+            )}
             
             <div>
               {auth.user ? (
                 <div className="flex items-center gap-4">
-                  <span className="text-gray-700">{auth.user.name}</span>
                   <Link 
-                    href="/logout" 
+                    href="/dashboard"
+                    className="text-gray-700 hover:text-blue-600 transition"
+                  >
+                    {auth.user.name}
+                  </Link>
+                  {auth.user.role === 'admin' && (
+                    <Link 
+                      href="/avo"
+                      className="text-gray-700 hover:text-blue-600 transition"
+                    >
+                      Admin
+                    </Link>
+                  )}
+                  <Link 
+                    href="/users/sign_out" 
                     method="delete"
                     as="button"
                     className="text-red-600 hover:text-red-700"
@@ -54,12 +57,20 @@ export default function Layout({ children }: LayoutProps) {
                   </Link>
                 </div>
               ) : (
-                <Link 
-                  href="/login" 
-                  className="btn btn-primary"
-                >
-                  Login
-                </Link>
+                <div className="flex items-center gap-4">
+                  <Link 
+                    href="/users/sign_in" 
+                    className="text-gray-700 hover:text-blue-600 transition"
+                  >
+                    Login
+                  </Link>
+                  <Link 
+                    href="/users/sign_up" 
+                    className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+                  >
+                    Register
+                  </Link>
+                </div>
               )}
             </div>
           </div>
@@ -67,14 +78,14 @@ export default function Layout({ children }: LayoutProps) {
       </nav>
 
       {/* Flash Messages */}
-      {flash.success && (
+      {(flash.success || flash.notice) && (
         <div className="bg-green-500 text-white px-4 py-3 text-center">
-          {flash.success}
+          {flash.success || flash.notice}
         </div>
       )}
-      {flash.error && (
+      {(flash.error || flash.alert) && (
         <div className="bg-red-500 text-white px-4 py-3 text-center">
-          {flash.error}
+          {flash.error || flash.alert}
         </div>
       )}
 

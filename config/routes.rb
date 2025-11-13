@@ -1,6 +1,4 @@
 Rails.application.routes.draw do
-  resource :squad, only: [ :show, :update ]
-  get "home", to: "pages#home"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
@@ -11,7 +9,20 @@ Rails.application.routes.draw do
   # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
-  # Defines the root path route ("/")
-  # root "posts#index"
-  root "pages#home"
+  # Devise routes with custom controllers
+  devise_for :users, controllers: {
+    registrations: 'users/registrations',
+    sessions: 'users/sessions'
+  }
+
+  # Avo admin panel (only accessible to admins)
+  authenticate :user, ->(u) { u.admin? } do
+    mount_avo
+  end
+
+  # Dashboard routes (protected)
+  get '/dashboard', to: 'dashboards#index', as: :dashboard
+
+  # Root route points to dashboard (redirects to login if not authenticated)
+  root to: 'dashboards#index'
 end
