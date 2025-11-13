@@ -1,10 +1,10 @@
-import React, { FormEvent, useState } from 'react'
+import React, { FormEvent } from 'react'
 import { Link, useForm } from '@inertiajs/react'
 import { PageProps } from '@/types'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import Layout from '@/components/layout/layout'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 
 interface LoginProps extends PageProps {
   errors?: Record<string, string>
@@ -32,6 +32,7 @@ export default function Login({ errors: pageErrors, locale }: LoginProps) {
         sign_in: 'Sign In',
         dont_have_account: "Don't have an account?",
         register: 'Register',
+        login_description: 'Enter your email to sign in to your account',
       },
       id: {
         login: 'Masuk',
@@ -41,6 +42,7 @@ export default function Login({ errors: pageErrors, locale }: LoginProps) {
         sign_in: 'Masuk',
         dont_have_account: 'Belum punya akun?',
         register: 'Daftar',
+        login_description: 'Masukkan email Anda untuk masuk ke akun Anda',
       },
     }
     const lang = (locale as string) || 'en'
@@ -50,51 +52,54 @@ export default function Login({ errors: pageErrors, locale }: LoginProps) {
   const formErrors = errors || pageErrors || {}
 
   return (
-    <Layout>
-      <div className="max-w-md mx-auto mt-16">
-        <div className="bg-white rounded-lg shadow-lg p-8">
-          <h1 className="text-3xl font-bold text-center mb-8">{t('login')}</h1>
-
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+      <Card className="w-full max-w-md">
+        <CardHeader className="space-y-1">
+          <CardTitle className="text-2xl font-bold text-center">{t('login')}</CardTitle>
+          <CardDescription className="text-center">{t('login_description')}</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-2">
               <Label htmlFor="email">{t('email')}</Label>
               <Input
                 id="email"
                 type="email"
+                placeholder="name@example.com"
                 value={data.email}
                 onChange={(e) => setData('email', e.target.value)}
-                className="mt-1"
                 required
               />
               {formErrors.email && (
-                <p className="mt-1 text-sm text-red-600">{formErrors.email}</p>
+                <p className="text-sm text-red-600 mt-1">{formErrors.email}</p>
               )}
             </div>
 
-            <div>
-              <Label htmlFor="password">{t('password')}</Label>
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <Label htmlFor="password">{t('password')}</Label>
+              </div>
               <Input
                 id="password"
                 type="password"
                 value={data.password}
                 onChange={(e) => setData('password', e.target.value)}
-                className="mt-1"
                 required
               />
               {formErrors.password && (
-                <p className="mt-1 text-sm text-red-600">{formErrors.password}</p>
+                <p className="text-sm text-red-600 mt-1">{formErrors.password}</p>
               )}
             </div>
 
-            <div className="flex items-center">
+            <div className="flex items-center space-x-2">
               <input
                 id="remember_me"
                 type="checkbox"
                 checked={data.remember_me}
                 onChange={(e) => setData('remember_me', e.target.checked)}
-                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                className="h-4 w-4 rounded border-gray-300"
               />
-              <Label htmlFor="remember_me" className="ml-2">
+              <Label htmlFor="remember_me" className="text-sm font-normal cursor-pointer">
                 {t('remember_me')}
               </Label>
             </div>
@@ -102,19 +107,18 @@ export default function Login({ errors: pageErrors, locale }: LoginProps) {
             <Button type="submit" disabled={processing} className="w-full">
               {processing ? 'Loading...' : t('sign_in')}
             </Button>
-
-            <div className="text-center">
-              <p className="text-sm text-gray-600">
-                {t('dont_have_account')}{' '}
-                <Link href="/users/sign_up" className="text-blue-600 hover:underline">
-                  {t('register')}
-                </Link>
-              </p>
-            </div>
           </form>
-        </div>
-      </div>
-    </Layout>
+        </CardContent>
+        <CardFooter className="flex flex-col space-y-4">
+          <div className="text-sm text-center text-muted-foreground">
+            {t('dont_have_account')}{' '}
+            <Link href="/users/sign_up" className="text-primary hover:underline font-medium">
+              {t('register')}
+            </Link>
+          </div>
+        </CardFooter>
+      </Card>
+    </div>
   )
 }
 

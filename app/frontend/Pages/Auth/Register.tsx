@@ -4,7 +4,7 @@ import { PageProps } from '@/types'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import Layout from '@/components/layout/layout'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 
 interface RegisterProps extends PageProps {
   errors?: Record<string, string>
@@ -26,17 +26,18 @@ export default function Register({ errors: pageErrors, locale }: RegisterProps) 
   const t = (key: string) => {
     const translations: Record<string, Record<string, string>> = {
       en: {
-        register: 'Register',
+        register: 'Create an account',
         name: 'Name',
         email: 'Email',
         password: 'Password',
-        password_confirmation: 'Password Confirmation',
+        password_confirmation: 'Confirm Password',
         sign_up: 'Sign Up',
         already_have_account: 'Already have an account?',
         login: 'Login',
+        register_description: 'Enter your information to create your account',
       },
       id: {
-        register: 'Daftar',
+        register: 'Buat akun',
         name: 'Nama',
         email: 'Email',
         password: 'Kata Sandi',
@@ -44,6 +45,7 @@ export default function Register({ errors: pageErrors, locale }: RegisterProps) 
         sign_up: 'Daftar',
         already_have_account: 'Sudah punya akun?',
         login: 'Masuk',
+        register_description: 'Masukkan informasi Anda untuk membuat akun',
       },
     }
     const lang = (locale as string) || 'en'
@@ -53,88 +55,87 @@ export default function Register({ errors: pageErrors, locale }: RegisterProps) 
   const formErrors = errors || pageErrors || {}
 
   return (
-    <Layout>
-      <div className="max-w-md mx-auto mt-16">
-        <div className="bg-white rounded-lg shadow-lg p-8">
-          <h1 className="text-3xl font-bold text-center mb-8">{t('register')}</h1>
-
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+      <Card className="w-full max-w-md">
+        <CardHeader className="space-y-1">
+          <CardTitle className="text-2xl font-bold text-center">{t('register')}</CardTitle>
+          <CardDescription className="text-center">{t('register_description')}</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-2">
               <Label htmlFor="name">{t('name')}</Label>
               <Input
                 id="name"
                 type="text"
+                placeholder="John Doe"
                 value={data.name}
                 onChange={(e) => setData('name', e.target.value)}
-                className="mt-1"
                 required
               />
               {formErrors.name && (
-                <p className="mt-1 text-sm text-red-600">{formErrors.name}</p>
+                <p className="text-sm text-red-600 mt-1">{formErrors.name}</p>
               )}
             </div>
 
-            <div>
+            <div className="space-y-2">
               <Label htmlFor="email">{t('email')}</Label>
               <Input
                 id="email"
                 type="email"
+                placeholder="name@example.com"
                 value={data.email}
                 onChange={(e) => setData('email', e.target.value)}
-                className="mt-1"
                 required
               />
               {formErrors.email && (
-                <p className="mt-1 text-sm text-red-600">{formErrors.email}</p>
+                <p className="text-sm text-red-600 mt-1">{formErrors.email}</p>
               )}
             </div>
 
-            <div>
+            <div className="space-y-2">
               <Label htmlFor="password">{t('password')}</Label>
               <Input
                 id="password"
                 type="password"
                 value={data.password}
                 onChange={(e) => setData('password', e.target.value)}
-                className="mt-1"
                 required
               />
               {formErrors.password && (
-                <p className="mt-1 text-sm text-red-600">{formErrors.password}</p>
+                <p className="text-sm text-red-600 mt-1">{formErrors.password}</p>
               )}
             </div>
 
-            <div>
+            <div className="space-y-2">
               <Label htmlFor="password_confirmation">{t('password_confirmation')}</Label>
               <Input
                 id="password_confirmation"
                 type="password"
                 value={data.password_confirmation}
                 onChange={(e) => setData('password_confirmation', e.target.value)}
-                className="mt-1"
                 required
               />
               {formErrors.password_confirmation && (
-                <p className="mt-1 text-sm text-red-600">{formErrors.password_confirmation}</p>
+                <p className="text-sm text-red-600 mt-1">{formErrors.password_confirmation}</p>
               )}
             </div>
 
             <Button type="submit" disabled={processing} className="w-full">
               {processing ? 'Loading...' : t('sign_up')}
             </Button>
-
-            <div className="text-center">
-              <p className="text-sm text-gray-600">
-                {t('already_have_account')}{' '}
-                <Link href="/users/sign_in" className="text-blue-600 hover:underline">
-                  {t('login')}
-                </Link>
-              </p>
-            </div>
           </form>
-        </div>
-      </div>
-    </Layout>
+        </CardContent>
+        <CardFooter className="flex flex-col space-y-4">
+          <div className="text-sm text-center text-muted-foreground">
+            {t('already_have_account')}{' '}
+            <Link href="/users/sign_in" className="text-primary hover:underline font-medium">
+              {t('login')}
+            </Link>
+          </div>
+        </CardFooter>
+      </Card>
+    </div>
   )
 }
 

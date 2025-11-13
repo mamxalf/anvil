@@ -16,7 +16,7 @@ export default function Layout({ children }: LayoutProps) {
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center h-16">
             <Link href="/" className="text-2xl font-bold text-blue-600">
-              FPL Clone
+              Anvil
             </Link>
             
             {auth.user && (
@@ -97,7 +97,7 @@ export default function Layout({ children }: LayoutProps) {
       {/* Footer */}
       <footer className="bg-gray-800 text-white py-8 mt-16">
         <div className="container mx-auto px-4 text-center">
-          <p>&copy; 2024 FPL Clone. Built with Rails + Inertia + React + TypeScript</p>
+          <p>&copy; 2024 Anvil. Built with Rails + Inertia + React + TypeScript</p>
         </div>
       </footer>
     </div>
