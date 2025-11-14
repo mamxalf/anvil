@@ -41,5 +41,33 @@ module Anvil
     config.i18n.available_locales = [ :en, :id ]
     config.i18n.default_locale = :en
     config.i18n.fallbacks = true
+
+    # Automatically load credentials into ENV variables
+    # This makes credentials available as environment variables throughout the app
+    # Only sets ENV if not already set (allows override via actual ENV)
+    # Supports nested credentials: database: { username: "postgres" } -> ENV["DATABASE_USERNAME"]
+    config.after_initialize do
+      # Try environment-specific credentials first, then fall back to root level
+      env_credentials = Rails.application.credentials[Rails.env.to_sym] || Rails.application.credentials
+
+      if env_credentials.present?
+        # Recursively flatten nested credentials into ENV variables
+        flatten_credentials_to_env = lambda do |hash, prefix = nil|
+          hash.each do |key, value|
+            env_key = prefix ? "#{prefix}_#{key}".upcase : key.to_s.upcase
+
+            if value.is_a?(Hash)
+              # Recursively process nested hashes
+              flatten_credentials_to_env.call(value, env_key)
+            else
+              # Set ENV variable (only if not already set)
+              ENV[env_key] ||= value.to_s if value.present?
+            end
+          end
+        end
+
+        flatten_credentials_to_env.call(env_credentials)
+      end
+    end
   end
 end
