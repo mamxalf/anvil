@@ -54,8 +54,8 @@ gem "pundit", "~> 2.3"
 gem "avo", "~> 3.0"
 
 # error tracking
-gem "sentry-ruby", "~> 5.0"
-gem "sentry-rails", "~> 5.0"
+gem "sentry-ruby", "~> 6.1"
+gem "sentry-rails", "~> 6.1"
 
 # logging
 gem "lograge", "~> 0.14.0"
