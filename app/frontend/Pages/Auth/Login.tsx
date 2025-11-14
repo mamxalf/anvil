@@ -10,7 +10,7 @@ import { loginSchema, type LoginFormData } from '@/lib/validations'
 
 interface LoginProps extends PageProps {}
 
-export default function Login({ errors: pageErrors = {}, locale }: LoginProps) {
+export default function Login({ errors: pageErrors = {}, translations }: LoginProps) {
   const {
     register,
     handleSubmit,
@@ -48,31 +48,14 @@ export default function Login({ errors: pageErrors = {}, locale }: LoginProps) {
     )
   }
 
-  const t = (key: string) => {
-    const translations: Record<string, Record<string, string>> = {
-      en: {
-        login: 'Login',
-        email: 'Email',
-        password: 'Password',
-        remember_me: 'Remember me',
-        sign_in: 'Sign In',
-        dont_have_account: "Don't have an account?",
-        register: 'Register',
-        login_description: 'Enter your email to sign in to your account',
-      },
-      id: {
-        login: 'Masuk',
-        email: 'Email',
-        password: 'Kata Sandi',
-        remember_me: 'Ingat saya',
-        sign_in: 'Masuk',
-        dont_have_account: 'Belum punya akun?',
-        register: 'Daftar',
-        login_description: 'Masukkan email Anda untuk masuk ke akun Anda',
-      },
-    }
-    const lang = (locale as string) || 'en'
-    return translations[lang]?.[key] || key
+  const t = translations?.auth || {
+    login: '',
+    email: '',
+    password: '',
+    remember_me: '',
+    sign_in: '',
+    dont_have_account: '',
+    register: '',
   }
 
   // Merge server errors with form errors
@@ -90,13 +73,15 @@ export default function Login({ errors: pageErrors = {}, locale }: LoginProps) {
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold text-center">{t('login')}</CardTitle>
-          <CardDescription className="text-center">{t('login_description')}</CardDescription>
+          <CardTitle className="text-2xl font-bold text-center">{t.login || 'Login'}</CardTitle>
+          <CardDescription className="text-center">
+            Enter your email to sign in to your account
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">{t('email')}</Label>
+              <Label htmlFor="email">{t.email || 'Email'}</Label>
               <Input
                 id="email"
                 type="email"
@@ -112,7 +97,7 @@ export default function Login({ errors: pageErrors = {}, locale }: LoginProps) {
 
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <Label htmlFor="password">{t('password')}</Label>
+                <Label htmlFor="password">{t.password || 'Password'}</Label>
               </div>
               <Input
                 id="password"
@@ -134,20 +119,20 @@ export default function Login({ errors: pageErrors = {}, locale }: LoginProps) {
                 className="h-4 w-4 rounded border-gray-300"
               />
               <Label htmlFor="remember_me" className="text-sm font-normal cursor-pointer">
-                {t('remember_me')}
+                {t.remember_me || 'Remember me'}
               </Label>
             </div>
 
             <Button type="submit" disabled={isSubmitting} className="w-full">
-              {isSubmitting ? 'Loading...' : t('sign_in')}
+              {isSubmitting ? 'Loading...' : t.sign_in || 'Sign In'}
             </Button>
           </form>
         </CardContent>
         <CardFooter className="flex flex-col space-y-4">
           <div className="text-sm text-center text-muted-foreground">
-            {t('dont_have_account')}{' '}
+            {t.dont_have_account || "Don't have an account?"}{' '}
             <Link href="/users/sign_up" className="text-primary hover:underline font-medium">
-              {t('register')}
+              {t.register || 'Register'}
             </Link>
           </div>
         </CardFooter>

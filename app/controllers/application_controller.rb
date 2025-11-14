@@ -23,7 +23,8 @@ class ApplicationController < ActionController::Base
         alert: flash[:alert]
       },
       errors: session.delete(:errors) || {},
-      locale: I18n.locale
+      locale: I18n.locale,
+      translations: i18n_translations_for_namespaces(%w[auth dashboard common])
     }
   end
 
@@ -68,5 +69,24 @@ class ApplicationController < ActionController::Base
         username: current_user&.name
       )
     end
+  end
+
+  # Extract all translations for given namespaces
+  # This recursively extracts all keys under the namespace
+  def i18n_translations_for_namespaces(namespaces)
+    result = {}
+    namespaces.each do |namespace|
+      result[namespace.to_sym] = extract_translations_for_namespace(namespace)
+    end
+    result
+  end
+
+  def extract_translations_for_namespace(namespace)
+    translations = I18n.t(namespace, default: {})
+    return {} unless translations.is_a?(Hash)
+
+    # Remove nested keys (like success:, error:) and return only top-level keys
+    # Or return all keys recursively depending on your needs
+    translations.transform_keys(&:to_sym).except(:success, :error)
   end
 end

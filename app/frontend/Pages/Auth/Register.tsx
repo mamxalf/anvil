@@ -10,7 +10,7 @@ import { registerSchema, type RegisterFormData } from '@/lib/validations'
 
 interface RegisterProps extends PageProps {}
 
-export default function Register({ errors: pageErrors = {}, locale }: RegisterProps) {
+export default function Register({ errors: pageErrors = {}, translations }: RegisterProps) {
   const {
     register,
     handleSubmit,
@@ -50,33 +50,15 @@ export default function Register({ errors: pageErrors = {}, locale }: RegisterPr
     )
   }
 
-  const t = (key: string) => {
-    const translations: Record<string, Record<string, string>> = {
-      en: {
-        register: 'Create an account',
-        name: 'Name',
-        email: 'Email',
-        password: 'Password',
-        password_confirmation: 'Confirm Password',
-        sign_up: 'Sign Up',
-        already_have_account: 'Already have an account?',
-        login: 'Login',
-        register_description: 'Enter your information to create your account',
-      },
-      id: {
-        register: 'Buat akun',
-        name: 'Nama',
-        email: 'Email',
-        password: 'Kata Sandi',
-        password_confirmation: 'Konfirmasi Kata Sandi',
-        sign_up: 'Daftar',
-        already_have_account: 'Sudah punya akun?',
-        login: 'Masuk',
-        register_description: 'Masukkan informasi Anda untuk membuat akun',
-      },
-    }
-    const lang = (locale as string) || 'en'
-    return translations[lang]?.[key] || key
+  const t = translations?.auth || {
+    register: '',
+    name: '',
+    email: '',
+    password: '',
+    password_confirmation: '',
+    sign_up: '',
+    already_have_account: '',
+    sign_in: '',
   }
 
   // Merge server errors with form errors
@@ -94,13 +76,17 @@ export default function Register({ errors: pageErrors = {}, locale }: RegisterPr
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold text-center">{t('register')}</CardTitle>
-          <CardDescription className="text-center">{t('register_description')}</CardDescription>
+          <CardTitle className="text-2xl font-bold text-center">
+            {t.register || 'Create an account'}
+          </CardTitle>
+          <CardDescription className="text-center">
+            Enter your information to create your account
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="name">{t('name')}</Label>
+              <Label htmlFor="name">{t.name || 'Name'}</Label>
               <Input
                 id="name"
                 type="text"
@@ -115,7 +101,7 @@ export default function Register({ errors: pageErrors = {}, locale }: RegisterPr
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="email">{t('email')}</Label>
+              <Label htmlFor="email">{t.email || 'Email'}</Label>
               <Input
                 id="email"
                 type="email"
@@ -130,7 +116,7 @@ export default function Register({ errors: pageErrors = {}, locale }: RegisterPr
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password">{t('password')}</Label>
+              <Label htmlFor="password">{t.password || 'Password'}</Label>
               <Input
                 id="password"
                 type="password"
@@ -144,7 +130,9 @@ export default function Register({ errors: pageErrors = {}, locale }: RegisterPr
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password_confirmation">{t('password_confirmation')}</Label>
+              <Label htmlFor="password_confirmation">
+                {t.password_confirmation || 'Confirm Password'}
+              </Label>
               <Input
                 id="password_confirmation"
                 type="password"
@@ -158,15 +146,15 @@ export default function Register({ errors: pageErrors = {}, locale }: RegisterPr
             </div>
 
             <Button type="submit" disabled={isSubmitting} className="w-full">
-              {isSubmitting ? 'Loading...' : t('sign_up')}
+              {isSubmitting ? 'Loading...' : t.sign_up || 'Sign Up'}
             </Button>
           </form>
         </CardContent>
         <CardFooter className="flex flex-col space-y-4">
           <div className="text-sm text-center text-muted-foreground">
-            {t('already_have_account')}{' '}
+            {t.already_have_account || 'Already have an account?'}{' '}
             <Link href="/users/sign_in" className="text-primary hover:underline font-medium">
-              {t('login')}
+              {t.sign_in || 'Login'}
             </Link>
           </div>
         </CardFooter>
