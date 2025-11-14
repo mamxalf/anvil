@@ -88,6 +88,15 @@ A modern Rails application built with React, TypeScript, and Inertia.js.
    # Add SENTRY_DSN to your environment variables or Rails credentials
    ```
 
+   Notes: structure init credentials (you can update by looking on database.yml)
+   ```yml
+   database:
+    port:
+    host:
+    username:
+    password:
+   ```
+
 6. Create a user (optional, via Rails console):
    ```bash
    bin/rails console
