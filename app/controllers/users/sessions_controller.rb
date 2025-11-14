@@ -18,7 +18,7 @@ class Users::SessionsController < Devise::SessionsController
   rescue => e
     clean_up_passwords resource
     render inertia: "Auth/Login", props: {
-      errors: { email: I18n.t('devise.failure.invalid') }
+      errors: { email: I18n.t("devise.failure.invalid") }
     }, status: :unprocessable_entity
   end
 
@@ -39,4 +39,3 @@ class Users::SessionsController < Devise::SessionsController
     root_path
   end
 end
-

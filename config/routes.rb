@@ -11,8 +11,8 @@ Rails.application.routes.draw do
 
   # Devise routes with custom controllers
   devise_for :users, controllers: {
-    registrations: 'users/registrations',
-    sessions: 'users/sessions'
+    registrations: "users/registrations",
+    sessions: "users/sessions"
   }
 
   # Avo admin panel (only accessible to admins)
@@ -21,8 +21,8 @@ Rails.application.routes.draw do
   end
 
   # Dashboard routes (protected)
-  get '/dashboard', to: 'dashboards#index', as: :dashboard
+  get "/dashboard", to: "dashboards#index", as: :dashboard
 
   # Root route points to dashboard (redirects to login if not authenticated)
-  root to: 'dashboards#index'
+  root to: "dashboards#index"
 end
