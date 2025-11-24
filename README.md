@@ -24,7 +24,7 @@ A modern Rails application built with React, TypeScript, and Inertia.js.
 - **Styling**: Tailwind CSS v4
 - **UI Components**: Shadcn UI
 - **Asset Pipeline**: Vite
-- **Package Manager**: Yarn 4.11.0
+- **Package Manager**: Bun 1.3.2
 
 ### Deployment
 - **Kamal**: For containerized deployment
@@ -45,8 +45,8 @@ A modern Rails application built with React, TypeScript, and Inertia.js.
 
 - Ruby 3.4.7 (see `.ruby-version`)
 - PostgreSQL
-- Node.js (for Yarn 4.11.0)
-- Yarn package manager (v4.11.0)
+- Node.js (for Bun 1.3.2)
+- Bun package manager (v1.3.2)
 
 ## Getting Started
 
@@ -65,7 +65,7 @@ A modern Rails application built with React, TypeScript, and Inertia.js.
 
 3. Install JavaScript dependencies:
    ```bash
-   yarn install
+   bun install
    ```
 
 4. Set up the database:
