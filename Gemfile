@@ -42,7 +42,7 @@ gem "solargraph", "~> 0.57.0"
 gem "htmlbeautifier", "~> 1.4", ">= 1.4.3"
 
 # inertia
-gem "inertia_rails", "~> 3.12", ">= 3.12.1"
+gem "inertia_rails", "~> 3.13"
 
 # authentication
 gem "devise", "~> 4.9"
