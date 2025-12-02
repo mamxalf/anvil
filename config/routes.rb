@@ -15,13 +15,32 @@ Rails.application.routes.draw do
     sessions: "users/sessions"
   }
 
-  # Avo admin panel (only accessible to admins)
-  authenticate :user, ->(u) { u.admin? } do
-    mount_avo
-  end
+  # Avo admin panel (authentication handled in avo.rb initializer)
+  mount Avo::Engine, at: Avo.configuration.root_path
 
   # Dashboard routes (protected)
   get "/dashboard", to: "dashboards#index", as: :dashboard
+
+  # MBG Resources (for dietitians and admins)
+  resources :target_groups, only: [ :index, :show ]
+  resources :food_items
+  resources :menus do
+    member do
+      patch :publish
+      patch :archive
+    end
+  end
+  resources :institutions
+  resources :beneficiaries
+  resources :meal_distributions
+
+  # Menu Items (nested under menus)
+  resources :menus do
+    resources :menu_items, only: [ :create, :update, :destroy ]
+  end
+
+  # Locale switching
+  get "/locale/:locale", to: "locales#switch", as: :switch_locale
 
   # Root route points to dashboard (redirects to login if not authenticated)
   root to: "dashboards#index"

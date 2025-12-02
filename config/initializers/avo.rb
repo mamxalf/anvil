@@ -38,7 +38,7 @@ Avo.configure do |config|
   # }
   # config.raise_error_on_missing_policy = false
   config.authorization_client = nil
-  config.explicit_authorization = true
+  config.explicit_authorization = false
 
   ## == Localization ==
   # config.locale = 'en-US'
@@ -115,7 +115,7 @@ Avo.configure do |config|
   # config.disabled_features = []
   # config.buttons_on_form_footers = true
   # config.field_wrapper_layout = true
-  # config.resource_parent_controller = "Avo::ResourcesController"
+  config.resource_parent_controller = "Avo::ResourcesController"
   # config.first_sorting_option = :desc # :desc or :asc
   # config.exclude_from_status = []
   # config.model_generator_hook = true

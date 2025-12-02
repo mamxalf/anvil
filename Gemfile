@@ -52,6 +52,7 @@ gem "pundit", "~> 2.3"
 
 # admin panel
 gem "avo", "~> 3.0"
+gem "sprockets-rails" # Required for Avo icons/assets
 
 # error tracking
 gem "sentry-ruby", "~> 5.0"

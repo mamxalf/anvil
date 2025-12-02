@@ -59,6 +59,14 @@ en:
     title: "Dashboard"
     welcome: "Welcome"
     admin_panel: "Admin Panel"
+    statistics: "Statistics"
+    total_beneficiaries: "Total Beneficiaries"
+    total_institutions: "Total Institutions"
+    total_menus: "Total Menus"
+    total_distributions: "Total Distributions"
+    distributions_this_month: "Distributions This Month"
+    recent_distributions: "Recent Distributions"
+    nutrition_compliance: "Nutrition Compliance"
 
   # Common
   common:
@@ -69,7 +77,213 @@ en:
     create: "Create"
     update: "Update"
     back: "Back"
+    search: "Search"
+    filter: "Filter"
+    export: "Export"
+    import: "Import"
+    actions: "Actions"
+    view: "View"
+    details: "Details"
+    status: "Status"
+    date: "Date"
+    name: "Name"
+    description: "Description"
+    type: "Type"
+    category: "Category"
+    total: "Total"
+    per_page: "Per Page"
+    showing: "Showing"
+    of: "of"
+    no_data: "No data available"
+    loading: "Loading..."
+    confirm_delete: "Are you sure you want to delete?"
+    "yes": "Yes"
+    "no": "No"
 
   # Pundit
   pundit:
     not_authorized: "You are not authorized to perform this action."
+
+  # Users
+  users:
+    roles:
+      user: "User"
+      admin: "Administrator"
+      dietitian: "Dietitian"
+
+  # Target Groups
+  target_groups:
+    title: "Target Groups"
+    singular: "Target Group"
+    ibu_hamil: "Pregnant Women"
+    ibu_menyusui: "Breastfeeding Mothers"
+    balita_paud: "Toddlers & Kindergarten"
+    sd_kelas_1_3: "Elementary Grade 1-3"
+    sd_kelas_4_6: "Elementary Grade 4-6"
+    smp: "Junior High School"
+    sma: "Senior High School"
+    santri: "Islamic Boarding School Students"
+    age_range: "Age Range"
+    nutrition_requirements: "Nutrition Requirements"
+    years: "years"
+
+  # Food Items
+  food_items:
+    title: "Food Items"
+    singular: "Food Item"
+    add_new: "Add Food Item"
+    categories:
+      makanan_pokok: "Staple Foods"
+      lauk_hewani: "Animal Protein"
+      lauk_nabati: "Plant Protein"
+      sayuran: "Vegetables"
+      buah: "Fruits"
+      susu: "Milk/Dairy"
+    nutrition_per_100g: "Nutrition per 100g"
+    portion_info: "Portion Information"
+    urt: "Household Measure"
+
+  # Menus
+  menus:
+    title: "Menu List"
+    singular: "Menu"
+    add_new: "Create New Menu"
+    edit: "Edit Menu"
+    day_number: "Day"
+    status:
+      draft: "Draft"
+      published: "Published"
+      archived: "Archived"
+    nutrition_summary: "Nutrition Summary"
+    compliance_status: "Compliance Status"
+    meets_requirements: "Meets Requirements"
+    does_not_meet_requirements: "Does Not Meet Requirements"
+    add_food_item: "Add Food Item"
+    meal_types:
+      makanan_utama: "Main Dish"
+      selingan: "Snack"
+
+  # Menu Items
+  menu_items:
+    portion_size: "Portion Size"
+    portion_unit: "Portion Unit"
+
+  # Institutions
+  institutions:
+    title: "Institutions"
+    singular: "Institution"
+    add_new: "Add Institution"
+    edit: "Edit Institution"
+    types:
+      paud: "Kindergarten/PAUD"
+      sd: "Elementary School"
+      smp: "Junior High School"
+      sma: "Senior High School"
+      pesantren: "Islamic Boarding School"
+      posyandu: "Health Post"
+    student_count: "Student Count"
+    contact_person: "Contact Person"
+    address: "Address"
+    province: "Province"
+    city: "City/Regency"
+    district: "District"
+    postal_code: "Postal Code"
+    phone: "Phone"
+    email: "Email"
+
+  # Beneficiaries
+  beneficiaries:
+    title: "Beneficiaries"
+    singular: "Beneficiary"
+    add_new: "Add Beneficiary"
+    edit: "Edit Beneficiary"
+    date_of_birth: "Date of Birth"
+    age: "Age"
+    gender: "Gender"
+    genders:
+      male: "Male"
+      female: "Female"
+    special_needs: "Special Needs"
+    allergies: "Allergies"
+    dietary_restrictions: "Dietary Restrictions"
+
+  # Meal Distributions
+  meal_distributions:
+    title: "Meal Distributions"
+    singular: "Distribution"
+    add_new: "Record Distribution"
+    edit: "Edit Distribution"
+    distribution_date: "Distribution Date"
+    recipient_count: "Recipient Count"
+    distributed_by: "Distributed By"
+    notes: "Notes"
+    menu_served: "Menu Served"
+    total_distributed: "Total Distributed"
+
+  # Nutrition
+  nutrition:
+    energy: "Energy"
+    protein: "Protein"
+    fat: "Fat"
+    carbohydrate: "Carbohydrate"
+    fiber: "Fiber"
+    vitamin_a: "Vitamin A"
+    vitamin_b1: "Vitamin B1"
+    vitamin_b2: "Vitamin B2"
+    vitamin_b3: "Vitamin B3"
+    vitamin_b6: "Vitamin B6"
+    vitamin_b9: "Folate"
+    vitamin_b12: "Vitamin B12"
+    vitamin_c: "Vitamin C"
+    vitamin_d: "Vitamin D"
+    calcium: "Calcium"
+    iron: "Iron"
+    zinc: "Zinc"
+    iodine: "Iodine"
+    selenium: "Selenium"
+    units:
+      kcal: "kcal"
+      gram: "g"
+      mg: "mg"
+      mcg: "mcg"
+
+  # Navigation
+  nav:
+    dashboard: "Dashboard"
+    menus: "Menus"
+    food_items: "Food Items"
+    institutions: "Institutions"
+    beneficiaries: "Beneficiaries"
+    distributions: "Distributions"
+    reports: "Reports"
+    settings: "Settings"
+    profile: "Profile"
+
+  # Messages
+  messages:
+    created: "%{resource} successfully created"
+    updated: "%{resource} successfully updated"
+    deleted: "%{resource} successfully deleted"
+    error: "An error occurred"
+    not_found: "%{resource} not found"
+
+  # Validations
+  errors:
+    messages:
+      blank: "can't be blank"
+      invalid: "is invalid"
+      taken: "has already been taken"
+      too_short: "is too short (minimum is %{count} characters)"
+      too_long: "is too long (maximum is %{count} characters)"
+
+  # Date formats
+  date:
+    formats:
+      default: "%m/%d/%Y"
+      short: "%b %d"
+      long: "%B %d, %Y"
+  time:
+    formats:
+      default: "%m/%d/%Y %H:%M"
+      short: "%b %d %H:%M"
+      long: "%B %d, %Y %H:%M"

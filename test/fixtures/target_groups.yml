@@ -1,0 +1,28 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+sd_kelas_1_3:
+  id: <%= SecureRandom.uuid %>
+  name: "SD/MI Kelas 1-3"
+  code: "SD_KELAS_1_3"
+  description: "Siswa SD/MI sederajat kelas 1-3"
+  min_energy: 500
+  min_protein: 12.5
+  min_fat: 14
+  min_carbohydrate: 75
+  min_fiber: 6.5
+  age_range_start: 7
+  age_range_end: 9
+
+smp:
+  id: <%= SecureRandom.uuid %>
+  name: "SMP/MTS Sederajat"
+  code: "SMP"
+  description: "Siswa SMP/MTS sederajat"
+  min_energy: 700
+  min_protein: 17.5
+  min_fat: 19
+  min_carbohydrate: 105
+  min_fiber: 9
+  age_range_start: 13
+  age_range_end: 15
+

@@ -1,0 +1,58 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+nasi_putih:
+  id: <%= SecureRandom.uuid %>
+  name: "Nasi Putih"
+  code: "MP001"
+  category: 0
+  energy_per_100g: 130
+  protein_per_100g: 2.7
+  fat_per_100g: 0.3
+  carbohydrate_per_100g: 28.2
+  fiber_per_100g: 0.4
+  portion_size: 100
+  portion_unit: "gram"
+  urt_description: "3/4 gelas"
+
+ayam:
+  id: <%= SecureRandom.uuid %>
+  name: "Ayam (Daging)"
+  code: "LH001"
+  category: 1
+  energy_per_100g: 302
+  protein_per_100g: 18.2
+  fat_per_100g: 25.0
+  carbohydrate_per_100g: 0.0
+  fiber_per_100g: 0.0
+  portion_size: 40
+  portion_unit: "gram"
+  urt_description: "1 potong sedang"
+
+tempe:
+  id: <%= SecureRandom.uuid %>
+  name: "Tempe"
+  code: "LN001"
+  category: 2
+  energy_per_100g: 149
+  protein_per_100g: 18.3
+  fat_per_100g: 4.0
+  carbohydrate_per_100g: 12.7
+  fiber_per_100g: 1.4
+  portion_size: 50
+  portion_unit: "gram"
+  urt_description: "2 potong sedang"
+
+bayam:
+  id: <%= SecureRandom.uuid %>
+  name: "Bayam"
+  code: "SY001"
+  category: 3
+  energy_per_100g: 36
+  protein_per_100g: 3.5
+  fat_per_100g: 0.5
+  carbohydrate_per_100g: 6.5
+  fiber_per_100g: 0.8
+  portion_size: 100
+  portion_unit: "gram"
+  urt_description: "1 gelas"
+

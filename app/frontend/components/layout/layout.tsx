@@ -1,105 +1,204 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link, usePage } from '@inertiajs/react'
 import { PageProps } from '@/types'
+import {
+  LayoutDashboard,
+  UtensilsCrossed,
+  Apple,
+  Building2,
+  Users,
+  Truck,
+  Settings,
+  Menu,
+  X,
+  LogOut,
+  Globe,
+  ChevronDown,
+} from 'lucide-react'
+import { Button } from '@/components/ui/button'
 
 interface LayoutProps {
   children: React.ReactNode
 }
 
 export default function Layout({ children }: LayoutProps) {
-  const { auth, flash } = usePage<PageProps>().props
+  const { auth, flash, locale, translations } = usePage<PageProps>().props
+  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [langMenuOpen, setLangMenuOpen] = useState(false)
+
+  const t = translations?.nav || {}
+  const isDietitianOrAdmin = auth.user?.role === 'admin' || auth.user?.role === 'dietitian'
+
+  const navigation = [
+    { name: t.dashboard || 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
+    { name: t.menus || 'Menu', href: '/menus', icon: UtensilsCrossed, show: isDietitianOrAdmin },
+    { name: t.food_items || 'Bahan Pangan', href: '/food_items', icon: Apple, show: isDietitianOrAdmin },
+    { name: t.institutions || 'Institusi', href: '/institutions', icon: Building2, show: isDietitianOrAdmin },
+    { name: t.beneficiaries || 'Penerima Manfaat', href: '/beneficiaries', icon: Users, show: isDietitianOrAdmin },
+    { name: t.distributions || 'Distribusi', href: '/meal_distributions', icon: Truck, show: isDietitianOrAdmin },
+  ].filter(item => item.show !== false)
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
-      {/* Navigation */}
-      <nav className="bg-white shadow-sm border-b border-gray-200">
-        <div className="container mx-auto px-4">
-          <div className="flex justify-between items-center h-16">
-            <Link href="/" className="text-2xl font-bold text-blue-600">
-              Anvil
-            </Link>
+    <div className="min-h-screen bg-slate-50">
+      {/* Mobile sidebar backdrop */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-black/50 lg:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
 
-            {auth.user && (
-              <div className="flex gap-6">
+      {/* Sidebar */}
+      <aside
+        className={`fixed inset-y-0 left-0 z-50 w-64 transform bg-gradient-to-b from-emerald-800 to-emerald-900 transition-transform duration-300 ease-in-out lg:translate-x-0 ${
+          sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+        }`}
+      >
+        <div className="flex h-full flex-col">
+          {/* Logo */}
+          <div className="flex h-16 items-center justify-between px-4 border-b border-emerald-700">
+            <Link href="/" className="flex items-center gap-2">
+              <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
+                <span className="text-emerald-800 font-bold text-lg">M</span>
+              </div>
+              <span className="text-xl font-bold text-white">MBG App</span>
+            </Link>
+            <button
+              className="lg:hidden text-white"
+              onClick={() => setSidebarOpen(false)}
+            >
+              <X className="h-6 w-6" />
+            </button>
+          </div>
+
+          {/* Navigation */}
+          <nav className="flex-1 space-y-1 px-3 py-4">
+            {navigation.map((item) => {
+              const isActive = window.location.pathname === item.href ||
+                window.location.pathname.startsWith(item.href + '/')
+              return (
                 <Link
-                  href="/dashboard"
-                  className="text-gray-700 hover:text-blue-600 transition"
+                  key={item.name}
+                  href={item.href}
+                  className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
+                    isActive
+                      ? 'bg-emerald-700 text-white'
+                      : 'text-emerald-100 hover:bg-emerald-700/50 hover:text-white'
+                  }`}
                 >
-                  Dashboard
+                  <item.icon className="h-5 w-5" />
+                  {item.name}
+                </Link>
+              )
+            })}
+          </nav>
+
+          {/* User section */}
+          {auth.user && (
+            <div className="border-t border-emerald-700 p-4">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 rounded-full bg-emerald-600 flex items-center justify-center text-white font-semibold">
+                  {auth.user.name.charAt(0).toUpperCase()}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-white truncate">{auth.user.name}</p>
+                  <p className="text-xs text-emerald-300 capitalize">{auth.user.role}</p>
+                </div>
+              </div>
+              <div className="flex gap-2">
+                {auth.user.role === 'admin' && (
+                  <Link
+                    href="/avo"
+                    className="flex-1 text-center text-xs py-2 px-3 rounded bg-emerald-700 text-white hover:bg-emerald-600 transition"
+                  >
+                    Admin Panel
+                  </Link>
+                )}
+                <Link
+                  href="/users/sign_out"
+                  method="delete"
+                  as="button"
+                  className="flex items-center justify-center gap-1 text-xs py-2 px-3 rounded bg-red-600 text-white hover:bg-red-500 transition"
+                >
+                  <LogOut className="h-3 w-3" />
+                  Keluar
+                </Link>
+              </div>
+            </div>
+          )}
+        </div>
+      </aside>
+
+      {/* Main content */}
+      <div className="lg:pl-64">
+        {/* Top header */}
+        <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b bg-white px-4 shadow-sm">
+          <button
+            className="lg:hidden text-gray-600"
+            onClick={() => setSidebarOpen(true)}
+          >
+            <Menu className="h-6 w-6" />
+          </button>
+
+          <div className="flex-1" />
+
+          {/* Language switcher */}
+          <div className="relative">
+            <button
+              onClick={() => setLangMenuOpen(!langMenuOpen)}
+              className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900"
+            >
+              <Globe className="h-4 w-4" />
+              <span>{locale === 'id' ? 'Indonesia' : 'English'}</span>
+              <ChevronDown className="h-4 w-4" />
+            </button>
+            {langMenuOpen && (
+              <div className="absolute right-0 mt-2 w-40 rounded-lg bg-white shadow-lg border py-1 z-50">
+                <Link
+                  href="/locale/id"
+                  className={`block px-4 py-2 text-sm hover:bg-gray-100 ${locale === 'id' ? 'text-emerald-600 font-medium' : 'text-gray-700'}`}
+                  onClick={() => setLangMenuOpen(false)}
+                >
+                  🇮🇩 Bahasa Indonesia
+                </Link>
+                <Link
+                  href="/locale/en"
+                  className={`block px-4 py-2 text-sm hover:bg-gray-100 ${locale === 'en' ? 'text-emerald-600 font-medium' : 'text-gray-700'}`}
+                  onClick={() => setLangMenuOpen(false)}
+                >
+                  🇬🇧 English
                 </Link>
               </div>
             )}
+          </div>
+        </header>
 
-            <div>
-              {auth.user ? (
-                <div className="flex items-center gap-4">
-                  <Link
-                    href="/dashboard"
-                    className="text-gray-700 hover:text-blue-600 transition"
-                  >
-                    {auth.user.name}
-                  </Link>
-                  {auth.user.role === 'admin' && (
-                    <Link
-                      href="/avo"
-                      className="text-gray-700 hover:text-blue-600 transition"
-                    >
-                      Admin
-                    </Link>
-                  )}
-                  <Link
-                    href="/users/sign_out"
-                    method="delete"
-                    as="button"
-                    className="text-red-600 hover:text-red-700"
-                  >
-                    Logout
-                  </Link>
-                </div>
-              ) : (
-                <div className="flex items-center gap-4">
-                  <Link
-                    href="/users/sign_in"
-                    className="text-gray-700 hover:text-blue-600 transition"
-                  >
-                    Login
-                  </Link>
-                  <Link
-                    href="/users/sign_up"
-                    className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
-                  >
-                    Register
-                  </Link>
-                </div>
-              )}
+        {/* Flash Messages */}
+        {(flash.success || flash.notice) && (
+          <div className="mx-4 mt-4">
+            <div className="rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-800 px-4 py-3">
+              {flash.success || flash.notice}
             </div>
           </div>
-        </div>
-      </nav>
+        )}
+        {(flash.error || flash.alert) && (
+          <div className="mx-4 mt-4">
+            <div className="rounded-lg bg-red-50 border border-red-200 text-red-800 px-4 py-3">
+              {flash.error || flash.alert}
+            </div>
+          </div>
+        )}
 
-      {/* Flash Messages */}
-      {(flash.success || flash.notice) && (
-        <div className="bg-green-500 text-white px-4 py-3 text-center">
-          {flash.success || flash.notice}
-        </div>
-      )}
-      {(flash.error || flash.alert) && (
-        <div className="bg-red-500 text-white px-4 py-3 text-center">
-          {flash.error || flash.alert}
-        </div>
-      )}
+        {/* Page content */}
+        <main className="p-4 lg:p-6">
+          {children}
+        </main>
 
-      {/* Main Content */}
-      <main className="container mx-auto px-4 py-8 grow">
-        {children}
-      </main>
-
-      {/* Footer */}
-      <footer className="bg-gray-800 text-white py-8 mt-auto">
-        <div className="container mx-auto px-4 text-center">
-          <p>&copy; 2024 Anvil. Built with Rails + Inertia + React + TypeScript</p>
-        </div>
-      </footer>
+        {/* Footer */}
+        <footer className="border-t bg-white px-4 py-4 text-center text-sm text-gray-500">
+          <p>© 2024 Makan Bergizi Gratis - Badan Gizi Nasional Indonesia</p>
+        </footer>
+      </div>
     </div>
   )
 }

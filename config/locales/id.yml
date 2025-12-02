@@ -30,6 +30,14 @@ id:
     title: "Dasbor"
     welcome: "Selamat datang"
     admin_panel: "Panel Admin"
+    statistics: "Statistik"
+    total_beneficiaries: "Total Penerima Manfaat"
+    total_institutions: "Total Institusi"
+    total_menus: "Total Menu"
+    total_distributions: "Total Distribusi"
+    distributions_this_month: "Distribusi Bulan Ini"
+    recent_distributions: "Distribusi Terbaru"
+    nutrition_compliance: "Kepatuhan Gizi"
 
   # Common
   common:
@@ -40,8 +48,213 @@ id:
     create: "Buat"
     update: "Perbarui"
     back: "Kembali"
+    search: "Cari"
+    filter: "Filter"
+    export: "Ekspor"
+    import: "Impor"
+    actions: "Aksi"
+    view: "Lihat"
+    details: "Detail"
+    status: "Status"
+    date: "Tanggal"
+    name: "Nama"
+    description: "Deskripsi"
+    type: "Tipe"
+    category: "Kategori"
+    total: "Total"
+    per_page: "Per Halaman"
+    showing: "Menampilkan"
+    of: "dari"
+    no_data: "Tidak ada data"
+    loading: "Memuat..."
+    confirm_delete: "Apakah Anda yakin ingin menghapus?"
+    "yes": "Ya"
+    "no": "Tidak"
 
   # Pundit
   pundit:
     not_authorized: "Anda tidak memiliki izin untuk melakukan tindakan ini."
 
+  # Users
+  users:
+    roles:
+      user: "Pengguna"
+      admin: "Administrator"
+      dietitian: "Ahli Gizi"
+
+  # Target Groups
+  target_groups:
+    title: "Kelompok Sasaran"
+    singular: "Kelompok Sasaran"
+    ibu_hamil: "Ibu Hamil"
+    ibu_menyusui: "Ibu Menyusui"
+    balita_paud: "Balita & PAUD/TK/RA"
+    sd_kelas_1_3: "SD/MI Kelas 1-3"
+    sd_kelas_4_6: "SD/MI Kelas 4-6"
+    smp: "SMP/MTS Sederajat"
+    sma: "SMA/MA Sederajat"
+    santri: "Santri"
+    age_range: "Rentang Usia"
+    nutrition_requirements: "Kebutuhan Gizi"
+    years: "tahun"
+
+  # Food Items
+  food_items:
+    title: "Daftar Bahan Pangan"
+    singular: "Bahan Pangan"
+    add_new: "Tambah Bahan Pangan"
+    categories:
+      makanan_pokok: "Makanan Pokok"
+      lauk_hewani: "Lauk Hewani"
+      lauk_nabati: "Lauk Nabati"
+      sayuran: "Sayuran"
+      buah: "Buah"
+      susu: "Susu"
+    nutrition_per_100g: "Nilai Gizi per 100g"
+    portion_info: "Informasi Porsi"
+    urt: "Ukuran Rumah Tangga (URT)"
+
+  # Menus
+  menus:
+    title: "Daftar Menu"
+    singular: "Menu"
+    add_new: "Buat Menu Baru"
+    edit: "Edit Menu"
+    day_number: "Hari ke"
+    status:
+      draft: "Draf"
+      published: "Dipublikasi"
+      archived: "Diarsipkan"
+    nutrition_summary: "Ringkasan Gizi"
+    compliance_status: "Status Kepatuhan"
+    meets_requirements: "Memenuhi Syarat"
+    does_not_meet_requirements: "Belum Memenuhi Syarat"
+    add_food_item: "Tambah Bahan Pangan"
+    meal_types:
+      makanan_utama: "Makanan Utama"
+      selingan: "Selingan"
+
+  # Menu Items
+  menu_items:
+    portion_size: "Ukuran Porsi"
+    portion_unit: "Satuan Porsi"
+
+  # Institutions
+  institutions:
+    title: "Daftar Institusi"
+    singular: "Institusi"
+    add_new: "Tambah Institusi"
+    edit: "Edit Institusi"
+    types:
+      paud: "PAUD/TK/RA"
+      sd: "SD/MI"
+      smp: "SMP/MTS"
+      sma: "SMA/MA"
+      pesantren: "Pondok Pesantren"
+      posyandu: "Posyandu"
+    student_count: "Jumlah Siswa"
+    contact_person: "Penanggung Jawab"
+    address: "Alamat"
+    province: "Provinsi"
+    city: "Kota/Kabupaten"
+    district: "Kecamatan"
+    postal_code: "Kode Pos"
+    phone: "Telepon"
+    email: "Email"
+
+  # Beneficiaries
+  beneficiaries:
+    title: "Daftar Penerima Manfaat"
+    singular: "Penerima Manfaat"
+    add_new: "Tambah Penerima Manfaat"
+    edit: "Edit Penerima Manfaat"
+    date_of_birth: "Tanggal Lahir"
+    age: "Usia"
+    gender: "Jenis Kelamin"
+    genders:
+      male: "Laki-laki"
+      female: "Perempuan"
+    special_needs: "Kebutuhan Khusus"
+    allergies: "Alergi"
+    dietary_restrictions: "Pantangan Makanan"
+
+  # Meal Distributions
+  meal_distributions:
+    title: "Distribusi Makanan"
+    singular: "Distribusi"
+    add_new: "Catat Distribusi"
+    edit: "Edit Distribusi"
+    distribution_date: "Tanggal Distribusi"
+    recipient_count: "Jumlah Penerima"
+    distributed_by: "Didistribusikan Oleh"
+    notes: "Catatan"
+    menu_served: "Menu yang Disajikan"
+    total_distributed: "Total Terdistribusi"
+
+  # Nutrition
+  nutrition:
+    energy: "Energi"
+    protein: "Protein"
+    fat: "Lemak"
+    carbohydrate: "Karbohidrat"
+    fiber: "Serat"
+    vitamin_a: "Vitamin A"
+    vitamin_b1: "Vitamin B1"
+    vitamin_b2: "Vitamin B2"
+    vitamin_b3: "Vitamin B3"
+    vitamin_b6: "Vitamin B6"
+    vitamin_b9: "Folat"
+    vitamin_b12: "Vitamin B12"
+    vitamin_c: "Vitamin C"
+    vitamin_d: "Vitamin D"
+    calcium: "Kalsium"
+    iron: "Zat Besi"
+    zinc: "Zinc"
+    iodine: "Iodium"
+    selenium: "Selenium"
+    units:
+      kcal: "kkal"
+      gram: "g"
+      mg: "mg"
+      mcg: "mcg"
+
+  # Navigation
+  nav:
+    dashboard: "Dasbor"
+    menus: "Menu"
+    food_items: "Bahan Pangan"
+    institutions: "Institusi"
+    beneficiaries: "Penerima Manfaat"
+    distributions: "Distribusi"
+    reports: "Laporan"
+    settings: "Pengaturan"
+    profile: "Profil"
+
+  # Messages
+  messages:
+    created: "%{resource} berhasil dibuat"
+    updated: "%{resource} berhasil diperbarui"
+    deleted: "%{resource} berhasil dihapus"
+    error: "Terjadi kesalahan"
+    not_found: "%{resource} tidak ditemukan"
+
+  # Validations
+  errors:
+    messages:
+      blank: "tidak boleh kosong"
+      invalid: "tidak valid"
+      taken: "sudah digunakan"
+      too_short: "terlalu pendek (minimal %{count} karakter)"
+      too_long: "terlalu panjang (maksimal %{count} karakter)"
+
+  # Date formats
+  date:
+    formats:
+      default: "%d/%m/%Y"
+      short: "%d %b"
+      long: "%d %B %Y"
+  time:
+    formats:
+      default: "%d/%m/%Y %H:%M"
+      short: "%d %b %H:%M"
+      long: "%d %B %Y %H:%M"

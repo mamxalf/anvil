@@ -24,7 +24,7 @@ class ApplicationController < ActionController::Base
       },
       errors: session.delete(:errors) || {},
       locale: I18n.locale,
-      translations: i18n_translations_for_namespaces(%w[auth dashboard common])
+      translations: i18n_translations_for_namespaces(%w[auth dashboard common nav menus food_items institutions beneficiaries meal_distributions nutrition target_groups messages])
     }
   end
 
@@ -85,8 +85,25 @@ class ApplicationController < ActionController::Base
     translations = I18n.t(namespace, default: {})
     return {} unless translations.is_a?(Hash)
 
-    # Remove nested keys (like success:, error:) and return only top-level keys
-    # Or return all keys recursively depending on your needs
-    translations.transform_keys(&:to_sym).except(:success, :error)
+    # Recursively convert translations to a safe format for JSON
+    deep_stringify_translations(translations)
+  end
+
+  def deep_stringify_translations(hash)
+    return {} unless hash.is_a?(Hash)
+
+    hash.each_with_object({}) do |(key, value), result|
+      # Skip non-symbol/string keys
+      next unless key.is_a?(Symbol) || key.is_a?(String)
+
+      result[key.to_sym] = case value
+      when Hash
+        deep_stringify_translations(value)
+      when String, Numeric, TrueClass, FalseClass, NilClass
+        value
+      else
+        value.to_s
+      end
+    end
   end
 end

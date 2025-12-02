@@ -6,14 +6,6 @@ require "rails/all"
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-# Initialize Sentry early
-if defined?(Sentry)
-  Sentry.init do |config|
-    config.dsn = ENV["SENTRY_DSN"] if ENV["SENTRY_DSN"].present?
-    config.enabled_environments = %w[production staging]
-  end
-end
-
 module Anvil
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
@@ -37,9 +29,9 @@ module Anvil
       g.orm :active_record, primary_key_type: :uuid
     end
 
-    # Configure i18n
-    config.i18n.available_locales = [ :en, :id ]
-    config.i18n.default_locale = :en
+    # Configure i18n - Default: Bahasa Indonesia, Secondary: English
+    config.i18n.available_locales = [ :id, :en ]
+    config.i18n.default_locale = :id
     config.i18n.fallbacks = true
 
     # Automatically load credentials into ENV variables

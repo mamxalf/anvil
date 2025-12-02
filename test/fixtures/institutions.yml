@@ -1,0 +1,26 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+sdn_1:
+  id: <%= SecureRandom.uuid %>
+  name: "SDN 1 Jakarta"
+  institution_type: 1
+  address: "Jl. Merdeka No. 1"
+  province: "DKI Jakarta"
+  city: "Jakarta Pusat"
+  district: "Gambir"
+  postal_code: "10110"
+  phone: "021-12345678"
+  email: "sdn1@jakarta.go.id"
+  student_count: 500
+  contact_person: "Kepala Sekolah"
+
+smpn_1:
+  id: <%= SecureRandom.uuid %>
+  name: "SMPN 1 Jakarta"
+  institution_type: 2
+  address: "Jl. Sudirman No. 10"
+  province: "DKI Jakarta"
+  city: "Jakarta Pusat"
+  student_count: 800
+  contact_person: "Kepala Sekolah"
+
