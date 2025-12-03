@@ -10,6 +10,7 @@ import {
   Truck,
   TrendingUp,
   Calendar,
+  Zap,
 } from 'lucide-react'
 
 interface DashboardProps extends PageProps {
@@ -51,6 +52,13 @@ export default function Index({
       icon: UtensilsCrossed,
       color: 'bg-amber-500',
       href: '/menus',
+    },
+    {
+      name: t.target_groups || 'Kelompok Sasaran',
+      value: statistics.target_groups_count.toLocaleString('id-ID'),
+      icon: Zap,
+      color: 'bg-red-500',
+      href: '/target_groups',
     },
     {
       name: t.distributions_this_month || 'Distribusi Bulan Ini',

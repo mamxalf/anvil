@@ -58,12 +58,26 @@ export default function Form({ menu, target_groups, food_items, is_edit, errors,
     description: menu.description || '',
     target_group_id: menu.target_group_id || '',
     day_number: menu.day_number || 1,
+    nutrition_profile: (menu as any).nutrition_profile || 'standard',
     menu_items_attributes: menuItems,
   })
 
   const selectedTargetGroup = useMemo(() => {
     return target_groups.find(tg => tg.id === data.target_group_id)
   }, [data.target_group_id, target_groups])
+
+  const availableProfiles = useMemo(() => {
+    if (!selectedTargetGroup) return [] as string[]
+    const profiles = selectedTargetGroup.nutrition_profiles || {}
+    const keys = Object.keys(profiles)
+    return keys.length > 0 ? keys : ['standard']
+  }, [selectedTargetGroup])
+
+  const getProfileLabel = (key: string) => {
+    if (key === 'standard') return 'Standar'
+    if (key === 'high_protein') return 'Tinggi Protein'
+    return key.replace(/_/g, ' ')
+  }
 
   const calculateNutrition = useMemo(() => {
     let energy = 0, protein = 0, fat = 0, carbohydrate = 0
@@ -82,14 +96,20 @@ export default function Form({ menu, target_groups, food_items, is_edit, errors,
     return { energy, protein, fat, carbohydrate }
   }, [menuItems, food_items])
 
+  const activeProfileKey = (data as any).nutrition_profile || 'standard'
+
   const nutritionCompliance = useMemo(() => {
     if (!selectedTargetGroup) return null
 
-    const req = selectedTargetGroup.nutrition_requirements || {
+    const profiles = selectedTargetGroup.nutrition_profiles || {}
+    const profileReq = profiles[activeProfileKey]
+
+    const req = profileReq || selectedTargetGroup.nutrition_requirements || {
       energy: selectedTargetGroup.min_energy,
       protein: selectedTargetGroup.min_protein,
       fat: selectedTargetGroup.min_fat,
       carbohydrate: selectedTargetGroup.min_carbohydrate,
+      fiber: selectedTargetGroup.min_fiber,
     }
 
     const energyRequired = Number(req.energy ?? selectedTargetGroup.min_energy)
@@ -119,7 +139,7 @@ export default function Form({ menu, target_groups, food_items, is_edit, errors,
         met: carbohydrateRequired ? calculateNutrition.carbohydrate >= carbohydrateRequired : false,
       },
     }
-  }, [selectedTargetGroup, calculateNutrition])
+  }, [selectedTargetGroup, calculateNutrition, activeProfileKey])
 
   const formatNumber = (value: unknown, decimals: number) => {
     const num = typeof value === 'number' ? value : Number(value)
@@ -215,6 +235,26 @@ export default function Form({ menu, target_groups, food_items, is_edit, errors,
                       </SelectContent>
                     </Select>
                     {errors.target_group_id && <p className="text-sm text-red-500">{errors.target_group_id}</p>}
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="nutrition_profile">Profil Gizi</Label>
+                    <Select
+                      value={(data as any).nutrition_profile || availableProfiles[0] || ''}
+                      onValueChange={value => setData('nutrition_profile' as any, value)}
+                      disabled={!selectedTargetGroup}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Pilih profil gizi" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {availableProfiles.map((key) => (
+                          <SelectItem key={key} value={key}>
+                            {getProfileLabel(key)}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </div>
 
                   <div className="space-y-2">

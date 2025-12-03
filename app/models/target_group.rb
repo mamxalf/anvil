@@ -1,6 +1,9 @@
 class TargetGroup < ApplicationRecord
   has_many :menus, dependent: :restrict_with_error
   has_many :beneficiaries, dependent: :restrict_with_error
+  has_many :nutrition_requirement_profiles,
+           class_name: "TargetGroupNutritionRequirement",
+           dependent: :destroy
 
   validates :name, presence: true
   validates :code, presence: true, uniqueness: true
@@ -19,13 +22,16 @@ class TargetGroup < ApplicationRecord
 
   scope :ordered, -> { order(:name) }
 
-  def meets_nutrition_requirements?(menu)
-    menu.total_energy >= min_energy &&
-      menu.total_protein >= min_protein &&
-      menu.total_fat >= min_fat &&
-      menu.total_carbohydrate >= min_carbohydrate
+  def meets_nutrition_requirements?(menu, profile_key = :standard)
+    requirements = nutrition_requirements_for(profile_key)
+
+    menu.total_energy.to_f >= requirements[:energy].to_f &&
+      menu.total_protein.to_f >= requirements[:protein].to_f &&
+      menu.total_fat.to_f >= requirements[:fat].to_f &&
+      menu.total_carbohydrate.to_f >= requirements[:carbohydrate].to_f
   end
 
+  # Default nutrition requirements based on min_* columns
   def nutrition_requirements
     {
       energy: min_energy,
@@ -52,6 +58,36 @@ class TargetGroup < ApplicationRecord
         selenium: min_selenium
       }
     }
+  end
+
+  # Returns macro requirements for a given profile, falling back to min_* values
+  def nutrition_requirements_for(profile_key = :standard)
+    profile = nutrition_requirement_profiles.find_by(profile_key: profile_key.to_s)
+
+    if profile
+      {
+        energy: profile.energy || min_energy,
+        protein: profile.protein || min_protein,
+        fat: profile.fat || min_fat,
+        carbohydrate: profile.carbohydrate || min_carbohydrate,
+        fiber: profile.fiber || min_fiber
+      }
+    else
+      {
+        energy: min_energy,
+        protein: min_protein,
+        fat: min_fat,
+        carbohydrate: min_carbohydrate,
+        fiber: min_fiber
+      }
+    end
+  end
+
+  # Expose all profiles as a hash keyed by profile_key for frontend use
+  def nutrition_profiles
+    nutrition_requirement_profiles.each_with_object({}) do |profile, hash|
+      hash[profile.profile_key] = profile.to_profile_hash
+    end
   end
 end
 

@@ -1,5 +1,9 @@
 class Menu < ApplicationRecord
   belongs_to :target_group
+  belongs_to :nutrition_requirement,
+             class_name: "TargetGroupNutritionRequirement",
+             foreign_key: :target_group_nutrition_requirement_id,
+             optional: true
   belongs_to :created_by, class_name: "User"
   has_many :menu_items, dependent: :destroy
   has_many :food_items, through: :menu_items
@@ -40,8 +44,12 @@ class Menu < ApplicationRecord
     save!
   end
 
+  def nutrition_profile
+    nutrition_requirement&.profile_key || "standard"
+  end
+
   def meets_requirements?
-    target_group.meets_nutrition_requirements?(self)
+    target_group.meets_nutrition_requirements?(self, nutrition_profile.to_sym)
   end
 
   def nutrition_summary
@@ -55,12 +63,30 @@ class Menu < ApplicationRecord
   end
 
   def nutrition_compliance
-    requirements = target_group.nutrition_requirements
+    profile_key = nutrition_profile.to_sym
+    requirements = target_group.nutrition_requirements_for(profile_key)
+
     {
-      energy: { value: total_energy, required: requirements[:energy], met: total_energy >= requirements[:energy] },
-      protein: { value: total_protein, required: requirements[:protein], met: total_protein >= requirements[:protein] },
-      fat: { value: total_fat, required: requirements[:fat], met: total_fat >= requirements[:fat] },
-      carbohydrate: { value: total_carbohydrate, required: requirements[:carbohydrate], met: total_carbohydrate >= requirements[:carbohydrate] }
+      energy: {
+        value: total_energy.to_f,
+        required: requirements[:energy].to_f,
+        met: total_energy.to_f >= requirements[:energy].to_f
+      },
+      protein: {
+        value: total_protein.to_f,
+        required: requirements[:protein].to_f,
+        met: total_protein.to_f >= requirements[:protein].to_f
+      },
+      fat: {
+        value: total_fat.to_f,
+        required: requirements[:fat].to_f,
+        met: total_fat.to_f >= requirements[:fat].to_f
+      },
+      carbohydrate: {
+        value: total_carbohydrate.to_f,
+        required: requirements[:carbohydrate].to_f,
+        met: total_carbohydrate.to_f >= requirements[:carbohydrate].to_f
+      }
     }
   end
 end

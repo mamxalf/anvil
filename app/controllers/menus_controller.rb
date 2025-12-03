@@ -38,7 +38,10 @@ class MenusController < ApplicationController
     @menu = Menu.new
     render inertia: "Menus/Form", props: {
       menu: @menu.as_json,
-      target_groups: TargetGroup.ordered.as_json(only: [ :id, :name, :code ]),
+      target_groups: TargetGroup.ordered.as_json(
+        only: [ :id, :name, :code, :min_energy, :min_protein, :min_fat, :min_carbohydrate, :min_fiber ],
+        methods: [ :nutrition_profiles, :nutrition_requirements ]
+      ),
       food_items: FoodItem.ordered.as_json(methods: [ :category_name_id ]),
       is_edit: false
     }
@@ -61,7 +64,10 @@ class MenusController < ApplicationController
     authorize @menu
     render inertia: "Menus/Form", props: {
       menu: menu_json(@menu),
-      target_groups: TargetGroup.ordered.as_json(only: [ :id, :name, :code ]),
+      target_groups: TargetGroup.ordered.as_json(
+        only: [ :id, :name, :code, :min_energy, :min_protein, :min_fat, :min_carbohydrate, :min_fiber ],
+        methods: [ :nutrition_profiles, :nutrition_requirements ]
+      ),
       food_items: FoodItem.ordered.as_json(methods: [ :category_name_id ]),
       is_edit: true
     }
@@ -114,7 +120,7 @@ class MenusController < ApplicationController
   end
 
   def menu_params
-    params.require(:menu).permit(
+    permitted = params.require(:menu).permit(
       :name,
       :description,
       :target_group_id,
@@ -122,6 +128,17 @@ class MenusController < ApplicationController
       :day_number,
       menu_items_attributes: [ :id, :food_item_id, :portion_size, :portion_unit, :meal_type, :_destroy ]
     )
+
+    profile_key = permitted.delete(:nutrition_profile)
+    if profile_key.present? && permitted[:target_group_id].present?
+      target_group = TargetGroup.find_by(id: permitted[:target_group_id])
+      if target_group
+        profile = target_group.nutrition_requirement_profiles.find_by(profile_key: profile_key)
+        permitted[:target_group_nutrition_requirement_id] = profile.id if profile
+      end
+    end
+
+    permitted
   end
 
   def menu_json(menu)
@@ -134,7 +151,7 @@ class MenusController < ApplicationController
           methods: [ :energy, :protein, :fat, :carbohydrate, :fiber ]
         }
       },
-      methods: [ :nutrition_summary, :meets_requirements? ]
+      methods: [ :nutrition_summary, :meets_requirements?, :nutrition_profile ]
     )
   end
 end

@@ -52,6 +52,7 @@ export interface TargetGroup {
   age_range_start?: number
   age_range_end?: number
   nutrition_requirements?: NutritionRequirements
+  nutrition_profiles?: Record<string, NutritionRequirements>
 }
 
 // Nutrition Requirements interface
@@ -91,6 +92,7 @@ export interface Menu {
   target_group_id: string
   target_group?: TargetGroup
   status: 'draft' | 'published' | 'archived'
+  nutrition_profile?: string
   total_energy: number
   total_protein: number
   total_fat: number

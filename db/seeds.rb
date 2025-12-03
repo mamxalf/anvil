@@ -230,6 +230,26 @@ end
 puts "Created #{TargetGroup.count} target groups"
 
 # =============================================================================
+# TARGET GROUP NUTRITION REQUIREMENTS (Profiles)
+# =============================================================================
+puts "Creating target group nutrition requirement profiles..."
+
+TargetGroup.find_each do |tg|
+  TargetGroupNutritionRequirement.find_or_create_by!(
+    target_group: tg,
+    profile_key: "standard"
+  ) do |profile|
+    profile.energy = tg.min_energy
+    profile.protein = tg.min_protein
+    profile.fat = tg.min_fat
+    profile.carbohydrate = tg.min_carbohydrate
+    profile.fiber = tg.min_fiber
+  end
+end
+
+puts "Created #{TargetGroupNutritionRequirement.count} nutrition requirement profiles"
+
+# =============================================================================
 # FOOD ITEMS - Based on Daftar Penukar Pangan (Food Exchange List)
 # Nutritional values per 100 gram
 # =============================================================================

@@ -27,15 +27,18 @@ export default function Layout({ children }: LayoutProps) {
   const [langMenuOpen, setLangMenuOpen] = useState(false)
 
   const t = translations?.nav || {}
-  const isDietitianOrAdmin = auth.user?.role === 'admin' || auth.user?.role === 'dietitian'
+  const user = auth?.user
+  const isDietitianOrAdmin = user?.role === 'admin' || user?.role === 'dietitian'
 
   const navigation = [
     { name: t.dashboard || 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
+    { name: t.target_groups || 'Kelompok Sasaran', href: '/target_groups', icon: Users, show: isDietitianOrAdmin },
     { name: t.menus || 'Menu', href: '/menus', icon: UtensilsCrossed, show: isDietitianOrAdmin },
     { name: t.food_items || 'Bahan Pangan', href: '/food_items', icon: Apple, show: isDietitianOrAdmin },
     { name: t.institutions || 'Institusi', href: '/institutions', icon: Building2, show: isDietitianOrAdmin },
     { name: t.beneficiaries || 'Penerima Manfaat', href: '/beneficiaries', icon: Users, show: isDietitianOrAdmin },
     { name: t.distributions || 'Distribusi', href: '/meal_distributions', icon: Truck, show: isDietitianOrAdmin },
+    { name: t.nutrition_profiles || 'Profil Gizi', href: '/nutrition_profiles', icon: Settings, show: isDietitianOrAdmin },
   ].filter(item => item.show !== false)
 
   return (
@@ -94,19 +97,19 @@ export default function Layout({ children }: LayoutProps) {
           </nav>
 
           {/* User section */}
-          {auth.user && (
+          {user && (
             <div className="border-t border-emerald-700 p-4">
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-10 h-10 rounded-full bg-emerald-600 flex items-center justify-center text-white font-semibold">
-                  {auth.user.name.charAt(0).toUpperCase()}
+                  {user.name.charAt(0).toUpperCase()}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-white truncate">{auth.user.name}</p>
-                  <p className="text-xs text-emerald-300 capitalize">{auth.user.role}</p>
+                  <p className="text-sm font-medium text-white truncate">{user.name}</p>
+                  <p className="text-xs text-emerald-300 capitalize">{user.role}</p>
                 </div>
               </div>
               <div className="flex gap-2">
-                {auth.user.role === 'admin' && (
+                {user.role === 'admin' && (
                   <Link
                     href="/avo"
                     className="flex-1 text-center text-xs py-2 px-3 rounded bg-emerald-700 text-white hover:bg-emerald-600 transition"

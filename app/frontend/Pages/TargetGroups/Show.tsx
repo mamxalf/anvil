@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from '@inertiajs/react'
+import { Link, usePage } from '@inertiajs/react'
 import { PageProps, TargetGroup } from '@/types'
 import Layout from '@/components/layout/layout'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -15,8 +15,12 @@ export default function Show({ target_group, translations }: TargetGroupShowProp
   const t = translations?.target_groups || {}
   const nutrition = translations?.nutrition || {}
   const common = translations?.common || {}
+  const page = usePage<PageProps>()
+  const auth = page.props.auth
+  const user = auth?.user
 
   const requirements = target_group.nutrition_requirements
+  const profiles = target_group.nutrition_profiles || {}
 
   return (
     <Layout>
@@ -107,6 +111,46 @@ export default function Show({ target_group, translations }: TargetGroupShowProp
             </CardContent>
           </Card>
         </div>
+
+        {/* Nutrition Profiles Overview */}
+        {Object.keys(profiles).length > 0 && (
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg">Profil Kebutuhan Gizi</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {Object.entries(profiles).map(([key, profile]) => (
+                  <div key={key} className="p-4 rounded-lg bg-gray-50 space-y-2">
+                    <p className="text-sm font-semibold text-gray-800">{key}</p>
+                    <div className="grid grid-cols-2 gap-2 text-xs text-gray-600">
+                      <div className="flex justify-between">
+                        <span>{nutrition.energy || 'Energi'}</span>
+                        <span className="font-semibold">{profile.energy} kkal</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>{nutrition.protein || 'Protein'}</span>
+                        <span className="font-semibold">{profile.protein} g</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>{nutrition.fat || 'Lemak'}</span>
+                        <span className="font-semibold">{profile.fat} g</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>{nutrition.carbohydrate || 'Karbo'}</span>
+                        <span className="font-semibold">{profile.carbohydrate} g</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>{nutrition.fiber || 'Serat'}</span>
+                        <span className="font-semibold">{profile.fiber} g</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
         {/* Quick Links */}
         <Card>

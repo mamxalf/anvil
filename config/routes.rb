@@ -22,7 +22,13 @@ Rails.application.routes.draw do
   get "/dashboard", to: "dashboards#index", as: :dashboard
 
   # MBG Resources (for dietitians and admins)
-  resources :target_groups, only: [ :index, :show ]
+  get "/nutrition_profiles", to: "nutrition_profiles#index", as: :nutrition_profiles
+  resources :target_groups, only: [ :index, :show ] do
+    member do
+      patch :nutrition_profiles, to: "target_groups#update_nutrition_profiles"
+      delete :nutrition_profile, to: "target_groups#destroy_nutrition_profile"
+    end
+  end
   resources :food_items
   resources :menus do
     member do

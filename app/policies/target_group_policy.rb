@@ -21,6 +21,10 @@ class TargetGroupPolicy < ApplicationPolicy
     admin?
   end
 
+  def manage_nutrition_profiles?
+    dietitian_or_admin?
+  end
+
   private
 
   def dietitian_or_admin?

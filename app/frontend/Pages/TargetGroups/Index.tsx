@@ -41,12 +41,12 @@ export default function Index({ target_groups, translations }: TargetGroupsIndex
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-gray-600 mb-4">{group.description}</p>
-                
+
                 <div className="space-y-3">
                   <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">
                     {t.nutrition_requirements || 'Kebutuhan Gizi Minimal'}
                   </p>
-                  
+
                   <div className="grid grid-cols-2 gap-2">
                     <div className="flex items-center gap-2 p-2 rounded bg-orange-50">
                       <Zap className="h-4 w-4 text-orange-500" />
@@ -55,7 +55,7 @@ export default function Index({ target_groups, translations }: TargetGroupsIndex
                         <p className="text-sm font-semibold">{group.min_energy} kkal</p>
                       </div>
                     </div>
-                    
+
                     <div className="flex items-center gap-2 p-2 rounded bg-red-50">
                       <Beef className="h-4 w-4 text-red-500" />
                       <div>
@@ -63,7 +63,7 @@ export default function Index({ target_groups, translations }: TargetGroupsIndex
                         <p className="text-sm font-semibold">{group.min_protein} g</p>
                       </div>
                     </div>
-                    
+
                     <div className="flex items-center gap-2 p-2 rounded bg-yellow-50">
                       <Droplet className="h-4 w-4 text-yellow-500" />
                       <div>
@@ -71,7 +71,7 @@ export default function Index({ target_groups, translations }: TargetGroupsIndex
                         <p className="text-sm font-semibold">{group.min_fat} g</p>
                       </div>
                     </div>
-                    
+
                     <div className="flex items-center gap-2 p-2 rounded bg-amber-50">
                       <Wheat className="h-4 w-4 text-amber-500" />
                       <div>
@@ -81,6 +81,21 @@ export default function Index({ target_groups, translations }: TargetGroupsIndex
                     </div>
                   </div>
                 </div>
+
+                {group.nutrition_profiles && Object.keys(group.nutrition_profiles).length > 0 && (
+                  <div className="mt-4 space-y-2">
+                    <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+                      Profil Gizi Tersedia
+                    </p>
+                    <div className="flex flex-wrap gap-1">
+                      {Object.keys(group.nutrition_profiles).map((key) => (
+                        <Badge key={key} variant="outline" className="text-xs">
+                          {key}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
                 <div className="mt-4 pt-4 border-t">
                   <Link href={`/target_groups/${group.id}`}>

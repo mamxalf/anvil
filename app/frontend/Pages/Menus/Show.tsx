@@ -1,5 +1,4 @@
-import React from 'react'
-import { Link, usePage, router } from '@inertiajs/react'
+import { Link, router } from '@inertiajs/react'
 import { PageProps, Menu, NutritionCompliance } from '@/types'
 import Layout from '@/components/layout/layout'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -21,9 +20,16 @@ interface MenuShowProps extends PageProps {
 }
 
 export default function Show({ menu, nutrition_compliance, translations }: MenuShowProps) {
-  const t = translations?.menus || {}
-  const nutrition = translations?.nutrition || {}
-  const common = translations?.common || {}
+  const t = (translations?.menus || {}) as Record<string, string>
+  const nutrition = (translations?.nutrition || {}) as Record<string, string>
+  const common = (translations?.common || {}) as Record<string, string>
+
+  const getProfileLabel = (key?: string | null) => {
+    if (!key) return ''
+    if (key === 'standard') return 'Standar'
+    if (key === 'high_protein') return 'Tinggi Protein'
+    return key.replace(/_/g, ' ')
+  }
 
   const formatNumber = (value: unknown, decimals: number) => {
     const num = typeof value === 'number' ? value : Number(value)
@@ -71,6 +77,9 @@ export default function Show({ menu, nutrition_compliance, translations }: MenuS
               </div>
               <p className="text-gray-600">
                 {menu.target_group?.name} • Hari ke-{menu.day_number || '-'}
+                {menu.nutrition_profile && (
+                  <> • Profil: {getProfileLabel(menu.nutrition_profile)}</>
+                )}
               </p>
             </div>
           </div>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_12_02_150428) do
+ActiveRecord::Schema[8.1].define(version: 2025_12_03_180500) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -102,6 +102,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_02_150428) do
     t.integer "day_number", default: 1
     t.text "description"
     t.string "name", null: false
+    t.string "nutrition_profile", default: "standard", null: false
     t.integer "status", default: 0, null: false
     t.uuid "target_group_id", null: false
     t.decimal "total_carbohydrate", precision: 10, scale: 2, default: "0.0"
@@ -112,8 +113,23 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_02_150428) do
     t.datetime "updated_at", null: false
     t.index ["created_by_id"], name: "index_menus_on_created_by_id"
     t.index ["day_number"], name: "index_menus_on_day_number"
+    t.index ["nutrition_profile"], name: "index_menus_on_nutrition_profile"
     t.index ["status"], name: "index_menus_on_status"
     t.index ["target_group_id"], name: "index_menus_on_target_group_id"
+  end
+
+  create_table "target_group_nutrition_requirements", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.decimal "carbohydrate", precision: 10, scale: 2, default: "0.0"
+    t.datetime "created_at", null: false
+    t.decimal "energy", precision: 10, scale: 2, default: "0.0"
+    t.decimal "fat", precision: 10, scale: 2, default: "0.0"
+    t.decimal "fiber", precision: 10, scale: 2, default: "0.0"
+    t.string "profile_key", default: "standard", null: false
+    t.decimal "protein", precision: 10, scale: 2, default: "0.0"
+    t.uuid "target_group_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["profile_key"], name: "index_target_group_nutrition_requirements_on_profile_key"
+    t.index ["target_group_id", "profile_key"], name: "index_tgnr_on_target_group_and_profile", unique: true
   end
 
   create_table "target_groups", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -169,4 +185,5 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_02_150428) do
   add_foreign_key "menu_items", "menus"
   add_foreign_key "menus", "target_groups"
   add_foreign_key "menus", "users", column: "created_by_id"
+  add_foreign_key "target_group_nutrition_requirements", "target_groups"
 end

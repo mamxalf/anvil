@@ -55,6 +55,13 @@ export default function Index({ menus, target_groups, filters, translations }: M
     return <Badge variant={variants[status]}>{labels[status]}</Badge>
   }
 
+  const getProfileLabel = (key?: string | null) => {
+    if (!key) return '-'
+    if (key === 'standard') return 'Standar'
+    if (key === 'high_protein') return 'Tinggi Protein'
+    return key.replace(/_/g, ' ')
+  }
+
   const handleDelete = (id: string) => {
     if (confirm(common.confirm_delete || 'Apakah Anda yakin ingin menghapus?')) {
       router.delete(`/menus/${id}`)
@@ -128,6 +135,7 @@ export default function Index({ menus, target_groups, filters, translations }: M
                 <TableRow>
                   <TableHead>{common.name || 'Nama'}</TableHead>
                   <TableHead>Kelompok Sasaran</TableHead>
+                  <TableHead>Profil Gizi</TableHead>
                   <TableHead className="text-center">Hari</TableHead>
                   <TableHead className="text-right">Energi (kkal)</TableHead>
                   <TableHead className="text-right">Protein (g)</TableHead>
@@ -141,6 +149,7 @@ export default function Index({ menus, target_groups, filters, translations }: M
                     <TableRow key={menu.id}>
                       <TableCell className="font-medium">{menu.name}</TableCell>
                       <TableCell>{menu.target_group?.name}</TableCell>
+                      <TableCell>{getProfileLabel(menu.nutrition_profile)}</TableCell>
                       <TableCell className="text-center">{menu.day_number || '-'}</TableCell>
                       <TableCell className="text-right">
                         {formatNumber(menu.total_energy, 0)}
