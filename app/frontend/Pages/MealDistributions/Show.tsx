@@ -23,6 +23,11 @@ export default function Show({ distribution, translations }: MealDistributionSho
   const common = translations?.common || {}
   const nutrition = translations?.nutrition || {}
 
+  const formatNumber = (value: unknown, decimals: number) => {
+    const num = typeof value === 'number' ? value : Number(value)
+    return Number.isFinite(num) ? num.toFixed(decimals) : '-'
+  }
+
   return (
     <Layout>
       <div className="space-y-6">
@@ -145,21 +150,36 @@ export default function Show({ distribution, translations }: MealDistributionSho
                     <div className="p-3 rounded-lg bg-gray-50 text-center">
                       <p className="text-xs text-gray-500">{nutrition.protein || 'Protein'}</p>
                       <p className="font-bold text-gray-900">
-                        {(distribution.nutrition_delivered.protein / 1000).toFixed(1)}
+                        {formatNumber(
+                          distribution.nutrition_delivered.protein != null
+                            ? distribution.nutrition_delivered.protein / 1000
+                            : null,
+                          1
+                        )}
                       </p>
                       <p className="text-xs text-gray-500">kg</p>
                     </div>
                     <div className="p-3 rounded-lg bg-gray-50 text-center">
                       <p className="text-xs text-gray-500">{nutrition.fat || 'Lemak'}</p>
                       <p className="font-bold text-gray-900">
-                        {(distribution.nutrition_delivered.fat / 1000).toFixed(1)}
+                        {formatNumber(
+                          distribution.nutrition_delivered.fat != null
+                            ? distribution.nutrition_delivered.fat / 1000
+                            : null,
+                          1
+                        )}
                       </p>
                       <p className="text-xs text-gray-500">kg</p>
                     </div>
                     <div className="p-3 rounded-lg bg-gray-50 text-center">
                       <p className="text-xs text-gray-500">{nutrition.carbohydrate || 'Karbo'}</p>
                       <p className="font-bold text-gray-900">
-                        {(distribution.nutrition_delivered.carbohydrate / 1000).toFixed(1)}
+                        {formatNumber(
+                          distribution.nutrition_delivered.carbohydrate != null
+                            ? distribution.nutrition_delivered.carbohydrate / 1000
+                            : null,
+                          1
+                        )}
                       </p>
                       <p className="text-xs text-gray-500">kg</p>
                     </div>

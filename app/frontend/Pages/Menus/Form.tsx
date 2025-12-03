@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react'
-import { Link, useForm, usePage } from '@inertiajs/react'
-import { PageProps, Menu, TargetGroup, FoodItem, MenuItem } from '@/types'
+import { Link, useForm, router } from '@inertiajs/react'
+import { PageProps, Menu, TargetGroup, FoodItem } from '@/types'
 import Layout from '@/components/layout/layout'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -53,7 +53,7 @@ export default function Form({ menu, target_groups, food_items, is_edit, errors,
     })) || []
   )
 
-  const { data, setData, post, put, processing } = useForm({
+  const { data, setData, processing } = useForm({
     name: menu.name || '',
     description: menu.description || '',
     target_group_id: menu.target_group_id || '',
@@ -92,13 +92,39 @@ export default function Form({ menu, target_groups, food_items, is_edit, errors,
       carbohydrate: selectedTargetGroup.min_carbohydrate,
     }
 
+    const energyRequired = Number(req.energy ?? selectedTargetGroup.min_energy)
+    const proteinRequired = Number(req.protein ?? selectedTargetGroup.min_protein)
+    const fatRequired = Number(req.fat ?? selectedTargetGroup.min_fat)
+    const carbohydrateRequired = Number(req.carbohydrate ?? selectedTargetGroup.min_carbohydrate)
+
     return {
-      energy: { value: calculateNutrition.energy, required: req.energy, met: calculateNutrition.energy >= req.energy },
-      protein: { value: calculateNutrition.protein, required: req.protein, met: calculateNutrition.protein >= req.protein },
-      fat: { value: calculateNutrition.fat, required: req.fat, met: calculateNutrition.fat >= req.fat },
-      carbohydrate: { value: calculateNutrition.carbohydrate, required: req.carbohydrate, met: calculateNutrition.carbohydrate >= req.carbohydrate },
+      energy: {
+        value: calculateNutrition.energy,
+        required: energyRequired,
+        met: energyRequired ? calculateNutrition.energy >= energyRequired : false,
+      },
+      protein: {
+        value: calculateNutrition.protein,
+        required: proteinRequired,
+        met: proteinRequired ? calculateNutrition.protein >= proteinRequired : false,
+      },
+      fat: {
+        value: calculateNutrition.fat,
+        required: fatRequired,
+        met: fatRequired ? calculateNutrition.fat >= fatRequired : false,
+      },
+      carbohydrate: {
+        value: calculateNutrition.carbohydrate,
+        required: carbohydrateRequired,
+        met: carbohydrateRequired ? calculateNutrition.carbohydrate >= carbohydrateRequired : false,
+      },
     }
   }, [selectedTargetGroup, calculateNutrition])
+
+  const formatNumber = (value: unknown, decimals: number) => {
+    const num = typeof value === 'number' ? value : Number(value)
+    return Number.isFinite(num) ? num.toFixed(decimals) : '-'
+  }
 
   const addMenuItem = () => {
     setMenuItems([...menuItems, {
@@ -127,12 +153,12 @@ export default function Form({ menu, target_groups, food_items, is_edit, errors,
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    const formData = { ...data, menu_items_attributes: menuItems }
+    const formData: any = { ...data, menu_items_attributes: menuItems }
 
     if (is_edit) {
-      put(`/menus/${menu.id}`, { data: { menu: formData } })
+      router.put(`/menus/${menu.id}`, { menu: formData as any })
     } else {
-      post('/menus', { data: { menu: formData } })
+      router.post('/menus', { menu: formData as any })
     }
   }
 
@@ -148,7 +174,7 @@ export default function Form({ menu, target_groups, food_items, is_edit, errors,
             </Button>
           </Link>
           <h1 className="text-2xl font-bold text-gray-900">
-            {is_edit ? (t.edit || 'Edit Menu') : (t.add_new || 'Buat Menu Baru')}
+            {is_edit ? String(t.edit || 'Edit Menu') : String(t.add_new || 'Buat Menu Baru')}
           </h1>
         </div>
 
@@ -338,7 +364,15 @@ export default function Form({ menu, target_groups, food_items, is_edit, errors,
               <CardContent>
                 {nutritionCompliance ? (
                   <div className="space-y-4">
-                    {Object.entries(nutritionCompliance).map(([key, data]) => (
+                    {Object.entries(nutritionCompliance).map(([key, data]) => {
+                      const value = Number(data.value)
+                      const required = Number(data.required)
+                      const progress =
+                        Number.isFinite(required) && required > 0 && Number.isFinite(value)
+                          ? Math.min((value / required) * 100, 100)
+                          : 0
+
+                      return (
                       <div key={key}>
                         <div className="flex justify-between items-center mb-1">
                           <span className="text-sm text-gray-600 capitalize">{key}</span>
@@ -355,16 +389,16 @@ export default function Form({ menu, target_groups, food_items, is_edit, errors,
                                 data.met ? 'bg-emerald-500' : 'bg-red-400'
                               }`}
                               style={{
-                                width: `${Math.min((data.value / data.required) * 100, 100)}%`,
+                                width: `${progress}%`,
                               }}
                             />
                           </div>
                           <span className="text-xs text-gray-500 w-24 text-right">
-                            {data.value.toFixed(1)} / {data.required.toFixed(1)}
+                            {formatNumber(data.value, 1)} / {formatNumber(data.required, 1)}
                           </span>
                         </div>
                       </div>
-                    ))}
+                    )})}
 
                     <div className="pt-4 border-t">
                       <p className="text-sm text-gray-500">

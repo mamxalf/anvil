@@ -34,6 +34,11 @@ export default function Index({ food_items, categories, filters, translations }:
   const common = translations?.common || {}
   const nutrition = translations?.nutrition || {}
 
+  const formatNumber = (value: unknown, decimals: number) => {
+    const num = typeof value === 'number' ? value : Number(value)
+    return Number.isFinite(num) ? num.toFixed(decimals) : '-'
+  }
+
   const handleFilter = (key: string, value: string) => {
     router.get('/food_items', { ...filters, [key]: value || undefined }, { preserveState: true })
   }
@@ -151,10 +156,18 @@ export default function Index({ food_items, categories, filters, translations }:
                           {item.category_name_id}
                         </Badge>
                       </TableCell>
-                      <TableCell className="text-right">{item.energy_per_100g?.toFixed(0)} kkal</TableCell>
-                      <TableCell className="text-right">{item.protein_per_100g?.toFixed(1)} g</TableCell>
-                      <TableCell className="text-right">{item.fat_per_100g?.toFixed(1)} g</TableCell>
-                      <TableCell className="text-right">{item.carbohydrate_per_100g?.toFixed(1)} g</TableCell>
+                      <TableCell className="text-right">
+                        {formatNumber(item.energy_per_100g, 0)} kkal
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {formatNumber(item.protein_per_100g, 1)} g
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {formatNumber(item.fat_per_100g, 1)} g
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {formatNumber(item.carbohydrate_per_100g, 1)} g
+                      </TableCell>
                       <TableCell className="text-sm text-gray-500">{item.urt_description || '-'}</TableCell>
                       <TableCell className="text-right">
                         <div className="flex justify-end gap-2">

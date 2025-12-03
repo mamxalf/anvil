@@ -32,6 +32,11 @@ export default function Index({ menus, target_groups, filters, translations }: M
   const t = translations?.menus || {}
   const common = translations?.common || {}
 
+  const formatNumber = (value: unknown, decimals: number) => {
+    const num = typeof value === 'number' ? value : Number(value)
+    return Number.isFinite(num) ? num.toFixed(decimals) : '-'
+  }
+
   const handleFilter = (key: string, value: string) => {
     router.get('/menus', { ...filters, [key]: value || undefined }, { preserveState: true })
   }
@@ -137,8 +142,12 @@ export default function Index({ menus, target_groups, filters, translations }: M
                       <TableCell className="font-medium">{menu.name}</TableCell>
                       <TableCell>{menu.target_group?.name}</TableCell>
                       <TableCell className="text-center">{menu.day_number || '-'}</TableCell>
-                      <TableCell className="text-right">{menu.total_energy?.toFixed(0)}</TableCell>
-                      <TableCell className="text-right">{menu.total_protein?.toFixed(1)}</TableCell>
+                      <TableCell className="text-right">
+                        {formatNumber(menu.total_energy, 0)}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {formatNumber(menu.total_protein, 1)}
+                      </TableCell>
                       <TableCell>{getStatusBadge(menu.status)}</TableCell>
                       <TableCell className="text-right">
                         <div className="flex justify-end gap-2">

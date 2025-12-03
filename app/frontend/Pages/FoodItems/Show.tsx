@@ -16,6 +16,11 @@ export default function Show({ food_item, translations }: FoodItemShowProps) {
   const common = translations?.common || {}
   const nutrition = translations?.nutrition || {}
 
+  const formatNumber = (value: unknown, decimals: number) => {
+    const num = typeof value === 'number' ? value : Number(value)
+    return Number.isFinite(num) ? num.toFixed(decimals) : '-'
+  }
+
   const getCategoryColor = (category: string) => {
     const colors: Record<string, string> = {
       makanan_pokok: 'bg-amber-100 text-amber-800',
@@ -67,7 +72,7 @@ export default function Show({ food_item, translations }: FoodItemShowProps) {
                   <Flame className="h-5 w-5" />
                   <span className="text-sm text-orange-100">{nutrition.energy || 'Energi'}</span>
                 </div>
-                <p className="text-3xl font-bold">{food_item.energy_per_100g?.toFixed(0)}</p>
+                <p className="text-3xl font-bold">{formatNumber(food_item.energy_per_100g, 0)}</p>
                 <p className="text-sm text-orange-200">kkal / 100g</p>
               </CardContent>
             </Card>
@@ -78,7 +83,7 @@ export default function Show({ food_item, translations }: FoodItemShowProps) {
                   <Beef className="h-5 w-5" />
                   <span className="text-sm text-red-100">{nutrition.protein || 'Protein'}</span>
                 </div>
-                <p className="text-3xl font-bold">{food_item.protein_per_100g?.toFixed(1)}</p>
+                <p className="text-3xl font-bold">{formatNumber(food_item.protein_per_100g, 1)}</p>
                 <p className="text-sm text-red-200">g / 100g</p>
               </CardContent>
             </Card>
@@ -89,7 +94,7 @@ export default function Show({ food_item, translations }: FoodItemShowProps) {
                   <Droplet className="h-5 w-5" />
                   <span className="text-sm text-yellow-100">{nutrition.fat || 'Lemak'}</span>
                 </div>
-                <p className="text-3xl font-bold">{food_item.fat_per_100g?.toFixed(1)}</p>
+                <p className="text-3xl font-bold">{formatNumber(food_item.fat_per_100g, 1)}</p>
                 <p className="text-sm text-yellow-200">g / 100g</p>
               </CardContent>
             </Card>
@@ -100,7 +105,7 @@ export default function Show({ food_item, translations }: FoodItemShowProps) {
                   <Wheat className="h-5 w-5" />
                   <span className="text-sm text-amber-100">{nutrition.carbohydrate || 'Karbo'}</span>
                 </div>
-                <p className="text-3xl font-bold">{food_item.carbohydrate_per_100g?.toFixed(1)}</p>
+                <p className="text-3xl font-bold">{formatNumber(food_item.carbohydrate_per_100g, 1)}</p>
                 <p className="text-sm text-amber-200">g / 100g</p>
               </CardContent>
             </Card>
@@ -137,27 +142,27 @@ export default function Show({ food_item, translations }: FoodItemShowProps) {
             <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
               <div className="p-4 rounded-lg bg-gray-50 text-center">
                 <p className="text-sm text-gray-500">{nutrition.energy || 'Energi'}</p>
-                <p className="text-xl font-bold text-gray-900">{food_item.energy_per_100g?.toFixed(0)}</p>
+                <p className="text-xl font-bold text-gray-900">{formatNumber(food_item.energy_per_100g, 0)}</p>
                 <p className="text-xs text-gray-400">kkal</p>
               </div>
               <div className="p-4 rounded-lg bg-gray-50 text-center">
                 <p className="text-sm text-gray-500">{nutrition.protein || 'Protein'}</p>
-                <p className="text-xl font-bold text-gray-900">{food_item.protein_per_100g?.toFixed(1)}</p>
+                <p className="text-xl font-bold text-gray-900">{formatNumber(food_item.protein_per_100g, 1)}</p>
                 <p className="text-xs text-gray-400">g</p>
               </div>
               <div className="p-4 rounded-lg bg-gray-50 text-center">
                 <p className="text-sm text-gray-500">{nutrition.fat || 'Lemak'}</p>
-                <p className="text-xl font-bold text-gray-900">{food_item.fat_per_100g?.toFixed(1)}</p>
+                <p className="text-xl font-bold text-gray-900">{formatNumber(food_item.fat_per_100g, 1)}</p>
                 <p className="text-xs text-gray-400">g</p>
               </div>
               <div className="p-4 rounded-lg bg-gray-50 text-center">
                 <p className="text-sm text-gray-500">{nutrition.carbohydrate || 'Karbohidrat'}</p>
-                <p className="text-xl font-bold text-gray-900">{food_item.carbohydrate_per_100g?.toFixed(1)}</p>
+                <p className="text-xl font-bold text-gray-900">{formatNumber(food_item.carbohydrate_per_100g, 1)}</p>
                 <p className="text-xs text-gray-400">g</p>
               </div>
               <div className="p-4 rounded-lg bg-gray-50 text-center">
                 <p className="text-sm text-gray-500">{nutrition.fiber || 'Serat'}</p>
-                <p className="text-xl font-bold text-gray-900">{food_item.fiber_per_100g?.toFixed(1)}</p>
+                <p className="text-xl font-bold text-gray-900">{formatNumber(food_item.fiber_per_100g, 1)}</p>
                 <p className="text-xs text-gray-400">g</p>
               </div>
             </div>

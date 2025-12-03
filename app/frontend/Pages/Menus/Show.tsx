@@ -25,6 +25,11 @@ export default function Show({ menu, nutrition_compliance, translations }: MenuS
   const nutrition = translations?.nutrition || {}
   const common = translations?.common || {}
 
+  const formatNumber = (value: unknown, decimals: number) => {
+    const num = typeof value === 'number' ? value : Number(value)
+    return Number.isFinite(num) ? num.toFixed(decimals) : '-'
+  }
+
   const handlePublish = () => {
     router.patch(`/menus/${menu.id}/publish`)
   }
@@ -99,35 +104,44 @@ export default function Show({ menu, nutrition_compliance, translations }: MenuS
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {Object.entries(nutrition_compliance).map(([key, data]) => (
-                  <div key={key}>
-                    <div className="flex justify-between items-center mb-1">
-                      <span className="text-sm text-gray-600 capitalize">
-                        {nutrition[key as keyof typeof nutrition] || key}
-                      </span>
-                      {data.met ? (
-                        <CheckCircle className="h-4 w-4 text-emerald-500" />
-                      ) : (
-                        <XCircle className="h-4 w-4 text-red-500" />
-                      )}
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden">
-                        <div
-                          className={`h-full rounded-full transition-all ${
-                            data.met ? 'bg-emerald-500' : 'bg-red-400'
-                          }`}
-                          style={{
-                            width: `${Math.min((data.value / data.required) * 100, 100)}%`,
-                          }}
-                        />
+                {Object.entries(nutrition_compliance).map(([key, data]) => {
+                  const value = typeof data.value === 'number' ? data.value : Number(data.value)
+                  const required = typeof data.required === 'number' ? data.required : Number(data.required)
+                  const progress =
+                    Number.isFinite(required) && required > 0 && Number.isFinite(value)
+                      ? Math.min((value / required) * 100, 100)
+                      : 0
+
+                  return (
+                    <div key={key}>
+                      <div className="flex justify-between items-center mb-1">
+                        <span className="text-sm text-gray-600 capitalize">
+                          {nutrition[key as keyof typeof nutrition] || key}
+                        </span>
+                        {data.met ? (
+                          <CheckCircle className="h-4 w-4 text-emerald-500" />
+                        ) : (
+                          <XCircle className="h-4 w-4 text-red-500" />
+                        )}
                       </div>
-                      <span className="text-xs text-gray-500 w-24 text-right">
-                        {data.value.toFixed(1)} / {data.required.toFixed(1)}
-                      </span>
+                      <div className="flex items-center gap-2">
+                        <div className="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden">
+                          <div
+                            className={`h-full rounded-full transition-all ${
+                              data.met ? 'bg-emerald-500' : 'bg-red-400'
+                            }`}
+                            style={{
+                              width: `${progress}%`,
+                            }}
+                          />
+                        </div>
+                        <span className="text-xs text-gray-500 w-24 text-right">
+                          {formatNumber(data.value, 1)} / {formatNumber(data.required, 1)}
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  )
+                })}
               </div>
 
               <div className="mt-6 p-4 rounded-lg bg-gray-50">
@@ -183,8 +197,12 @@ export default function Show({ menu, nutrition_compliance, translations }: MenuS
                         <TableCell className="text-right">
                           {item.portion_size} {item.portion_unit}
                         </TableCell>
-                        <TableCell className="text-right">{item.energy?.toFixed(0)} kkal</TableCell>
-                        <TableCell className="text-right">{item.protein?.toFixed(1)} g</TableCell>
+                        <TableCell className="text-right">
+                          {formatNumber(item.energy, 0)} kkal
+                        </TableCell>
+                        <TableCell className="text-right">
+                          {formatNumber(item.protein, 1)} g
+                        </TableCell>
                       </TableRow>
                     ))
                   ) : (
