@@ -120,25 +120,15 @@ class MenusController < ApplicationController
   end
 
   def menu_params
-    permitted = params.require(:menu).permit(
+    params.require(:menu).permit(
       :name,
       :description,
       :target_group_id,
+      :nutrition_profile,
       :status,
       :day_number,
       menu_items_attributes: [ :id, :food_item_id, :portion_size, :portion_unit, :meal_type, :_destroy ]
     )
-
-    profile_key = permitted.delete(:nutrition_profile)
-    if profile_key.present? && permitted[:target_group_id].present?
-      target_group = TargetGroup.find_by(id: permitted[:target_group_id])
-      if target_group
-        profile = target_group.nutrition_requirement_profiles.find_by(profile_key: profile_key)
-        permitted[:target_group_nutrition_requirement_id] = profile.id if profile
-      end
-    end
-
-    permitted
   end
 
   def menu_json(menu)
@@ -151,7 +141,7 @@ class MenusController < ApplicationController
           methods: [ :energy, :protein, :fat, :carbohydrate, :fiber ]
         }
       },
-      methods: [ :nutrition_summary, :meets_requirements?, :nutrition_profile ]
+      methods: [ :nutrition_summary, :meets_requirements, :nutrition_profile ]
     )
   end
 end

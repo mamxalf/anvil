@@ -1,9 +1,5 @@
 class Menu < ApplicationRecord
   belongs_to :target_group
-  belongs_to :nutrition_requirement,
-             class_name: "TargetGroupNutritionRequirement",
-             foreign_key: :target_group_nutrition_requirement_id,
-             optional: true
   belongs_to :created_by, class_name: "User"
   has_many :menu_items, dependent: :destroy
   has_many :food_items, through: :menu_items
@@ -45,11 +41,16 @@ class Menu < ApplicationRecord
   end
 
   def nutrition_profile
-    nutrition_requirement&.profile_key || "standard"
+    self[:nutrition_profile] || "standard"
   end
 
   def meets_requirements?
     target_group.meets_nutrition_requirements?(self, nutrition_profile.to_sym)
+  end
+
+  # For JSON serialization without question mark in key
+  def meets_requirements
+    meets_requirements?
   end
 
   def nutrition_summary
