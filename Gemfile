@@ -51,7 +51,7 @@ gem "devise", "~> 4.9"
 gem "pundit", "~> 2.3"
 
 # admin panel
-gem "avo", "~> 3.0"
+gem "avo", "~> 3.27"
 
 # error tracking
 gem "sentry-ruby", "~> 5.0"
