@@ -1,0 +1,17 @@
+ruby_course:
+  title: "Ruby for Beginners"
+  slug: "ruby-for-beginners"
+  description: "Learn Ruby"
+  level: "beginner"
+  subject: "coding"
+  status: "published"
+  instructor: instructor_one
+
+draft_course:
+  title: "Draft Course"
+  slug: "draft-course"
+  description: "Secret"
+  level: "advanced"
+  subject: "coding"
+  status: "draft"
+  instructor: instructor_one

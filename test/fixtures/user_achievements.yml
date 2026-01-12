@@ -1,0 +1,5 @@
+# Empty fixtures to prevent FK errors
+# one:
+#   student_profile: one
+#   achievement: one
+#   earned_at: 2026-01-12 17:00:06

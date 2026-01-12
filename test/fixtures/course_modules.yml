@@ -1,0 +1,10 @@
+module_one:
+  course: ruby_course
+  title: "Introduction"
+  position: 1
+  description: "Getting started"
+
+module_two:
+  course: ruby_course
+  title: "Advanced Concepts"
+  position: 2

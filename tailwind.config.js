@@ -23,6 +23,11 @@ export default {
           DEFAULT: 'hsl(var(--primary))',
           foreground: 'hsl(var(--primary-foreground))',
         },
+        kodibot: {
+          orange: '#E18914',
+          green: '#1D8536',
+          yellow: '#F9DB2B',
+        },
         // ... shadcn adds more
       },
     },

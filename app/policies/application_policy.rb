@@ -38,12 +38,37 @@ class ApplicationPolicy
 
   private
 
+  # Role helpers
   def admin?
     user&.admin?
   end
 
+  def instructor?
+    user&.instructor?
+  end
+
+  def parent?
+    user&.parent?
+  end
+
+  def student?
+    user&.student?
+  end
+
   def authenticated?
     user.present?
+  end
+
+  # Check if user owns the record (for instructors managing their content)
+  def owner?
+    return false unless user && record.respond_to?(:user_id)
+    record.user_id == user.id
+  end
+
+  # Check if parent can access child's records
+  def parent_of_student?
+    return false unless parent? && record.respond_to?(:student_profile)
+    user.children.include?(record.student_profile.user)
   end
 
   class Scope
@@ -59,5 +84,21 @@ class ApplicationPolicy
     private
 
     attr_reader :user, :scope
+
+    def admin?
+      user&.admin?
+    end
+
+    def instructor?
+      user&.instructor?
+    end
+
+    def parent?
+      user&.parent?
+    end
+
+    def student?
+      user&.student?
+    end
   end
 end

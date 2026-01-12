@@ -1,13 +1,41 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
 one:
   name: Test User One
   email: user1@example.com
-  encrypted_password: $2a$04$xdThr57vZH64oSJ2hzta0OiL4v1wGVWYR/wnlPz98dlwSpHktHApG
-  role: 0
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
+  role: student
 
 two:
   name: Test User Two
   email: user2@example.com
-  encrypted_password: $2a$04$xdThr57vZH64oSJ2hzta0OiL4v1wGVWYR/wnlPz98dlwSpHktHApG
-  role: 0
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
+  role: student
+
+admin:
+  name: Admin User
+  email: admin@example.com
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
+  role: admin
+
+instructor:
+  name: Instructor User
+  email: instructor@example.com
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
+  role: instructor
+
+student:
+  name: Student User
+  email: student@example.com
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
+  role: student
+
+parent:
+  name: Parent User
+  email: parent@example.com
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
+  role: parent
+
+teacher_bot:
+  name: Teacher Bot
+  email: bot@example.com
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
+  role: instructor

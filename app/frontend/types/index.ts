@@ -47,10 +47,11 @@ export type PageProps<T = Record<string, unknown>> = {
 
 // User interface
 export interface User {
-  id: string // UUID
+  id: string
   name: string
   email: string
-  role: 'user' | 'admin'
+  role: string
+  avatar_url?: string
 }
 
 // Add more types as needed

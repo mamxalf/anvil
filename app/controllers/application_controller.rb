@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
   inertia_share do
     {
       auth: {
-        user: current_user&.as_json(only: [ :id, :name, :email, :role ])
+        user: current_user&.as_json(only: [ :id, :name, :email, :role ], methods: [:avatar_url])
       },
       flash: {
         success: flash[:success],
@@ -24,7 +24,7 @@ class ApplicationController < ActionController::Base
       },
       errors: session.delete(:errors) || {},
       locale: I18n.locale,
-      translations: i18n_translations_for_namespaces(%w[auth dashboard common])
+      translations: i18n_translations_for_namespaces(%w[auth dashboard common courses lessons gamification mascot notifications settings errors])
     }
   end
 

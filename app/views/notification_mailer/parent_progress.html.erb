@@ -1,0 +1,10 @@
+<h1>Student Progress Update</h1>
+<p>Hi <%= @parent.name %>,</p>
+<p>Here is a quick update on <strong><%= @child.name %></strong>'s progress:</p>
+<p>
+  <strong>Activity:</strong> <%= @activity %>
+</p>
+<p>Log in to your parent dashboard to see more details and manage your child's learning schedule.</p>
+<p>
+  <%= link_to "Go to Parent Dashboard", dashboard_url %>
+</p>

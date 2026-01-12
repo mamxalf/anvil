@@ -1,0 +1,8 @@
+instructor_one:
+  user: instructor
+  verified_at: <%= Time.current %>
+  expertise: ["ruby", "python"]
+
+bot_profile:
+  user: teacher_bot
+  verified_at: <%= Time.current %>

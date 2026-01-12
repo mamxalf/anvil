@@ -1,75 +1,129 @@
-# Files in the config/locales directory are used for internationalization and
-# are automatically loaded by Rails. If you want to use locales other than
-# English, add the necessary files in this directory.
-#
-# To use the locales, use `I18n.t`:
-#
-#     I18n.t "hello"
-#
-# In views, this is aliased to just `t`:
-#
-#     <%= t("hello") %>
-#
-# To use a different locale, set it with `I18n.locale`:
-#
-#     I18n.locale = :es
-#
-# This would use the information in config/locales/es.yml.
-#
-# To learn more about the API, please read the Rails Internationalization guide
-# at https://guides.rubyonrails.org/i18n.html.
-#
-# Be aware that YAML interprets the following case-insensitive strings as
-# booleans: `true`, `false`, `on`, `off`, `yes`, `no`. Therefore, these strings
-# must be quoted to be interpreted as strings. For example:
-#
-#     en:
-#       "yes": yup
-#       enabled: "ON"
-
 en:
-  hello: "Hello world"
-
-  # Authentication
-  auth:
-    login: "Login"
-    register: "Register"
-    logout: "Logout"
-    email: "Email"
-    password: "Password"
-    password_confirmation: "Password Confirmation"
-    name: "Name"
-    remember_me: "Remember me"
-    forgot_password: "Forgot password?"
-    already_have_account: "Already have an account?"
-    dont_have_account: "Don't have an account?"
-    sign_in: "Sign In"
-    sign_up: "Sign Up"
-    sign_out: "Sign Out"
-    success:
-      signed_in: "Successfully signed in"
-      signed_up: "Successfully signed up"
-      signed_out: "Successfully signed out"
-    error:
-      invalid_credentials: "Invalid email or password"
-      unauthorized: "You are not authorized"
-
-  # Dashboard
-  dashboard:
-    title: "Dashboard"
-    welcome: "Welcome"
-    admin_panel: "Admin Panel"
-
-  # Common
   common:
     save: "Save"
     cancel: "Cancel"
-    edit: "Edit"
-    delete: "Delete"
-    create: "Create"
-    update: "Update"
     back: "Back"
+    next: "Next"
+    loading: "Loading..."
+    error: "An error occurred"
+    success: "Success!"
+    view_all: "View All"
+    learn_more: "Learn More"
+    enroll: "Enroll"
+    continue: "Continue"
+    complete: "Complete"
+    search: "Search"
+    filter: "Filter"
+    sort: "Sort"
 
-  # Pundit
-  pundit:
-    not_authorized: "You are not authorized to perform this action."
+  auth:
+    login: "Login"
+    logout: "Logout"
+    register: "Register"
+    forgot_password: "Forgot Password?"
+    email: "Email"
+    password: "Password"
+    confirm_password: "Confirm Password"
+    remember_me: "Remember Me"
+
+  dashboard:
+    welcome: "Hello, %{name}!"
+    student:
+      title: "Student Dashboard"
+      my_courses: "My Courses"
+      ready_to_learn: "Ready for today's learning adventure?"
+      level: "Level"
+      points: "Points"
+      streak: "Streak"
+      days: "Days"
+      recent_badges: "Recent Achievements"
+      daily_challenge: "Daily Challenge"
+      no_courses: "You haven't enrolled in any courses yet."
+      start_adventure: "Start Adventure!"
+      continue_learning: "Continue Learning"
+      upcoming_classes: "Upcoming Live Classes"
+      join: "Join"
+    parent:
+      title: "Parent Dashboard"
+      add_child: "Add Child"
+      my_children: "My Children"
+      view_report: "View Report"
+      no_children: "You haven't added any children yet."
+      learning_progress: "Learning Progress"
+      this_week: "This Week"
+      screen_time: "Screen Time"
+    instructor:
+      title: "Instructor Dashboard"
+      my_courses: "My Courses"
+      create_course: "Create Course"
+      total_students: "Total Students"
+      total_revenue: "Total Revenue"
+      active_courses: "Active Courses"
+
+  courses:
+    catalog: "Course Catalog"
+    all_courses: "All Courses"
+    my_courses: "My Courses"
+    curriculum: "Curriculum"
+    description: "Description"
+    instructor: "Instructor"
+    level: "Level"
+    subject: "Subject"
+    beginner: "Beginner"
+    intermediate: "Intermediate"
+    advanced: "Advanced"
+    coding: "Coding"
+    robotics: "Robotics"
+    enroll_now: "Enroll Now"
+    enrolled: "Enrolled"
+    start_learning: "Start Learning"
+    lessons: "Lessons"
+    modules: "Modules"
+    progress: "Progress"
+    completed: "Completed"
+    duration: "Duration"
+    minutes: "minutes"
+
+  lessons:
+    complete_continue: "Complete & Continue"
+    previous: "Previous"
+    next: "Next"
+    completed: "Lesson Completed!"
+    xp_earned: "XP Earned"
+
+  gamification:
+    xp: "XP"
+    level: "Level"
+    streak: "Streak"
+    badges: "Badges"
+    all_badges: "All Badges"
+    leaderboard: "Leaderboard"
+    achievements: "Achievements"
+    points: "Points"
+    rank: "Rank"
+
+  mascot:
+    messages:
+      welcome: "Let's keep learning!"
+      great_job: "Great job!"
+      keep_going: "Keep going!"
+      course_complete: "Awesome! You completed the course!"
+      streak_reminder: "Don't forget to learn today!"
+
+  notifications:
+    title: "Notifications"
+    no_notifications: "No notifications"
+    mark_read: "Mark as Read"
+
+  settings:
+    title: "Settings"
+    profile: "Profile"
+    language: "Language"
+    notifications: "Notifications"
+    privacy: "Privacy"
+    account: "Account"
+
+  errors:
+    not_found: "Page not found"
+    unauthorized: "You are not authorized"
+    server_error: "Server error occurred"

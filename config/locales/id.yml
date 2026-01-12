@@ -1,47 +1,129 @@
 id:
-  hello: "Halo dunia"
-
-  # Authentication
-  auth:
-    login: "Masuk"
-    register: "Daftar"
-    logout: "Keluar"
-    email: "Email"
-    password: "Kata Sandi"
-    password_confirmation: "Konfirmasi Kata Sandi"
-    name: "Nama"
-    remember_me: "Ingat saya"
-    forgot_password: "Lupa kata sandi?"
-    already_have_account: "Sudah punya akun?"
-    dont_have_account: "Belum punya akun?"
-    sign_in: "Masuk"
-    sign_up: "Daftar"
-    sign_out: "Keluar"
-    success:
-      signed_in: "Berhasil masuk"
-      signed_up: "Pendaftaran berhasil"
-      signed_out: "Berhasil keluar"
-    error:
-      invalid_credentials: "Email atau kata sandi salah"
-      unauthorized: "Anda tidak memiliki akses"
-
-  # Dashboard
-  dashboard:
-    title: "Dasbor"
-    welcome: "Selamat datang"
-    admin_panel: "Panel Admin"
-
-  # Common
   common:
     save: "Simpan"
     cancel: "Batal"
-    edit: "Edit"
-    delete: "Hapus"
-    create: "Buat"
-    update: "Perbarui"
     back: "Kembali"
+    next: "Lanjut"
+    loading: "Memuat..."
+    error: "Terjadi kesalahan"
+    success: "Berhasil!"
+    view_all: "Lihat Semua"
+    learn_more: "Pelajari Lebih Lanjut"
+    enroll: "Daftar"
+    continue: "Lanjutkan"
+    complete: "Selesai"
+    search: "Cari"
+    filter: "Filter"
+    sort: "Urutkan"
 
-  # Pundit
-  pundit:
-    not_authorized: "Anda tidak memiliki izin untuk melakukan tindakan ini."
+  auth:
+    login: "Masuk"
+    logout: "Keluar"
+    register: "Daftar"
+    forgot_password: "Lupa Kata Sandi?"
+    email: "Email"
+    password: "Kata Sandi"
+    confirm_password: "Konfirmasi Kata Sandi"
+    remember_me: "Ingat Saya"
 
+  dashboard:
+    welcome: "Halo, %{name}!"
+    student:
+      title: "Dashboard Siswa"
+      my_courses: "Kursus Saya"
+      ready_to_learn: "Siap untuk petualangan belajar hari ini?"
+      level: "Level"
+      points: "Poin"
+      streak: "Streak"
+      days: "Hari"
+      recent_badges: "Pencapaian Terbaru"
+      daily_challenge: "Tantangan Harian"
+      no_courses: "Kamu belum mengambil kursus apapun."
+      start_adventure: "Mulai Petualangan!"
+      continue_learning: "Lanjut Belajar"
+      upcoming_classes: "Kelas Live Mendatang"
+      join: "Gabung"
+    parent:
+      title: "Dashboard Orang Tua"
+      add_child: "Tambah Anak"
+      my_children: "Anak-anak Saya"
+      view_report: "Lihat Laporan"
+      no_children: "Anda belum menambahkan anak."
+      learning_progress: "Progress Belajar"
+      this_week: "Minggu Ini"
+      screen_time: "Waktu Layar"
+    instructor:
+      title: "Dashboard Instruktur"
+      my_courses: "Kursus Saya"
+      create_course: "Buat Kursus"
+      total_students: "Total Siswa"
+      total_revenue: "Total Pendapatan"
+      active_courses: "Kursus Aktif"
+
+  courses:
+    catalog: "Katalog Kursus"
+    all_courses: "Semua Kursus"
+    my_courses: "Kursus Saya"
+    curriculum: "Kurikulum"
+    description: "Deskripsi"
+    instructor: "Instruktur"
+    level: "Tingkat"
+    subject: "Mata Pelajaran"
+    beginner: "Pemula"
+    intermediate: "Menengah"
+    advanced: "Lanjutan"
+    coding: "Pemrograman"
+    robotics: "Robotika"
+    enroll_now: "Daftar Sekarang"
+    enrolled: "Sudah Terdaftar"
+    start_learning: "Mulai Belajar"
+    lessons: "Pelajaran"
+    modules: "Modul"
+    progress: "Progress"
+    completed: "Selesai"
+    duration: "Durasi"
+    minutes: "menit"
+
+  lessons:
+    complete_continue: "Selesai & Lanjut"
+    previous: "Sebelumnya"
+    next: "Selanjutnya"
+    completed: "Pelajaran Selesai!"
+    xp_earned: "XP Diperoleh"
+
+  gamification:
+    xp: "XP"
+    level: "Level"
+    streak: "Streak"
+    badges: "Lencana"
+    all_badges: "Semua Lencana"
+    leaderboard: "Papan Peringkat"
+    achievements: "Pencapaian"
+    points: "Poin"
+    rank: "Peringkat"
+
+  mascot:
+    messages:
+      welcome: "Ayo lanjut belajar!"
+      great_job: "Kerja bagus!"
+      keep_going: "Terus semangat!"
+      course_complete: "Keren! Kamu menyelesaikan kursus!"
+      streak_reminder: "Jangan lupa belajar hari ini!"
+
+  notifications:
+    title: "Notifikasi"
+    no_notifications: "Tidak ada notifikasi"
+    mark_read: "Tandai Sudah Dibaca"
+
+  settings:
+    title: "Pengaturan"
+    profile: "Profil"
+    language: "Bahasa"
+    notifications: "Notifikasi"
+    privacy: "Privasi"
+    account: "Akun"
+
+  errors:
+    not_found: "Halaman tidak ditemukan"
+    unauthorized: "Anda tidak memiliki akses"
+    server_error: "Terjadi kesalahan server"

@@ -1,0 +1,16 @@
+lesson_one:
+  course_module: module_one
+  title: "Hello World"
+  position: 1
+  duration_minutes: 5
+  xp_reward: 10
+  content: "Welcome to Ruby!"
+  video_url: "https://www.youtube.com/embed/dQw4w9WgXcQ"
+
+lesson_two:
+  course_module: module_one
+  title: "Variables"
+  position: 2
+  duration_minutes: 10
+  xp_reward: 10
+  content: "Variables store data."
