@@ -1,13 +1,13 @@
 class LessonsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_context
-  before_action :set_lesson, only: [:update, :destroy]
+  before_action :set_lesson, only: [ :update, :destroy ]
 
   def create
     authorize @course, :update?
     @lesson = @module.lessons.build(lesson_params)
     @lesson.position = @module.lessons.count + 1
-    
+
     if @lesson.save
       redirect_back fallback_location: curriculum_course_path(@course), notice: "Lesson created."
     else
@@ -29,13 +29,13 @@ class LessonsController < ApplicationController
 
     # Record progress
     progress = current_user.student_profile.lesson_progresses.find_or_initialize_by(lesson: @lesson)
-    
+
     if progress.new_record? || !progress.completed?
       progress.completed = true
       progress.completed_at = Time.current
       progress.xp_earned = @lesson.xp_reward || 10
       progress.save!
-      
+
       # Award XP
       current_user.student_profile.increment!(:total_points, progress.xp_earned)
       # Check streaks (Logic can be in model callback)
@@ -48,7 +48,7 @@ class LessonsController < ApplicationController
       next_module = @course.course_modules.where("position > ?", @module.position).order(:position).first
       next_lesson = next_module&.lessons&.order(:position)&.first
     end
-    
+
     if next_lesson
       redirect_to learn_course_path(@course, lesson_id: next_lesson.id), notice: "Great job! +#{progress.xp_earned} XP"
     else

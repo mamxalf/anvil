@@ -12,15 +12,15 @@ class ParentDashboardTest < ApplicationSystemTestCase
 
   test "parent can view dashboard and children" do
     sign_in @parent
-    
+
     visit dashboard_url
-    
+
     assert_selector "h1", text: /Dashboard|Welcome/
     assert_text @parent.name
-    
+
     # Check if child is listed
     assert_text @child.name
-    
+
     # Check for "Learning Progress"
     assert_text "Learning Progress"
   end

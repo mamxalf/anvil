@@ -25,6 +25,19 @@ id:
     password: "Kata Sandi"
     confirm_password: "Konfirmasi Kata Sandi"
     remember_me: "Ingat Saya"
+  
+  auth_kids:
+    login_title: "Selamat Datang Kembali, Penjelajah!"
+    login_description: "Siap untuk misi koding berikutnya?"
+    register_title: "Ayo Mulai Petualangan!"
+    register_description: "Mulai perjalanan kodingmu bersama Kodibot!"
+    email_placeholder: "Email Orang Tua"
+    password_placeholder: "Kata Sandi Rahasia"
+    password_confirmation_placeholder: "Ketik Ulang Sandi Rahasia"
+    login_button: "Ayo Mulai!"
+    register_button: "Mulai Petualanganku!"
+    name: "Namamu"
+    name_placeholder: "Nama Jagoan Koding"
 
   dashboard:
     welcome: "Halo, %{name}!"

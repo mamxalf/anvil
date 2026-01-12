@@ -9,6 +9,6 @@ class CreateScreenTimeLimits < ActiveRecord::Migration[8.1]
       t.timestamps
     end
 
-    add_index :screen_time_limits, [:parent_child_id, :day_of_week], unique: true
+    add_index :screen_time_limits, [ :parent_child_id, :day_of_week ], unique: true
   end
 end

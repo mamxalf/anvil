@@ -10,6 +10,6 @@ class CreateQuizResponses < ActiveRecord::Migration[8.1]
       t.timestamps
     end
 
-    add_index :quiz_responses, [:quiz_attempt_id, :question_id], unique: true
+    add_index :quiz_responses, [ :quiz_attempt_id, :question_id ], unique: true
   end
 end

@@ -31,7 +31,7 @@ class Quiz < ApplicationRecord
     return nil if max_attempts.nil?
 
     attempts_count = quiz_attempts.where(student_profile: student_profile).count
-    [max_attempts - attempts_count, 0].max
+    [ max_attempts - attempts_count, 0 ].max
   end
 
   # Check if student passed the quiz

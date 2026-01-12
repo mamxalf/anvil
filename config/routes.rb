@@ -1,10 +1,10 @@
 Rails.application.routes.draw do
-  resources :scheduled_classes, only: [:index, :show] do
+  resources :scheduled_classes, only: [ :index, :show ] do
     member do
       post :register
     end
   end
-  resources :notifications, only: [:index] do
+  resources :notifications, only: [ :index ] do
     member do
       post :mark_as_read
     end
@@ -42,8 +42,8 @@ Rails.application.routes.draw do
       get :learn
       post :enroll
     end
-    resources :course_modules, only: [:create, :update, :destroy] do
-      resources :lessons, only: [:create, :update, :destroy] do
+    resources :course_modules, only: [ :create, :update, :destroy ] do
+      resources :lessons, only: [ :create, :update, :destroy ] do
         member do
           post :complete
         end
@@ -53,7 +53,7 @@ Rails.application.routes.draw do
 
   # Parent Resources
   namespace :parent do
-    resources :children, only: [:index, :new, :create, :show]
+    resources :children, only: [ :index, :new, :create, :show ]
   end
 
   # Dashboard routes (protected)

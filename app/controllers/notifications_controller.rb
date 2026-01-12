@@ -1,7 +1,7 @@
 class NotificationsController < ApplicationController
   def index
     @notifications = current_user.notifications.recent.limit(50)
-    
+
     render inertia: "Notifications/Index", props: {
       notifications: @notifications
     }

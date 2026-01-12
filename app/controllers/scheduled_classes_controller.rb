@@ -1,5 +1,5 @@
 class ScheduledClassesController < ApplicationController
-  before_action :set_scheduled_class, only: [:show, :register]
+  before_action :set_scheduled_class, only: [ :show, :register ]
 
   def index
     start_date = params[:start_date]&.to_date || Date.current.beginning_of_month
@@ -18,8 +18,8 @@ class ScheduledClassesController < ApplicationController
   def show
     render inertia: "Calendar/Show", props: {
       scheduledClass: @scheduled_class.as_json(
-        include: { course: { only: [:id, :title, :slug] }, instructor_profile: { include: { user: { only: [:name, :avatar] } } } },
-        methods: [:spots_remaining, :in_progress?, :upcoming?]
+        include: { course: { only: [ :id, :title, :slug ] }, instructor_profile: { include: { user: { only: [ :name, :avatar ] } } } },
+        methods: [ :spots_remaining, :in_progress?, :upcoming? ]
       ),
       isRegistered: current_user.student? && @scheduled_class.class_registrations.exists?(student_profile: current_user.student_profile)
     }

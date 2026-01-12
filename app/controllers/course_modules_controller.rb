@@ -1,13 +1,13 @@
 class CourseModulesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_course
-  before_action :set_module, only: [:update, :destroy]
+  before_action :set_module, only: [ :update, :destroy ]
 
   def create
     authorize @course, :update?
     @module = @course.course_modules.build(module_params)
     @module.position = @course.course_modules.count + 1
-    
+
     if @module.save
       redirect_back fallback_location: curriculum_course_path(@course), notice: "Module created."
     else

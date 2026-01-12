@@ -5,9 +5,9 @@ class AchievementsControllerTest < ActionDispatch::IntegrationTest
     @user = User.create!(email: "student-#{Time.now.to_f}@test.com", password: "password", role: :student, name: "Achiever")
     @profile = @user.student_profile
     sign_in @user, scope: :user
-    
+
     @badge = Badge.create!(name: "First Login", icon: "login", criteria_type: :first_badge, criteria_value: 1, points_reward: 10)
-    
+
     @achievement = Achievement.create!(
       title: "First Login",
       description: "Log in for the first time",

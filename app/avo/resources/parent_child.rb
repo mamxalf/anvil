@@ -1,6 +1,6 @@
 class Avo::Resources::ParentChild < Avo::BaseResource
   self.title = :id
-  self.includes = [:parent, :child]
+  self.includes = [ :parent, :child ]
 
   def fields
     field :id, as: :id

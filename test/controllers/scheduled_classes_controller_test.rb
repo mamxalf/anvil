@@ -8,9 +8,9 @@ class ScheduledClassesControllerTest < ActionDispatch::IntegrationTest
 
     @instructor_user = User.create!(email: "instructor-cal-#{Time.now.to_f}@test.com", password: "password", role: :instructor, name: "Teacher")
     @instructor = @instructor_user.instructor_profile
-    
+
     @course = Course.create!(title: "Math 101", description: "Basics", instructor: @instructor, level: :beginner, subject: :coding)
-    
+
     @scheduled_class = ScheduledClass.create!(
       course: @course,
       instructor_profile: @instructor,

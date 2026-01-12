@@ -22,7 +22,7 @@ class Notification < ApplicationRecord
   scope :unread, -> { where(read_at: nil) }
   scope :read, -> { where.not(read_at: nil) }
   scope :recent, -> { order(created_at: :desc) }
-  scope :for_parent_digest, -> { where(notification_type: [:progress_update, :badge_earned, :course_completed, :quiz_passed]) }
+  scope :for_parent_digest, -> { where(notification_type: [ :progress_update, :badge_earned, :course_completed, :quiz_passed ]) }
 
   def read?
     read_at.present?

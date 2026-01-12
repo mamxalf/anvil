@@ -1,6 +1,6 @@
 class Avo::Resources::StudentProfile < Avo::BaseResource
   self.title = :id
-  self.includes = [:user, :badges]
+  self.includes = [ :user, :badges ]
 
   def fields
     field :id, as: :id

@@ -91,6 +91,6 @@ class QuizAttempt < ApplicationRecord
     return 0 if completed?
 
     remaining = (started_at + quiz.time_limit_minutes.minutes) - Time.current
-    [remaining.to_i, 0].max
+    [ remaining.to_i, 0 ].max
   end
 end

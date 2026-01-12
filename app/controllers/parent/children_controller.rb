@@ -2,7 +2,7 @@ module Parent
   class ChildrenController < ApplicationController
     before_action :authenticate_user!
     before_action :ensure_parent!
-    before_action :set_child, only: [:show]
+    before_action :set_child, only: [ :show ]
 
     def index
       # Redirect to dashboard as it holds the list
@@ -16,20 +16,20 @@ module Parent
 
     def create
       authorize :parent_dashboard, :access?
-      
+
       # Logic to create a child account (User + StudentProfile)
       # Simplified: Parent creates a child account directly
-      
+
       User.transaction do
         @child = User.new(child_params)
         @child.role = :student
         @child.password = "kodilearn123" # Default, change later
         @child.password_confirmation = "kodilearn123"
-        
+
         if @child.save
           # Create relationship
           ParentChild.create!(parent: current_user, child: @child)
-          
+
           # Initialize student profile stats if needed (done by callback but we can customize)
           @child.student_profile.update(birth_date: params[:birth_date]) if params[:birth_date].present?
 
@@ -42,9 +42,9 @@ module Parent
 
     def show
       authorize :parent_dashboard, :access?
-      
+
       profile = @child.student_profile
-      
+
       render inertia: "Parent/ChildReport", props: {
         child: {
           id: @child.id,

@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
   inertia_share do
     {
       auth: {
-        user: current_user&.as_json(only: [ :id, :name, :email, :role ], methods: [:avatar_url])
+        user: current_user&.as_json(only: [ :id, :name, :email, :role ], methods: [ :avatar_url ])
       },
       flash: {
         success: flash[:success],

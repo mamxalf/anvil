@@ -1,7 +1,7 @@
 class CalendarService
   # Fetch all scheduled classes within a given date range for a user
   # User can be student (shows their registered classes) or instructor (shows their classes)
-  
+
   def self.events_for_user(user, start_date:, end_date:)
     if user.student?
       student_events(user.student_profile, start_date, end_date)
@@ -17,7 +17,7 @@ class CalendarService
   def self.student_events(profile, start_date, end_date)
     # Get registered classes
     registered_class_ids = profile.class_registrations.pluck(:scheduled_class_id)
-    
+
     ScheduledClass
       .where(id: registered_class_ids)
       .where(scheduled_at: start_date.beginning_of_day..end_date.end_of_day)
@@ -38,7 +38,7 @@ class CalendarService
     user.children.flat_map do |child|
       child_profile = child.student_profile
       next [] unless child_profile
-      
+
       student_events(child_profile, start_date, end_date).map do |event|
         event.merge(child_name: child.name)
       end

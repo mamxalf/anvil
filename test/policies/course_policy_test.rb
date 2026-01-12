@@ -7,7 +7,7 @@ class CoursePolicyTest < ActiveSupport::TestCase
     @other_instructor = users(:teacher_bot)
     @student = users(:student)
     @user = users(:parent)
-    
+
     @course = courses(:ruby_course)
     @draft_course = courses(:draft_course)
   end
@@ -26,7 +26,7 @@ class CoursePolicyTest < ActiveSupport::TestCase
     assert_permit @instructor, @course, :show?
     assert_permit @student, @course, :show?
     assert_permit @user, @course, :show?
-    
+
     # Draft course
     assert_permit @admin, @draft_course, :show?
     assert_permit @instructor, @draft_course, :show?
@@ -58,11 +58,11 @@ class CoursePolicyTest < ActiveSupport::TestCase
   test "enroll" do
     assert_permit @student, @course, :enroll?
     assert_permit @user, @course, :enroll?
-    
+
     refute_permit @admin, @course, :enroll?
     refute_permit @instructor, @course, :enroll?
     refute_permit nil, @course, :enroll?
-    
+
     refute_permit @student, @draft_course, :enroll?
   end
 

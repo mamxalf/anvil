@@ -1,6 +1,6 @@
-# Anvil
+# KodiLearn
 
-A modern Rails application built with React, TypeScript, and Inertia.js.
+A specialized STEM Learning Management System (LMS) designed for children, built with React, TypeScript, and Inertia.js on top of Rails.
 
 ## Tech Stack
 
@@ -336,6 +336,50 @@ app/frontend/
   styles/
     application.css              # Tailwind CSS styles
 ```
+
+### Primary Colors
+
+| Name | HEX | RGB | Usage |
+|------|-----|-----|-------|
+| **Kodibot Orange** | `#E18914` | 225, 137, 20 | Aksen utama, headline, CTA buttons |
+| **Kodibot Green** | `#1D8536` | 29, 133, 54 | Edukasi, trust, success states |
+| **Kodibot Yellow** | `#F9DB2B` | 249, 219, 43 | Highlight, elemen playful, badges |
+
+### Color Meaning
+
+| Color | Represents |
+|-------|------------|
+| **Orange** | Semangat belajar, energi, keberanian |
+| **Green** | Pertumbuhan, pendidikan, kepercayaan |
+| **Yellow** | Keceriaan, kreativitas, optimisme |
+
+### Neutral Colors
+
+| Name | HEX | Usage |
+|------|-----|-------|
+| **Dark** | `#2D2D2D` | Body text, heading |
+| **Gray** | `#6B7280` | Secondary text, captions |
+| **Light Gray** | `#F3F4F6` | Background, dividers |
+| **White** | `#FFFFFF` | Background, card surfaces |
+
+### Color Usage Rules
+
+- **Orange** sebagai aksen utama & headline
+- **Green** untuk edukasi & trust indicators
+- **Yellow** untuk highlight & elemen playful
+- Rasio kontras minimal **4.5:1** untuk aksesibilitas
+- Hindari gradasi kompleks, gunakan warna solid
+
+### Color Combinations
+
+```
+Primary background: White (#FFFFFF)
+Primary text: Dark (#2D2D2D)
+Primary accent: Orange (#E18914)
+Secondary accent: Green (#1D8536)
+Highlight: Yellow (#F9DB2B)
+```
+
 
 ## Pre-commit Hooks
 

@@ -10,7 +10,7 @@ class NotificationService
       notification_type: :badge_earned,
       data: { badge_id: badge.id, badge_name: badge.name, badge_icon: badge.icon }
     )
-    
+
     NotificationMailer.badge_earned(user, badge).deliver_later
   end
 
@@ -22,9 +22,9 @@ class NotificationService
       notification_type: :course_completed,
       data: { course_id: course.id, course_title: course.title }
     )
-    
+
     NotificationMailer.course_completed(user, course).deliver_later
-    
+
     # Notify parents if any
     user.parents.each do |parent|
       notify_parent_progress(parent, user, "completed course #{course.title}")
@@ -39,7 +39,7 @@ class NotificationService
       notification_type: :progress_update,
       data: { child_id: child.id, child_name: child.name, activity: activity }
     )
-    
+
     # Check if parent wants notifications for this child
     relation = ParentChild.find_by(parent: parent, child: child)
     if relation&.notifications_enabled?

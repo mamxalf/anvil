@@ -25,6 +25,19 @@ en:
     password: "Password"
     confirm_password: "Confirm Password"
     remember_me: "Remember Me"
+  
+  auth_kids:
+    login_title: "Welcome Back, Explorer!"
+    login_description: "Ready for your next coding mission?"
+    register_title: "Join the Adventure!"
+    register_description: "Start your coding journey with Kodibot!"
+    email_placeholder: "Parent's Email Address"
+    password_placeholder: "Secret Password"
+    password_confirmation_placeholder: "Type the Secret Password Again"
+    login_button: "Let's Go!"
+    register_button: "Start My Journey!"
+    name: "Your Name"
+    name_placeholder: "Super Coder Name"
 
   dashboard:
     welcome: "Hello, %{name}!"

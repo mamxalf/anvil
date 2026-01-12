@@ -11,6 +11,6 @@ class CreateLessonProgresses < ActiveRecord::Migration[8.1]
       t.timestamps
     end
 
-    add_index :lesson_progresses, [:student_profile_id, :lesson_id], unique: true
+    add_index :lesson_progresses, [ :student_profile_id, :lesson_id ], unique: true
   end
 end

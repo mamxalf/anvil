@@ -22,7 +22,7 @@ class LessonProgress < ApplicationRecord
 
   # Update video progress
   def update_video_progress!(percentage)
-    self.video_watch_percentage = [percentage, video_watch_percentage.to_f].max
+    self.video_watch_percentage = [ percentage, video_watch_percentage.to_f ].max
     save!
 
     # Auto-complete if video fully watched (90%+)

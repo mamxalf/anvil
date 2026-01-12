@@ -5,8 +5,8 @@ class LeaderboardController < ApplicationController
     @current_rank = current_user.student_profile ? LeaderboardService.get_student_rank(current_user.student_profile) : nil
 
     render inertia: "Leaderboard/Index", props: {
-      weeklyLeaders: @weekly_leaders.as_json(include: { user: { only: [:name, :avatar] } }),
-      allTimeLeaders: @all_time_leaders.as_json(include: { user: { only: [:name, :avatar] } }),
+      weeklyLeaders: @weekly_leaders.as_json(include: { user: { only: [ :name, :avatar ] } }),
+      allTimeLeaders: @all_time_leaders.as_json(include: { user: { only: [ :name, :avatar ] } }),
       currentRank: @current_rank
     }
   end

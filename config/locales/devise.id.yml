@@ -1,0 +1,63 @@
+en:
+  devise:
+    confirmations:
+      confirmed: "Alamat email Anda telah berhasil dikonfirmasi."
+      send_instructions: "Anda akan menerima email berisi instruksi untuk mengonfirmasi akun Anda dalam beberapa menit."
+      send_paranoid_instructions: "Jika email Anda ada di database kami, Anda akan menerima email instruksi konfirmasi."
+    failure:
+      already_authenticated: "Anda sudah masuk."
+      inactive: "Akun Anda belum diaktifkan."
+      invalid: "%{authentication_keys} atau kata sandi tidak valid."
+      locked: "Akun Anda terkunci."
+      last_attempt: "Anda memiliki satu kesempatan lagi sebelum akun terkunci."
+      not_found_in_database: "%{authentication_keys} atau kata sandi tidak valid."
+      timeout: "Sesi Anda telah berakhir. Silakan masuk kembali."
+      unauthenticated: "Anda perlu masuk atau mendaftar sebelum melanjutkan."
+      unconfirmed: "Anda harus mengonfirmasi alamat email Anda sebelum melanjutkan."
+    mailer:
+      confirmation_instructions:
+        subject: "Instruksi Konfirmasi"
+      reset_password_instructions:
+        subject: "Instruksi Reset Kata Sandi"
+      unlock_instructions:
+        subject: "Instruksi Buka Kunci"
+      email_changed:
+        subject: "Email Berubah"
+      password_change:
+        subject: "Kata Sandi Berubah"
+    omniauth_callbacks:
+      failure: "Tidak dapat mengautentikasi dari %{kind} karena \"%{reason}\"."
+      success: "Berhasil masuk dari akun %{kind}."
+    passwords:
+      no_token: "Halaman ini hanya dapat diakses dari email reset kata sandi."
+      send_instructions: "Anda akan menerima email instruksi reset kata sandi."
+      send_paranoid_instructions: "Jika email ada, kami akan mengirimkan instruksi pemulihan kata sandi."
+      updated: "Kata sandi Anda berhasil diubah. Anda sekarang telah masuk."
+      updated_not_active: "Kata sandi Anda berhasil diubah."
+    registrations:
+      destroyed: "Selamat tinggal! Akun Anda telah dibatalkan."
+      signed_up: "Hore! Selamat datang di tim! Petualanganmu dimulai sekarang."
+      signed_up_but_inactive: "Pendaftaran berhasil. Namun, akun belum aktif."
+      signed_up_but_locked: "Pendaftaran berhasil. Namun, akun terkunci."
+      signed_up_but_unconfirmed: "Pesan konfirmasi telah dikirim ke email Anda."
+      update_needs_confirmation: "Akun diperbarui, tetapi kami perlu memverifikasi email baru Anda."
+      updated: "Akun Anda berhasil diperbarui."
+      updated_but_not_signed_in: "Akun berhasil diperbarui, silakan masuk kembali dengan password baru."
+    sessions:
+      signed_in: "Selamat datang kembali di petualangan! Ayo ngoding!"
+      signed_out: "Berhasil keluar. Sampai jumpa lagi!"
+      already_signed_out: "Sudah keluar."
+    unlocks:
+      send_instructions: "Anda akan menerima email instruksi buka kunci akun."
+      send_paranoid_instructions: "Jika akun ada, Anda akan menerima email instruksi buka kunci."
+      unlocked: "Akun Anda telah berhasil dibuka."
+  errors:
+    messages:
+      already_confirmed: "sudah dikonfirmasi, silakan coba masuk"
+      confirmation_period_expired: "perlu dikonfirmasi dalam %{period}, silakan minta baru"
+      expired: "telah kedaluwarsa, silakan minta baru"
+      not_found: "tidak ditemukan"
+      not_locked: "tidak terkunci"
+      not_saved:
+        one: "1 kesalahan menghalangi penyimpanan %{resource} ini:"
+        other: "%{count} kesalahan menghalangi penyimpanan %{resource} ini:"

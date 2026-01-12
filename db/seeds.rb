@@ -75,7 +75,7 @@ if Rails.env.development?
     user.password_confirmation = "password123"
     user.role = :instructor
   end
-  instructor.instructor_profile&.update!(bio: "Pengajar coding dan robotik berpengalaman 10 tahun", expertise: ["Scratch", "Python", "Arduino"])
+  instructor.instructor_profile&.update!(bio: "Pengajar coding dan robotik berpengalaman 10 tahun", expertise: [ "Scratch", "Python", "Arduino" ])
   puts "Instructor created: #{instructor.email}"
 
   # Parent

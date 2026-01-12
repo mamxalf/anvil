@@ -4,7 +4,7 @@ class EnrollmentsController < ApplicationController
 
   def create
     authorize @course, :enroll?
-    
+
     # Check if already enrolled
     if @course.course_enrollments.exists?(student_profile: current_user.student_profile)
       redirect_to learn_course_path(@course), notice: "You are already enrolled."
@@ -13,7 +13,7 @@ class EnrollmentsController < ApplicationController
 
     # Create enrollment
     enrollment = @course.course_enrollments.build(student_profile: current_user.student_profile)
-    
+
     if @course.paid?
       # Logic for payment would go here. For now, auto-enroll or redirect to payment.
       # Assuming free/beta for now:

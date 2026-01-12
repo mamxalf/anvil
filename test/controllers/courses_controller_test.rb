@@ -4,9 +4,9 @@ class CoursesControllerTest < ActionDispatch::IntegrationTest
   setup do
     @instructor = User.create!(email: "instructor-course-#{Time.now.to_f}@test.com", password: "password", role: :instructor, name: "Dr. Code")
     @instructor_profile = @instructor.instructor_profile
-    
+
     @student = User.create!(email: "student-course-#{Time.now.to_f}@test.com", password: "password", role: :student, name: "Junior Dev")
-    
+
     @course = Course.create!(
       title: "Intro to Python",
       description: "Learn Python basics",
@@ -43,7 +43,7 @@ class CoursesControllerTest < ActionDispatch::IntegrationTest
   test "instructor should create course" do
     skip "FIXME: Returns 404 in test env"
     sign_in @instructor, scope: :user
-    assert_difference('Course.count') do
+    assert_difference("Course.count") do
       post courses_path, params: {
         course: {
           title: "New Ruby Course",

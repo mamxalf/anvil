@@ -38,8 +38,10 @@ class User < ApplicationRecord
   end
 
   def avatar_url
-    if defined?(avatar) && avatar.attached?
+    if defined?(avatar) && avatar.respond_to?(:attached?) && avatar.attached?
       Rails.application.routes.url_helpers.rails_blob_url(avatar, only_path: true)
+    elsif avatar.present? && avatar.is_a?(String)
+      avatar
     else
       "/assets/profile-kodibot.png"
     end

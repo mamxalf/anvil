@@ -4,7 +4,7 @@ class StudentProfile < ApplicationRecord
   # Course enrollments
   has_many :course_enrollments, dependent: :destroy
   has_many :courses, through: :course_enrollments
-  
+
   has_many :user_achievements, dependent: :destroy
   has_many :achievements, through: :user_achievements
 
@@ -49,7 +49,7 @@ class StudentProfile < ApplicationRecord
     next_level_points = points_for_level(level + 1)
     range = next_level_points - current_level_points
     progress = total_points - current_level_points
-    [(progress.to_f / range * 100).round, 100].min
+    [ (progress.to_f / range * 100).round, 100 ].min
   end
 
   # Update streak on activity
@@ -65,7 +65,7 @@ class StudentProfile < ApplicationRecord
     end
     # If same day, don't change streak
 
-    self.longest_streak = [longest_streak, current_streak].max
+    self.longest_streak = [ longest_streak, current_streak ].max
     self.last_activity_at = Time.current
     save!
   end

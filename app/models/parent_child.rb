@@ -16,8 +16,8 @@ class ParentChild < ApplicationRecord
 
   # Scopes
   scope :with_notifications, -> { where(notifications_enabled: true) }
-  scope :daily_digest, -> { where(email_frequency: [:daily, :both]) }
-  scope :weekly_digest, -> { where(email_frequency: [:weekly, :both]) }
+  scope :daily_digest, -> { where(email_frequency: [ :daily, :both ]) }
+  scope :weekly_digest, -> { where(email_frequency: [ :weekly, :both ]) }
 
   def child_name
     child.name

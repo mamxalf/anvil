@@ -14,6 +14,6 @@ class CreateScheduledClasses < ActiveRecord::Migration[8.1]
     end
 
     add_index :scheduled_classes, :scheduled_at
-    add_index :scheduled_classes, [:course_id, :scheduled_at]
+    add_index :scheduled_classes, [ :course_id, :scheduled_at ]
   end
 end

@@ -1,6 +1,6 @@
 class Avo::Resources::Notification < Avo::BaseResource
   self.title = :title
-  self.includes = [:user]
+  self.includes = [ :user ]
 
   def fields
     field :id, as: :id

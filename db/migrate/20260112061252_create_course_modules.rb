@@ -10,7 +10,7 @@ class CreateCourseModules < ActiveRecord::Migration[8.1]
       t.timestamps
     end
 
-    add_index :course_modules, [:course_id, :position]
+    add_index :course_modules, [ :course_id, :position ]
     add_foreign_key :course_modules, :course_modules, column: :unlock_after_module_id
   end
 end

@@ -1,6 +1,6 @@
 class Avo::Resources::User < Avo::BaseResource
   self.title = :name
-  self.includes = [:student_profile, :instructor_profile]
+  self.includes = [ :student_profile, :instructor_profile ]
   self.search = {
     query: -> { query.ransack(name_cont: params[:q], email_cont: params[:q], m: "or").result(distinct: false) }
   }

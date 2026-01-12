@@ -1,11 +1,11 @@
 class CoursesController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show]
+  before_action :authenticate_user!, except: [ :index, :show ]
 
-  before_action :set_course, only: [:show, :edit, :update, :destroy]
+  before_action :set_course, only: [ :show, :edit, :update, :destroy ]
 
   def index
     @courses = Course.published.includes(instructor: :user)
-    
+
     render inertia: "Courses/Index", props: {
       courses: @courses.map do |course|
         {
@@ -29,7 +29,7 @@ class CoursesController < ApplicationController
 
   def learn
     authorize @course, :show? # Or :learn? if policy has it. :show? usually implies access if enrolled.
-    
+
     # Ensure enrolled
     unless @course.course_enrollments.exists?(student_profile: current_user.student_profile)
       redirect_to course_path(@course), alert: "You must enroll first."
@@ -77,7 +77,7 @@ class CoursesController < ApplicationController
 
   def enroll
     authorize @course, :show? # Check if user can view course (and thus enroll)
-    
+
     if @course.course_enrollments.create(student_profile: current_user.student_profile)
       redirect_to learn_course_path(@course), notice: "Enrolled!"
     else
@@ -87,13 +87,13 @@ class CoursesController < ApplicationController
 
   def show
     authorize @course
-    
+
     is_enrolled = current_user&.student? ? @course.course_enrollments.exists?(student_profile: current_user.student_profile) : false
-    
+
     render inertia: "Courses/Show", props: {
       course: @course.as_json(
-        only: [:id, :title, :description, :level, :subject, :status], 
-        methods: [:total_lessons, :total_duration_minutes]
+        only: [ :id, :title, :description, :level, :subject, :status ],
+        methods: [ :total_lessons, :total_duration_minutes ]
       ).merge({
         thumbnail: @course.thumbnail.attached? ? url_for(@course.thumbnail) : nil
       }),
@@ -114,7 +114,7 @@ class CoursesController < ApplicationController
   def create
     authorize Course
     @course = current_user.instructor_profile.courses.build(course_params)
-    
+
     if @course.save
       redirect_to course_path(@course), notice: "Course created successfully."
     else
@@ -137,7 +137,7 @@ class CoursesController < ApplicationController
       modules: @course.course_modules.includes(:lessons).order(:position).as_json(include: :lessons)
     }
   end
-  
+
   def update
     authorize @course
     if @course.update(course_params)

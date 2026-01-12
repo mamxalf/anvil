@@ -10,6 +10,6 @@ class CreateParentChildren < ActiveRecord::Migration[8.1]
       t.timestamps
     end
 
-    add_index :parent_children, [:parent_id, :child_id], unique: true
+    add_index :parent_children, [ :parent_id, :child_id ], unique: true
   end
 end

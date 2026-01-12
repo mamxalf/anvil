@@ -25,7 +25,7 @@ class InstructorProfile < ApplicationRecord
   end
 
   def add_expertise(skill)
-    self.expertise = (expertise_list + [skill]).uniq
+    self.expertise = (expertise_list + [ skill ]).uniq
     save!
   end
 
