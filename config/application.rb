@@ -6,14 +6,6 @@ require "rails/all"
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-# Initialize Sentry early
-if defined?(Sentry)
-  Sentry.init do |config|
-    config.dsn = ENV["SENTRY_DSN"] if ENV["SENTRY_DSN"].present?
-    config.enabled_environments = %w[production staging]
-  end
-end
-
 module Anvil
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.

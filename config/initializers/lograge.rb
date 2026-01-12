@@ -14,7 +14,7 @@ Rails.application.configure do
       remote_ip: event.payload[:remote_ip],
       ip: event.payload[:ip],
       x_forwarded_for: event.payload[:x_forwarded_for],
-      params: event.payload[:params].except("controller", "action", "format", "utf8", "authenticity_token"),
+      params: event.payload[:params]&.except("controller", "action", "format", "utf8", "authenticity_token"),
       user_id: event.payload[:user_id],
       request_id: event.payload[:request_id]
     }
