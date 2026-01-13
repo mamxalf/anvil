@@ -337,7 +337,9 @@ app/frontend/
     application.css              # Tailwind CSS styles
 ```
 
-### Primary Colors
+### Design System
+
+#### Colors
 
 | Name | HEX | RGB | Usage |
 |------|-----|-----|-------|
@@ -345,7 +347,7 @@ app/frontend/
 | **Kodibot Green** | `#1D8536` | 29, 133, 54 | Edukasi, trust, success states |
 | **Kodibot Yellow** | `#F9DB2B` | 249, 219, 43 | Highlight, elemen playful, badges |
 
-### Color Meaning
+#### Color Meaning
 
 | Color | Represents |
 |-------|------------|
@@ -353,7 +355,7 @@ app/frontend/
 | **Green** | Pertumbuhan, pendidikan, kepercayaan |
 | **Yellow** | Keceriaan, kreativitas, optimisme |
 
-### Neutral Colors
+#### Neutral Colors
 
 | Name | HEX | Usage |
 |------|-----|-------|
@@ -362,7 +364,7 @@ app/frontend/
 | **Light Gray** | `#F3F4F6` | Background, dividers |
 | **White** | `#FFFFFF` | Background, card surfaces |
 
-### Color Usage Rules
+#### Color Usage Rules
 
 - **Orange** sebagai aksen utama & headline
 - **Green** untuk edukasi & trust indicators
@@ -370,7 +372,7 @@ app/frontend/
 - Rasio kontras minimal **4.5:1** untuk aksesibilitas
 - Hindari gradasi kompleks, gunakan warna solid
 
-### Color Combinations
+#### Color Combinations
 
 ```
 Primary background: White (#FFFFFF)

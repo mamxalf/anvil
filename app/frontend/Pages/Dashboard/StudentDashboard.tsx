@@ -1,4 +1,3 @@
-import React from 'react'
 import { Link, usePage } from '@inertiajs/react'
 import { PageProps } from '@/types'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -6,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import Mascot from '@/components/ui/mascot'
 import { useTranslation } from '@/hooks/useTranslation'
 import LanguageSwitcher from '@/components/LanguageSwitcher'
-import { Trophy, Flame, Calendar, BookOpen, Star, Sparkles, Clock, ArrowRight } from 'lucide-react'
+import { Trophy, Calendar, BookOpen, Star, Sparkles, Clock, ArrowRight } from 'lucide-react'
 
 interface StudentDashboardProps {
   studentProfile: {
@@ -96,7 +95,7 @@ export default function StudentDashboard({
           <div className="relative hidden md:flex justify-end items-center h-full min-h-[300px] pointer-events-none">
              <div className="absolute inset-0 bg-white/30 blur-[60px] rounded-full transform scale-75 animate-pulse"></div>
              <div className="relative z-20 transform hover:-translate-y-4 transition-transform duration-700 ease-in-out cursor-pointer hover:rotate-2 pointer-events-auto">
-                <Mascot mood="happy" size="2xl" message={t('mascot.messages.welcome')} />
+                <Mascot mood="happy" size="lg" message={t('mascot.messages.welcome')} />
              </div>
           </div>
         </div>
@@ -112,16 +111,16 @@ export default function StudentDashboard({
         {/* Left Column: My Courses & Upcoming (8 cols) */}
         <div className="lg:col-span-8 space-y-10">
           
-          {/* Active Courses */}
+            {/* Active Courses */}
           <section>
             <div className="flex justify-between items-end mb-6 px-1">
               <div className="flex items-center gap-3">
-                 <div className="p-2 bg-blue-100 text-blue-600 rounded-lg">
+                 <div className="p-2 bg-green-100 text-secondary rounded-lg">
                     <BookOpen className="w-6 h-6" />
                  </div>
-                 <h2 className="text-2xl font-extrabold text-foreground tracking-tight">{t('dashboard.student.my_courses')}</h2>
+                 <h2 className="text-2xl font-extrabold text-kodibot-dark tracking-tight">{t('dashboard.student.my_courses')}</h2>
               </div>
-              <Link href="/courses" className="text-primary font-bold hover:text-primary/80 flex items-center gap-1 transition-colors text-sm group">
+              <Link href="/courses" className="text-kodibot-orange font-bold hover:text-kodibot-orange/80 flex items-center gap-1 transition-colors text-sm group">
                 {t('common.view_all')}
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
@@ -274,13 +273,14 @@ export default function StudentDashboard({
           </Card>
 
           {/* Daily Challenge */}
-          <div className="bg-gradient-to-b from-blue-500 to-indigo-600 rounded-[2.5rem] p-8 shadow-xl text-white relative overflow-hidden">
-            {/* Background pattern */}
-            <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl transform translate-x-10 -translate-y-10"></div>
+          <div className="bg-gradient-to-br from-secondary/90 to-emerald-900/90 backdrop-blur-xl border border-white/20 shadow-2xl rounded-[2.5rem] p-8 text-white relative overflow-hidden group">
+            {/* Background pattern - Gloss Effect */}
+            <div className="absolute -top-24 -right-24 w-64 h-64 bg-white/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-white/10 to-transparent opacity-50 pointer-events-none"></div>
             
-            <h3 className="font-extrabold text-xl mb-6 flex items-center gap-3 relative z-10">
+            <h3 className="font-extrabold text-xl mb-6 flex items-center gap-3 relative z-10 text-white">
                <div className="p-2 bg-white/20 rounded-lg backdrop-blur-sm">
-                  <Star className="w-5 h-5 text-yellow-300 fill-current" />
+                  <Star className="w-5 h-5 text-kodibot-yellow fill-current" />
                </div>
                {t('dashboard.student.daily_challenge')}
             </h3>
@@ -288,36 +288,36 @@ export default function StudentDashboard({
             <div className="space-y-4 relative z-10">
               <div className="flex items-center gap-4 bg-black/10 p-3 rounded-2xl border border-white/10">
                 <div className="relative flex items-center justify-center">
-                    <input type="checkbox" className="peer w-6 h-6 rounded-lg text-green-400 border-2 border-white/30 focus:ring-green-400 focus:ring-offset-0 bg-transparent cursor-default" checked readOnly />
+                    <input type="checkbox" className="peer w-6 h-6 rounded-lg text-kodibot-green border-2 border-white/30 focus:ring-kodibot-green focus:ring-offset-0 bg-transparent cursor-default" checked readOnly />
                     {/* Fake check if needed or rely on default styling */}
                 </div>
                 <div className="flex-grow opacity-50">
                    <span className="text-sm font-bold block line-through">Login hari ini</span>
-                   <span className="text-xs font-medium text-yellow-300">+10 XP</span>
+                   <span className="text-xs font-medium text-kodibot-yellow">+10 XP</span>
                 </div>
               </div>
               
               <div className="flex items-center gap-4 bg-white/10 p-3 rounded-2xl border border-white/20 hover:bg-white/20 transition-colors cursor-pointer">
-                <input type="checkbox" className="w-6 h-6 rounded-lg text-green-400 border-2 border-white/40 focus:ring-green-400 bg-transparent" />
+                <input type="checkbox" className="w-6 h-6 rounded-lg text-kodibot-green border-2 border-white/40 focus:ring-kodibot-green bg-transparent" />
                 <div className="flex-grow">
                    <span className="text-sm font-bold block">Selesaikan 1 Kuis</span>
-                   <span className="text-xs font-medium text-yellow-300">+50 XP</span>
+                   <span className="text-xs font-medium text-kodibot-yellow">+50 XP</span>
                 </div>
               </div>
               
               <div className="flex items-center gap-4 bg-white/10 p-3 rounded-2xl border border-white/20 hover:bg-white/20 transition-colors cursor-pointer">
-                <input type="checkbox" className="w-6 h-6 rounded-lg text-green-400 border-2 border-white/40 focus:ring-green-400 bg-transparent" />
+                <input type="checkbox" className="w-6 h-6 rounded-lg text-kodibot-green border-2 border-white/40 focus:ring-kodibot-green bg-transparent" />
                 <div className="flex-grow">
                    <span className="text-sm font-bold block">Tonton 1 Video</span>
-                   <span className="text-xs font-medium text-yellow-300">+20 XP</span>
+                   <span className="text-xs font-medium text-kodibot-yellow">+20 XP</span>
                 </div>
               </div>
             </div>
             
             <div className="mt-8 pt-6 border-t border-white/10 text-center">
-               <p className="text-xs font-medium text-blue-100 mb-2">Progress: 1/3</p>
+               <p className="text-xs font-medium text-white/90 mb-2">Progress: 1/3</p>
                <div className="h-2 w-full bg-black/20 rounded-full overflow-hidden">
-                  <div className="h-full bg-yellow-400 w-1/3 rounded-full shadow-[0_0_10px_rgba(250,204,21,0.5)]"></div>
+                  <div className="h-full bg-kodibot-yellow w-1/3 rounded-full shadow-[0_0_10px_rgba(249,219,43,0.5)]"></div>
                </div>
             </div>
           </div>
