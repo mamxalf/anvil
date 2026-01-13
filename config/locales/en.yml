@@ -41,8 +41,11 @@ en:
 
   dashboard:
     welcome: "Hello, %{name}!"
+    welcome_back: "Welcome Back!"
     student:
       title: "Student Dashboard"
+      no_courses_title: "No Courses Yet"
+      no_courses_desc: "Start your learning journey today by exploring our amazing courses!"
       my_courses: "My Courses"
       ready_to_learn: "Ready for today's learning adventure?"
       level: "Level"

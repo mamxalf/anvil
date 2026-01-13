@@ -41,8 +41,11 @@ id:
 
   dashboard:
     welcome: "Halo, %{name}!"
+    welcome_back: "Selamat Datang Kembali!"
     student:
       title: "Dashboard Siswa"
+      no_courses_title: "Belum Ada Kursus"
+      no_courses_desc: "Mulai perjalanan belajarmu hari ini dengan menjelajahi kursus keren kami!"
       my_courses: "Kursus Saya"
       ready_to_learn: "Siap untuk petualangan belajar hari ini?"
       level: "Level"
