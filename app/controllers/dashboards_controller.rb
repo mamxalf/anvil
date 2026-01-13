@@ -12,7 +12,7 @@ class DashboardsController < ApplicationController
       profile = current_user.student_profile
       props[:studentProfile] = profile.as_json(only: [ :level, :total_points, :current_streak, :rank_name ])
 
-      props[:recentBadges] = current_user.badges.order(created_at: :desc).limit(3).map do |badge|
+      props[:recentBadges] = profile.badges.order(created_at: :desc).limit(3).map do |badge|
         { name: badge.name, icon: badge.icon, earned_at: badge.created_at }
       end
 
