@@ -1,5 +1,5 @@
 import React from 'react'
-import Layout from '@/components/layout/layout'
+import StudentLayout from '@/Layouts/StudentLayout'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Lock, Unlock, Zap, Trophy, Flame } from 'lucide-react'
 import { useTranslation } from '@/hooks/useTranslation'
@@ -107,4 +107,4 @@ export default function AchievementsIndex({ achievements, earnedIds, stats }: Ac
   )
 }
 
-AchievementsIndex.layout = (page: React.ReactNode) => <Layout children={page} />
+AchievementsIndex.layout = (page: React.ReactNode) => <StudentLayout children={page} />

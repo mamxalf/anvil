@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import Mascot from '@/components/ui/mascot'
 import { useTranslation } from '@/hooks/useTranslation'
-import LanguageSwitcher from '@/components/LanguageSwitcher'
+import StudentLayout from '@/Layouts/StudentLayout'
 import { Trophy, Calendar, BookOpen, Star, Sparkles, Clock, ArrowRight } from 'lucide-react'
 
 interface StudentDashboardProps {
@@ -43,15 +43,10 @@ export default function StudentDashboard({
   const { t } = useTranslation()
 
   return (
-    <div className="container mx-auto px-4 sm:px-6 lg:px-8 space-y-8 animate-in fade-in duration-700 pb-12 pt-6">
-      {/* Hero / Welcome Section */}
-      <section className="relative overflow-hidden rounded-[2.5rem] bg-orange-500 bg-gradient-to-br from-kodibot-orange to-kodibot-yellow p-8 md:p-12 lg:px-16 lg:py-14 shadow-2xl transition-all hover:shadow-orange-200/50">
+    <div className="space-y-8 pb-12">
+      {/* Welcome Section */}
+      <section className="relative overflow-hidden rounded-[2.5rem] bg-orange-500 bg-gradient-to-br from-kodibot-orange to-kodibot-yellow p-8 md:p-10 shadow-2xl transition-all hover:shadow-orange-200/50">
         
-        {/* Language Switcher Positioned Absolute Top-Right */}
-        <div className="absolute top-6 right-6 z-30">
-           <LanguageSwitcher className="bg-white/30 backdrop-blur-md rounded-full p-1.5 shadow-sm border border-white/40 hover:bg-white/40 transition-colors" />
-        </div>
-
         <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
           <div className="space-y-6 text-white md:max-w-xl">
              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-sm font-bold shadow-inner">

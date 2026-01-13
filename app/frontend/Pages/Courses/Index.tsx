@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link, usePage } from '@inertiajs/react'
-import Layout from '@/components/layout/layout'
+import StudentLayout from '@/Layouts/StudentLayout'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -114,4 +114,4 @@ export default function Index({ courses }: IndexProps) {
   )
 }
 
-Index.layout = (page: React.ReactNode) => <Layout children={page} />
+Index.layout = (page: React.ReactNode) => <StudentLayout children={page} />

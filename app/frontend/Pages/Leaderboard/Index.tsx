@@ -1,5 +1,5 @@
 import React from 'react'
-import Layout from '@/components/layout/layout'
+import StudentLayout from '@/Layouts/StudentLayout'
 import { Card, CardContent } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useTranslation } from '@/hooks/useTranslation'
@@ -99,4 +99,4 @@ export default function LeaderboardIndex({ weeklyLeaders, allTimeLeaders, curren
   )
 }
 
-LeaderboardIndex.layout = (page: React.ReactNode) => <Layout children={page} />
+LeaderboardIndex.layout = (page: React.ReactNode) => <StudentLayout children={page} />
