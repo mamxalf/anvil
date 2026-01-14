@@ -133,6 +133,9 @@ id:
     course_completed: "🎉 Kursus Selesai!"
     course_completed_message: "Selamat! Kamu telah menyelesaikan semua pelajaran di kursus ini. Kerja bagus!"
     back_to_dashboard: "Kembali ke Dashboard"
+    complete_continue: "Selesai & Lanjut"
+    done: "Selesai"
+    your_progress: "Progressmu"
 
 
   lessons:
@@ -157,6 +160,7 @@ id:
     login_today: "Login hari ini"
     complete_quiz: "Selesaikan 1 Kuis"
     watch_video: "Tonton 1 Video"
+    complete_and_earn: "Selesaikan dan Dapatkan"
 
   mascot:
     messages:

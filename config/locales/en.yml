@@ -133,7 +133,9 @@ en:
     course_completed: "🎉 Course Completed!"
     course_completed_message: "Congratulations! You've finished all the lessons in this course. Great job!"
     back_to_dashboard: "Back to Dashboard"
-
+    complete_continue: "Complete & Continue"
+    done: "Done"
+    your_progress: "Your Progress"
 
   lessons:
     complete_continue: "Complete & Continue"
@@ -157,6 +159,7 @@ en:
     login_today: "Login today"
     complete_quiz: "Complete 1 Quiz"
     watch_video: "Watch 1 Video"
+    complete_and_earn: "Complete and earn"
 
   mascot:
     messages:

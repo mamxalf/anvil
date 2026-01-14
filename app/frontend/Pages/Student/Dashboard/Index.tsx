@@ -166,19 +166,28 @@ export default function Index({
                         <div className="space-y-2">
                           <div className="flex justify-between text-sm font-bold text-gray-500">
                             <span>{t('courses.progress')}</span>
-                            <span className="text-kodibot-orange">{course.progress}%</span>
+                            <span className="text-kodibot-orange">{Math.round(course.progress || 0)}%</span>
                           </div>
                           <div className="h-3 w-full bg-gray-100 rounded-full overflow-hidden">
                             <div
-                              className="h-full bg-gradient-to-r from-kodibot-orange to-kodibot-yellow transition-all duration-1000 ease-out rounded-full relative"
-                              style={{ width: `${course.progress}%` }}
+                              className="h-full rounded-full relative transition-all duration-1000 ease-out"
+                              style={{
+                                width: `${Math.round(course.progress || 0)}%`,
+                                background: 'linear-gradient(to right, #E18914, #F9DB2B)'
+                              }}
                             >
                               <div className="absolute top-0 right-0 w-full h-full bg-white/20 animate-shimmer" />
                             </div>
                           </div>
                         </div>
-                        <Button className="w-full h-12 bg-kodibot-orange hover:bg-kodibot-orange/90 text-white rounded-2xl font-bold text-base shadow-lg shadow-kodibot-orange/20 hover:shadow-kodibot-orange/40 transition-all group-hover:scale-[1.02]">
-                          {t('dashboard.student.continue_learning')}
+                        <Button
+                          asChild
+                          className="w-full h-12 text-white rounded-2xl font-bold text-base shadow-lg shadow-orange-200 hover:shadow-orange-300 transition-all hover:scale-[1.02]"
+                          style={{ background: 'linear-gradient(to right, #f97316, #E18914, #eab308)' }}
+                        >
+                          <Link href={`/student/courses/${course.id}/learn`}>
+                            {t('dashboard.student.continue_learning')}
+                          </Link>
                         </Button>
                       </div>
                     </CardContent>
@@ -420,8 +429,8 @@ export default function Index({
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      </div >
+    </div >
   )
 }
 

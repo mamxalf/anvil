@@ -9,14 +9,16 @@ import { useTranslation } from '@/hooks/useTranslation'
 import { Course } from '@/types'
 import { Dialog, DialogContent } from '@/components/ui/dialog'
 import { useState } from 'react'
+import { Progress } from '@/components/ui/progress'
 
 interface CourseShowProps {
   course: Course
   modules: any[]
   isEnrolled: boolean
+  progressPercentage: number
 }
 
-export default function Show({ course, modules, isEnrolled }: CourseShowProps) {
+export default function Show({ course, modules, isEnrolled, progressPercentage }: CourseShowProps) {
   const { t } = useTranslation()
   const [isLoading, setIsLoading] = useState(false)
 
@@ -149,15 +151,26 @@ export default function Show({ course, modules, isEnrolled }: CourseShowProps) {
 
 
               {isEnrolled ? (
-                <Button
-                  className="w-full text-lg h-14 font-bold bg-gradient-to-r from-emerald-400 to-emerald-600 hover:from-emerald-600 hover:to-emerald-400 shadow-lg shadow-emerald-200 hover:shadow-emerald-300 rounded-2xl transition-all hover:scale-[1.02]"
-                  asChild
-                  onClick={handleContinue}
-                >
-                  <Link href={`/student/courses/${course.id}/learn`}>
-                    {t('courses.continue_learning', { defaultValue: 'Continue Learning' })}
-                  </Link>
-                </Button>
+                <>
+                  {/* Progress Bar */}
+                  <div className="mb-4 p-4 bg-emerald-50/50 rounded-2xl border border-emerald-100">
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="font-bold text-sm text-gray-700">{t('courses.your_progress', { defaultValue: 'Your Progress' })}</span>
+                      <span className="font-bold text-emerald-600">{Math.round(progressPercentage)}%</span>
+                    </div>
+                    <Progress value={progressPercentage} className="h-3 rounded-full bg-gray-100" />
+                  </div>
+
+                  <Button
+                    className="w-full text-lg h-14 font-bold bg-gradient-to-r from-emerald-400 to-emerald-600 hover:from-emerald-600 hover:to-emerald-400 shadow-lg shadow-emerald-200 hover:shadow-emerald-300 rounded-2xl transition-all hover:scale-[1.02]"
+                    asChild
+                    onClick={handleContinue}
+                  >
+                    <Link href={`/student/courses/${course.id}/learn`}>
+                      {t('courses.continue_learning', { defaultValue: 'Continue Learning' })}
+                    </Link>
+                  </Button>
+                </>
               ) : (
                 <Button
                   onClick={handleEnroll}

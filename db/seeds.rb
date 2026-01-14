@@ -89,7 +89,7 @@ if Rails.env.development?
 
   # Student
   student = User.find_or_create_by!(email: "student@kodilearn.id") do |user|
-    user.name = "Anisa"
+    user.name = "Malika"
     user.password = "password123"
     user.password_confirmation = "password123"
     user.role = :student

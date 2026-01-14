@@ -52,6 +52,8 @@ class Student::CoursesController < ApplicationController
     authorize @course
 
     is_enrolled = @course.course_enrollments.exists?(student_profile: current_user.student_profile)
+    enrollment = @course.course_enrollments.find_by(student_profile: current_user.student_profile)
+    progress_percentage = enrollment&.progress_percentage || 0
 
     render inertia: "Student/Courses/Show", props: {
       course: @course.as_json(
@@ -64,7 +66,8 @@ class Student::CoursesController < ApplicationController
         thumbnail: @course.thumbnail.attached? ? url_for(@course.thumbnail) : nil
       }),
       modules: @course.course_modules.includes(:lessons).order(:position).as_json(include: :lessons),
-      isEnrolled: is_enrolled
+      isEnrolled: is_enrolled,
+      progressPercentage: progress_percentage
     }
   end
 

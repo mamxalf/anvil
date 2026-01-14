@@ -47,9 +47,10 @@ class Lesson < ApplicationRecord
   end
 
   # Complete the lesson for a student and award XP
+  # Returns XP earned, or 0 if lesson was already completed
   def complete!(student_profile)
     progress = progress_for(student_profile)
-    return if progress.completed_at.present? # Already completed
+    return 0 if progress.completed_at.present? # Already completed - no XP awarded
 
     progress.update!(
       completed_at: Time.current,
@@ -63,6 +64,8 @@ class Lesson < ApplicationRecord
 
     # Update course progress
     update_course_progress(student_profile)
+
+    xp_reward # Return XP earned for caller
   end
 
   private
@@ -72,6 +75,7 @@ class Lesson < ApplicationRecord
     return unless enrollment
 
     total_lessons = course.lessons.count
+    return if total_lessons.zero? # Avoid division by zero
     completed_lessons = student_profile.lesson_progresses
                                        .joins(lesson: :course_module)
                                        .where(course_modules: { course_id: course.id })

@@ -6,17 +6,12 @@ class Student::LessonsController < ApplicationController
   def complete
     authorize @course, :show?
 
-    progress = current_user.student_profile.lesson_progresses.find_or_initialize_by(lesson: @lesson)
+    # Delegate to model method - it handles duplicate completion checks internally
+    # Returns XP earned (0 if already completed)
+    xp_earned = @lesson.complete!(current_user.student_profile)
 
-    if progress.new_record? || !progress.completed?
-
-      progress.completed_at = Time.current
-      progress.xp_earned = @lesson.xp_reward || 10
-      progress.save!
-
-      current_user.student_profile.increment!(:total_points, progress.xp_earned)
-      current_user.student_profile.record_activity!
-    end
+    # Check for new achievements only if XP was earned (means lesson was newly completed)
+    AchievementService.check_and_award(current_user.student_profile) if xp_earned.positive?
 
     next_lesson = @module.lessons.where("position > ?", @lesson.position).order(:position).first
     if next_lesson.nil?
@@ -25,7 +20,7 @@ class Student::LessonsController < ApplicationController
     end
 
     if next_lesson
-      redirect_to learn_student_course_path(@course, lesson_id: next_lesson.id), notice: "Great job! +#{progress.xp_earned} XP"
+      redirect_to learn_student_course_path(@course, lesson_id: next_lesson.id), notice: "Great job! +#{xp_earned} XP"
     else
       redirect_to learn_student_course_path(@course, done: true), notice: "Course completed! You are amazing!"
     end
