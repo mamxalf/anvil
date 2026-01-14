@@ -18,9 +18,35 @@ Rails.application.routes.draw do
   # ============================================
   namespace :student do
     get "dashboard", to: "dashboards#index", as: :dashboard
-    resources :courses, only: [ :index ]
+    resources :courses, only: [ :index, :show ] do
+      member do
+        get :curriculum
+        get :learn
+        post :enroll
+      end
+      resources :course_modules, only: [] do
+        resources :lessons, only: [] do
+          member do
+            post :complete
+          end
+        end
+      end
+    end
     resources :achievements, only: [ :index ]
     get "leaderboard", to: "leaderboard#index", as: :leaderboard
+    resources :scheduled_classes, only: [ :index, :show ] do
+      member do
+        post :register
+      end
+    end
+    resources :notifications, only: [ :index ] do
+      member do
+        post :mark_as_read
+      end
+      collection do
+        post :mark_all_as_read
+      end
+    end
   end
 
   # ============================================
@@ -28,31 +54,36 @@ Rails.application.routes.draw do
   # ============================================
   namespace :parent do
     get "dashboard", to: "dashboards#index", as: :dashboard
-    resources :courses, only: [ :index ]
+    resources :courses, only: [ :index, :show ] do
+      member do
+        get :curriculum
+      end
+    end
     resources :achievements, only: [ :index ]
     get "leaderboard", to: "leaderboard#index", as: :leaderboard
     resources :children, only: [ :index, :new, :create, :show ]
+    resources :scheduled_classes, only: [ :index, :show ]
+    resources :notifications, only: [ :index ] do
+      member do
+        post :mark_as_read
+      end
+      collection do
+        post :mark_all_as_read
+      end
+    end
   end
 
   # ============================================
-  # Instructor Namespace Routes
+  # Primary Resources (Admin/Instructor)
   # ============================================
-  namespace :instructor do
-    get "dashboard", to: "dashboards#index", as: :dashboard
-    resources :courses, only: [ :index ]
-  end
-
-  # ============================================
-  # Shared Resources (Course detail, enroll, learn)
-  # ============================================
-  resources :courses, only: [ :show, :new, :create, :edit, :update ] do
+  resources :courses do
     member do
       get :curriculum
       get :learn
       post :enroll
     end
-    resources :course_modules, only: [ :create, :update, :destroy ] do
-      resources :lessons, only: [ :create, :update, :destroy ] do
+    resources :course_modules do
+      resources :lessons do
         member do
           post :complete
         end
@@ -60,16 +91,13 @@ Rails.application.routes.draw do
     end
   end
 
-  # ============================================
-  # Other Shared Resources
-  # ============================================
-  resources :scheduled_classes, only: [ :index, :show ] do
+  resources :scheduled_classes do
     member do
       post :register
     end
   end
 
-  resources :notifications, only: [ :index ] do
+  resources :notifications do
     member do
       post :mark_as_read
     end

@@ -89,4 +89,18 @@ class ApplicationController < ActionController::Base
     # Or return all keys recursively depending on your needs
     translations.transform_keys(&:to_sym).except(:success, :error)
   end
+
+  private
+
+  def ensure_instructor_or_admin!
+    unless current_user&.instructor? || current_user&.admin?
+      if current_user&.student?
+        redirect_to student_notifications_path, alert: "Please use the student area."
+      elsif current_user&.parent?
+        redirect_to parent_notifications_path, alert: "Please use the parent area."
+      else
+        redirect_to root_path, alert: "Access denied."
+      end
+    end
+  end
 end

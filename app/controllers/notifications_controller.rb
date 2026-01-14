@@ -1,4 +1,7 @@
 class NotificationsController < ApplicationController
+  before_action :authenticate_user!
+  before_action :ensure_instructor_or_admin!
+
   def index
     @notifications = current_user.notifications.recent.limit(50)
 

@@ -1,6 +1,7 @@
 class Parent::CoursesController < ApplicationController
   before_action :authenticate_user!
   before_action :ensure_parent!
+  before_action :set_course, only: [ :show, :curriculum ]
 
   def index
     @courses = Course.published.includes(instructor: :user)
@@ -31,7 +32,30 @@ class Parent::CoursesController < ApplicationController
     }
   end
 
+  def show
+    render inertia: "Parent/Courses/Show", props: {
+      course: @course.as_json(
+        only: [ :id, :title, :description, :level, :subject, :status ],
+        methods: [ :total_lessons, :total_duration_minutes ]
+      ).merge({
+        thumbnail: @course.thumbnail.attached? ? url_for(@course.thumbnail) : nil
+      }),
+      modules: @course.course_modules.includes(:lessons).order(:position).as_json(include: :lessons)
+    }
+  end
+
+  def curriculum
+    render inertia: "Parent/Courses/Curriculum", props: {
+      course: @course,
+      modules: @course.course_modules.includes(:lessons).order(:position).as_json(include: :lessons)
+    }
+  end
+
   private
+
+  def set_course
+    @course = Course.find_by(slug: params[:id]) || Course.find(params[:id])
+  end
 
   def ensure_parent!
     unless current_user.parent?
@@ -39,3 +63,4 @@ class Parent::CoursesController < ApplicationController
     end
   end
 end
+

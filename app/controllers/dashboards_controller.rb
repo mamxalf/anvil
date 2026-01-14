@@ -9,7 +9,7 @@ class DashboardsController < ApplicationController
     when "parent"
       redirect_to parent_dashboard_path
     when "instructor"
-      redirect_to instructor_dashboard_path
+      render_instructor_dashboard
     when "admin"
       # Admin stays on generic dashboard or goes to Avo
       render_admin_dashboard
@@ -19,6 +19,22 @@ class DashboardsController < ApplicationController
   end
 
   private
+
+  def render_instructor_dashboard
+    @courses = current_user.instructor_profile&.courses || []
+
+    render inertia: "Instructor/Dashboard/Index", props: {
+      user: current_user.as_json(only: [ :id, :name, :email, :role ]),
+      courses: @courses.map do |course|
+        {
+          id: course.id,
+          title: course.title,
+          status: course.status,
+          enrollments_count: course.course_enrollments.count
+        }
+      end
+    }
+  end
 
   def render_admin_dashboard
     authorize :dashboard

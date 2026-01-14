@@ -1,4 +1,7 @@
 class AchievementsController < ApplicationController
+  before_action :authenticate_user!
+  before_action :ensure_instructor_or_admin!
+
   def index
     @profile = current_user.student_profile
     return redirect_to root_path, alert: "Only students can view achievements" unless @profile

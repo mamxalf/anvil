@@ -2,6 +2,7 @@ class CourseModulesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_course
   before_action :set_module, only: [ :update, :destroy ]
+  before_action :ensure_instructor_or_admin!
 
   def create
     authorize @course, :update?

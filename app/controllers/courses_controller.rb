@@ -1,7 +1,7 @@
 class CoursesController < ApplicationController
-  before_action :authenticate_user!, except: [ :index, :show ]
-
-  before_action :set_course, only: [ :show, :edit, :update ]
+  before_action :authenticate_user!, except: [ :index ]
+  before_action :ensure_instructor_or_admin!
+  before_action :set_course, only: [ :show, :edit, :update, :curriculum, :learn, :enroll ]
 
   def index
     @courses = Course.published.includes(instructor: :user)

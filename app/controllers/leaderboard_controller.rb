@@ -1,4 +1,7 @@
 class LeaderboardController < ApplicationController
+  before_action :authenticate_user!
+  before_action :ensure_instructor_or_admin!
+
   def index
     @weekly_leaders = LeaderboardService.get_weekly_leaders
     @all_time_leaders = LeaderboardService.get_all_time_leaders
