@@ -13,6 +13,17 @@ createInertiaApp({
     if (!page) {
       throw new Error(`Page not found: ${name}`);
     }
+    
+    // Check if the page component has a layout property
+    const PageComponent = page.default;
+    if (PageComponent && PageComponent.layout) {
+      // Wrap the page with its layout
+      const LayoutWrapper = PageComponent.layout;
+      return {
+        default: (props: any) => LayoutWrapper(<PageComponent {...props} />)
+      };
+    }
+    
     return page;
   },
 

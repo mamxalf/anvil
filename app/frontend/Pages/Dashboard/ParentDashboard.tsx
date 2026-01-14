@@ -3,7 +3,7 @@ import { Link, usePage } from '@inertiajs/react'
 import { PageProps } from '@/types'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import Layout from '@/components/layout/layout'
+import ParentLayout from '@/Layouts/ParentLayout'
 import { UserPlus, Activity, Clock, Shield } from 'lucide-react'
 import { useTranslation } from '@/hooks/useTranslation'
 
@@ -130,4 +130,4 @@ export default function ParentDashboard({ children_profiles }: ParentDashboardPr
   )
 }
 
-ParentDashboard.layout = (page: React.ReactNode) => <Layout children={page} />
+ParentDashboard.layout = (page: React.ReactNode) => <ParentLayout children={page} />

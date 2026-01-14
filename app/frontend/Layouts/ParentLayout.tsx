@@ -3,22 +3,23 @@ import { Link, usePage } from '@inertiajs/react'
 import { PageProps } from '@/types'
 import { 
   LayoutDashboard, 
-  BookOpen, 
-  Trophy, 
-  Medal, 
+  Users, 
   Menu, 
   X, 
   LogOut,
-  Bell
+  Bell,
+  BookOpen,
+  Trophy,
+  Medal
 } from 'lucide-react'
 import { useTranslation } from '@/hooks/useTranslation'
 import LanguageSwitcher from '@/components/LanguageSwitcher'
 
-interface StudentLayoutProps {
+interface ParentLayoutProps {
   children: React.ReactNode
 }
 
-export default function StudentLayout({ children }: StudentLayoutProps) {
+export default function ParentLayout({ children }: ParentLayoutProps) {
   const { auth } = usePage<PageProps>().props
   const { t } = useTranslation()
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
@@ -29,32 +30,38 @@ export default function StudentLayout({ children }: StudentLayoutProps) {
   const menuItems = [
     {
       name: t('menu.dashboard', { defaultValue: 'Dashboard' }),
-      href: '/student/dashboard',
+      href: '/parent/dashboard',
       icon: <LayoutDashboard className="w-5 h-5" />,
-      active: currentPath === '/student/dashboard'
+      active: currentPath === '/parent/dashboard'
+    },
+    {
+      name: t('menu.my_children', { defaultValue: 'My Children' }),
+      href: '/parent/children',
+      icon: <Users className="w-5 h-5" />,
+      active: currentPath.startsWith('/parent/children') && !currentPath.includes('/new')
     },
     {
       name: t('menu.courses', { defaultValue: 'Courses' }),
-      href: '/student/courses',
+      href: '/parent/courses',
       icon: <BookOpen className="w-5 h-5" />,
-      active: currentPath.startsWith('/student/courses')
+      active: currentPath.startsWith('/parent/courses')
     },
     {
       name: t('menu.achievements', { defaultValue: 'Achievements' }),
-      href: '/student/achievements',
+      href: '/parent/achievements',
       icon: <Trophy className="w-5 h-5" />,
-      active: currentPath.startsWith('/student/achievements')
+      active: currentPath.startsWith('/parent/achievements')
     },
     {
       name: t('menu.leaderboard', { defaultValue: 'Leaderboard' }),
-      href: '/student/leaderboard',
+      href: '/parent/leaderboard',
       icon: <Medal className="w-5 h-5" />,
-      active: currentPath.startsWith('/student/leaderboard')
+      active: currentPath.startsWith('/parent/leaderboard')
     }
   ]
 
   return (
-    <div className="min-h-screen bg-orange-50/30 flex font-sans">
+    <div className="min-h-screen bg-green-50/30 flex font-sans">
       {/* Mobile Sidebar Overlay */}
       {isSidebarOpen && (
         <div 
@@ -65,21 +72,21 @@ export default function StudentLayout({ children }: StudentLayoutProps) {
 
       {/* Sidebar */}
       <aside 
-        className={`fixed lg:sticky top-0 left-0 z-50 h-screen w-72 bg-white shadow-2xl shadow-orange-100/50 transition-transform duration-300 ease-in-out lg:translate-x-0 ${
+        className={`fixed lg:sticky top-0 left-0 z-50 h-screen w-72 bg-white shadow-2xl shadow-green-100/50 transition-transform duration-300 ease-in-out lg:translate-x-0 ${
           isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
         } flex flex-col`}
       >
         {/* Logo Area */}
         <div className="p-6 flex items-center justify-between">
-          <Link href="/student/dashboard" className="flex items-center gap-3 group">
-            <div className="bg-gradient-to-br from-kodibot-orange to-kodibot-yellow p-2 rounded-xl shadow-lg shadow-orange-200 group-hover:scale-105 transition-transform">
+          <Link href="/parent/dashboard" className="flex items-center gap-3 group">
+            <div className="bg-gradient-to-br from-kodibot-green to-emerald-500 p-2 rounded-xl shadow-lg shadow-green-200 group-hover:scale-105 transition-transform">
                <img src="/assets/profile-kodibot.png" alt="Kodibot Logo" className="w-8 h-8 object-contain" />
             </div>
             <div className="flex flex-col">
               <span className="text-2xl font-black text-gray-900 tracking-tight leading-none">
-                Kodi<span className="text-kodibot-orange">learn</span>
+                Kodi<span className="text-kodibot-green">learn</span>
               </span>
-              <span className="text-[10px] font-bold text-gray-400 tracking-widest uppercase">Student Area</span>
+              <span className="text-[10px] font-bold text-gray-400 tracking-widest uppercase">Parent Area</span>
             </div>
           </Link>
           <button 
@@ -98,11 +105,11 @@ export default function StudentLayout({ children }: StudentLayoutProps) {
               href={item.href}
               className={`flex items-center gap-3 px-4 py-3.5 rounded-2xl transition-all duration-200 group relative ${
                 item.active 
-                  ? 'bg-gradient-to-r from-kodibot-orange to-orange-500 text-white shadow-lg shadow-orange-200 font-bold' 
-                  : 'text-gray-600 hover:bg-orange-50 hover:text-kodibot-orange font-medium'
+                  ? 'bg-gradient-to-r from-kodibot-green to-emerald-500 text-white shadow-lg shadow-green-200 font-bold' 
+                  : 'text-gray-600 hover:bg-green-50 hover:text-kodibot-green font-medium'
               }`}
             >
-              <div className={`${item.active ? 'text-white' : 'text-gray-400 group-hover:text-kodibot-orange'} transition-colors`}>
+              <div className={`${item.active ? 'text-white' : 'text-gray-400 group-hover:text-kodibot-green'} transition-colors`}>
                 {item.icon}
               </div>
               <span className="tracking-wide">{item.name}</span>
@@ -125,7 +132,7 @@ export default function StudentLayout({ children }: StudentLayoutProps) {
              </div>
              <div className="min-w-0 flex-1">
                 <p className="text-sm font-bold text-gray-900 truncate">{auth.user?.name}</p>
-                <p className="text-xs text-gray-500 font-medium truncate">Level {(auth.user as any)?.student_profile?.level || 1} Student</p>
+                <p className="text-xs text-gray-500 font-medium truncate">Parent</p>
              </div>
           </div>
           
@@ -154,14 +161,14 @@ export default function StudentLayout({ children }: StudentLayoutProps) {
            </button>
 
            <div className="flex items-center gap-3">
-             <div className="hidden sm:flex items-center gap-2 bg-orange-50 px-3 py-1.5 rounded-full border border-orange-100">
+             <div className="hidden sm:flex items-center gap-2 bg-green-50 px-3 py-1.5 rounded-full border border-green-100">
                <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-               <span className="text-xs font-bold text-orange-700 uppercase tracking-wider">Online Learning</span>
+               <span className="text-xs font-bold text-green-700 uppercase tracking-wider">Parent Portal</span>
              </div>
              
              <div className="w-px h-6 bg-gray-200 mx-1 hidden sm:block"></div>
              
-             <button className="relative p-2 text-gray-400 hover:text-kodibot-orange hover:bg-orange-50 rounded-full transition-all">
+             <button className="relative p-2 text-gray-400 hover:text-kodibot-green hover:bg-green-50 rounded-full transition-all">
                 <Bell className="w-5 h-5" />
                 <span className="absolute top-1.5 right-2 w-2 h-2 bg-red-500 rounded-full border border-white"></span>
              </button>

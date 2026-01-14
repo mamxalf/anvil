@@ -24,7 +24,7 @@ class ApplicationController < ActionController::Base
       },
       errors: session.delete(:errors) || {},
       locale: I18n.locale,
-      translations: i18n_translations_for_namespaces(%w[auth dashboard common courses lessons gamification mascot notifications settings errors])
+      translations: i18n_translations_for_namespaces(%w[auth auth_kids menu dashboard common courses lessons gamification mascot notifications settings errors])
     }
   end
 

@@ -16,6 +16,16 @@ en:
     filter: "Filter"
     sort: "Sort"
 
+  menu:
+    dashboard: "Dashboard"
+    courses: "Courses"
+    achievements: "Achievements"
+    leaderboard: "Leaderboard"
+    my_children: "My Children"
+    add_child: "Add Child"
+    my_courses: "My Courses"
+    create_course: "Create Course"
+
   auth:
     login: "Login"
     logout: "Logout"
@@ -41,7 +51,7 @@ en:
 
   dashboard:
     welcome: "Hello, %{name}!"
-    welcome_back: "Welcome Back!"
+    welcome_back: "Welcome Back"
     student:
       title: "Student Dashboard"
       no_courses_title: "No Courses Yet"
@@ -68,6 +78,12 @@ en:
       learning_progress: "Learning Progress"
       this_week: "This Week"
       screen_time: "Screen Time"
+      total_children: "Total Children"
+      total_points: "Total Points"
+      active_this_week: "Active This Week"
+      parent_controls: "Parent Controls"
+      content_privacy: "Content & Privacy"
+      notifications: "Notifications"
     instructor:
       title: "Instructor Dashboard"
       my_courses: "My Courses"
@@ -75,6 +91,9 @@ en:
       total_students: "Total Students"
       total_revenue: "Total Revenue"
       active_courses: "Active Courses"
+      total_courses: "Total Courses"
+      published: "Published"
+      avg_rating: "Avg Rating"
 
   courses:
     catalog: "Course Catalog"
@@ -117,6 +136,11 @@ en:
     achievements: "Achievements"
     points: "Points"
     rank: "Rank"
+    no_badges: "No badges yet"
+    complete_courses: "Complete courses to earn!"
+    login_today: "Login today"
+    complete_quiz: "Complete 1 Quiz"
+    watch_video: "Watch 1 Video"
 
   mascot:
     messages:

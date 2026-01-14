@@ -16,6 +16,16 @@ id:
     filter: "Filter"
     sort: "Urutkan"
 
+  menu:
+    dashboard: "Dashboard"
+    courses: "Kursus"
+    achievements: "Pencapaian"
+    leaderboard: "Papan Peringkat"
+    my_children: "Anak-anak Saya"
+    add_child: "Tambah Anak"
+    my_courses: "Kursus Saya"
+    create_course: "Buat Kursus"
+
   auth:
     login: "Masuk"
     logout: "Keluar"
@@ -41,7 +51,7 @@ id:
 
   dashboard:
     welcome: "Halo, %{name}!"
-    welcome_back: "Selamat Datang Kembali!"
+    welcome_back: "Selamat Datang Kembali"
     student:
       title: "Dashboard Siswa"
       no_courses_title: "Belum Ada Kursus"
@@ -68,6 +78,12 @@ id:
       learning_progress: "Progress Belajar"
       this_week: "Minggu Ini"
       screen_time: "Waktu Layar"
+      total_children: "Total Anak"
+      total_points: "Total Poin"
+      active_this_week: "Aktif Minggu Ini"
+      parent_controls: "Kontrol Orang Tua"
+      content_privacy: "Konten & Privasi"
+      notifications: "Notifikasi"
     instructor:
       title: "Dashboard Instruktur"
       my_courses: "Kursus Saya"
@@ -75,6 +91,9 @@ id:
       total_students: "Total Siswa"
       total_revenue: "Total Pendapatan"
       active_courses: "Kursus Aktif"
+      total_courses: "Total Kursus"
+      published: "Diterbitkan"
+      avg_rating: "Rating Rata-rata"
 
   courses:
     catalog: "Katalog Kursus"
@@ -117,6 +136,11 @@ id:
     achievements: "Pencapaian"
     points: "Poin"
     rank: "Peringkat"
+    no_badges: "Belum ada lencana"
+    complete_courses: "Ayo selesaikan kursus!"
+    login_today: "Login hari ini"
+    complete_quiz: "Selesaikan 1 Kuis"
+    watch_video: "Tonton 1 Video"
 
   mascot:
     messages:

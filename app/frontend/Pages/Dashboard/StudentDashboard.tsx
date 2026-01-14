@@ -1,3 +1,4 @@
+import React from 'react'
 import { Link, usePage } from '@inertiajs/react'
 import { PageProps } from '@/types'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -323,3 +324,5 @@ export default function StudentDashboard({
     </div>
   )
 }
+
+StudentDashboard.layout = (page: React.ReactNode) => <StudentLayout children={page} />

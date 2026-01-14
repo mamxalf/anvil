@@ -4,8 +4,7 @@ import { PageProps } from '@/types'
 import { 
   LayoutDashboard, 
   BookOpen, 
-  Trophy, 
-  Medal, 
+  PlusCircle, 
   Menu, 
   X, 
   LogOut,
@@ -14,11 +13,11 @@ import {
 import { useTranslation } from '@/hooks/useTranslation'
 import LanguageSwitcher from '@/components/LanguageSwitcher'
 
-interface StudentLayoutProps {
+interface InstructorLayoutProps {
   children: React.ReactNode
 }
 
-export default function StudentLayout({ children }: StudentLayoutProps) {
+export default function InstructorLayout({ children }: InstructorLayoutProps) {
   const { auth } = usePage<PageProps>().props
   const { t } = useTranslation()
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
@@ -29,32 +28,26 @@ export default function StudentLayout({ children }: StudentLayoutProps) {
   const menuItems = [
     {
       name: t('menu.dashboard', { defaultValue: 'Dashboard' }),
-      href: '/student/dashboard',
+      href: '/instructor/dashboard',
       icon: <LayoutDashboard className="w-5 h-5" />,
-      active: currentPath === '/student/dashboard'
+      active: currentPath === '/instructor/dashboard'
     },
     {
-      name: t('menu.courses', { defaultValue: 'Courses' }),
-      href: '/student/courses',
+      name: t('menu.my_courses', { defaultValue: 'My Courses' }),
+      href: '/instructor/courses',
       icon: <BookOpen className="w-5 h-5" />,
-      active: currentPath.startsWith('/student/courses')
+      active: currentPath.startsWith('/instructor/courses')
     },
     {
-      name: t('menu.achievements', { defaultValue: 'Achievements' }),
-      href: '/student/achievements',
-      icon: <Trophy className="w-5 h-5" />,
-      active: currentPath.startsWith('/student/achievements')
-    },
-    {
-      name: t('menu.leaderboard', { defaultValue: 'Leaderboard' }),
-      href: '/student/leaderboard',
-      icon: <Medal className="w-5 h-5" />,
-      active: currentPath.startsWith('/student/leaderboard')
+      name: t('menu.create_course', { defaultValue: 'Create Course' }),
+      href: '/courses/new',
+      icon: <PlusCircle className="w-5 h-5" />,
+      active: currentPath === '/courses/new'
     }
   ]
 
   return (
-    <div className="min-h-screen bg-orange-50/30 flex font-sans">
+    <div className="min-h-screen bg-blue-50/30 flex font-sans">
       {/* Mobile Sidebar Overlay */}
       {isSidebarOpen && (
         <div 
@@ -65,21 +58,21 @@ export default function StudentLayout({ children }: StudentLayoutProps) {
 
       {/* Sidebar */}
       <aside 
-        className={`fixed lg:sticky top-0 left-0 z-50 h-screen w-72 bg-white shadow-2xl shadow-orange-100/50 transition-transform duration-300 ease-in-out lg:translate-x-0 ${
+        className={`fixed lg:sticky top-0 left-0 z-50 h-screen w-72 bg-white shadow-2xl shadow-blue-100/50 transition-transform duration-300 ease-in-out lg:translate-x-0 ${
           isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
         } flex flex-col`}
       >
         {/* Logo Area */}
         <div className="p-6 flex items-center justify-between">
-          <Link href="/student/dashboard" className="flex items-center gap-3 group">
-            <div className="bg-gradient-to-br from-kodibot-orange to-kodibot-yellow p-2 rounded-xl shadow-lg shadow-orange-200 group-hover:scale-105 transition-transform">
+          <Link href="/instructor/dashboard" className="flex items-center gap-3 group">
+            <div className="bg-gradient-to-br from-blue-600 to-indigo-600 p-2 rounded-xl shadow-lg shadow-blue-200 group-hover:scale-105 transition-transform">
                <img src="/assets/profile-kodibot.png" alt="Kodibot Logo" className="w-8 h-8 object-contain" />
             </div>
             <div className="flex flex-col">
               <span className="text-2xl font-black text-gray-900 tracking-tight leading-none">
-                Kodi<span className="text-kodibot-orange">learn</span>
+                Kodi<span className="text-blue-600">learn</span>
               </span>
-              <span className="text-[10px] font-bold text-gray-400 tracking-widest uppercase">Student Area</span>
+              <span className="text-[10px] font-bold text-gray-400 tracking-widest uppercase">Instructor Area</span>
             </div>
           </Link>
           <button 
@@ -98,11 +91,11 @@ export default function StudentLayout({ children }: StudentLayoutProps) {
               href={item.href}
               className={`flex items-center gap-3 px-4 py-3.5 rounded-2xl transition-all duration-200 group relative ${
                 item.active 
-                  ? 'bg-gradient-to-r from-kodibot-orange to-orange-500 text-white shadow-lg shadow-orange-200 font-bold' 
-                  : 'text-gray-600 hover:bg-orange-50 hover:text-kodibot-orange font-medium'
+                  ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-200 font-bold' 
+                  : 'text-gray-600 hover:bg-blue-50 hover:text-blue-600 font-medium'
               }`}
             >
-              <div className={`${item.active ? 'text-white' : 'text-gray-400 group-hover:text-kodibot-orange'} transition-colors`}>
+              <div className={`${item.active ? 'text-white' : 'text-gray-400 group-hover:text-blue-600'} transition-colors`}>
                 {item.icon}
               </div>
               <span className="tracking-wide">{item.name}</span>
@@ -125,7 +118,7 @@ export default function StudentLayout({ children }: StudentLayoutProps) {
              </div>
              <div className="min-w-0 flex-1">
                 <p className="text-sm font-bold text-gray-900 truncate">{auth.user?.name}</p>
-                <p className="text-xs text-gray-500 font-medium truncate">Level {(auth.user as any)?.student_profile?.level || 1} Student</p>
+                <p className="text-xs text-gray-500 font-medium truncate">Instructor</p>
              </div>
           </div>
           
@@ -154,14 +147,14 @@ export default function StudentLayout({ children }: StudentLayoutProps) {
            </button>
 
            <div className="flex items-center gap-3">
-             <div className="hidden sm:flex items-center gap-2 bg-orange-50 px-3 py-1.5 rounded-full border border-orange-100">
-               <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-               <span className="text-xs font-bold text-orange-700 uppercase tracking-wider">Online Learning</span>
+             <div className="hidden sm:flex items-center gap-2 bg-blue-50 px-3 py-1.5 rounded-full border border-blue-100">
+               <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
+               <span className="text-xs font-bold text-blue-700 uppercase tracking-wider">Teaching Portal</span>
              </div>
              
              <div className="w-px h-6 bg-gray-200 mx-1 hidden sm:block"></div>
              
-             <button className="relative p-2 text-gray-400 hover:text-kodibot-orange hover:bg-orange-50 rounded-full transition-all">
+             <button className="relative p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-full transition-all">
                 <Bell className="w-5 h-5" />
                 <span className="absolute top-1.5 right-2 w-2 h-2 bg-red-500 rounded-full border border-white"></span>
              </button>

@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from '@inertiajs/react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import InstructorLayout from '@/Layouts/InstructorLayout'
 
 interface InstructorDashboardProps {
   instructorProfile: any
@@ -83,3 +84,5 @@ export default function InstructorDashboard({ instructorProfile, courses }: Inst
     </div>
   )
 }
+
+InstructorDashboard.layout = (page: React.ReactNode) => <InstructorLayout children={page} />

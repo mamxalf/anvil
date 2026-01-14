@@ -6,6 +6,9 @@ import { Button } from '@/components/ui/button'
 import StudentDashboard from './StudentDashboard'
 import InstructorDashboard from './InstructorDashboard'
 import ParentDashboard from './ParentDashboard'
+import StudentLayout from '@/Layouts/StudentLayout'
+import InstructorLayout from '@/Layouts/InstructorLayout'
+import ParentLayout from '@/Layouts/ParentLayout'
 
 interface DashboardProps extends PageProps {
   user: User
@@ -50,29 +53,35 @@ export default function Index({
   // Role Routing
   if (user.role === 'student' && studentProfile) {
     return (
-      <StudentDashboard 
-        studentProfile={studentProfile}
-        recentBadges={recentBadges || []}
-        courses={courses || []}
-        upcomingClasses={upcomingClasses || []}
-      />
+      <StudentLayout>
+        <StudentDashboard 
+          studentProfile={studentProfile}
+          recentBadges={recentBadges || []}
+          courses={courses || []}
+          upcomingClasses={upcomingClasses || []}
+        />
+      </StudentLayout>
     )
   }
 
   if (user.role === 'instructor' && instructorProfile) {
     return (
-      <InstructorDashboard
-        instructorProfile={instructorProfile}
-        courses={courses || []}
-      />
+      <InstructorLayout>
+        <InstructorDashboard
+          instructorProfile={instructorProfile}
+          courses={courses || []}
+        />
+      </InstructorLayout>
     )
   }
 
   if (user.role === 'parent') {
     return (
-      <ParentDashboard
-        children_profiles={children_profiles || []}
-      />
+      <ParentLayout>
+        <ParentDashboard
+          children_profiles={children_profiles || []}
+        />
+      </ParentLayout>
     )
   }
 
