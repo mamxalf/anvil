@@ -123,6 +123,7 @@ id:
     completed: "Selesai"
     duration: "Durasi"
     minutes: "menit"
+    continue_learning: "Lanjut Belajar"
 
   lessons:
     complete_continue: "Selesai & Lanjut"

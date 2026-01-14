@@ -64,7 +64,7 @@ class Student::CoursesController < ApplicationController
         thumbnail: @course.thumbnail.attached? ? url_for(@course.thumbnail) : nil
       }),
       modules: @course.course_modules.includes(:lessons).order(:position).as_json(include: :lessons),
-      isEnrolled: is_enrolled,
+      isEnrolled: is_enrolled
     }
   end
 
@@ -93,7 +93,14 @@ class Student::CoursesController < ApplicationController
     completed_lesson_ids = current_user.student_profile.lesson_progresses.where(lesson: @course.lessons).pluck(:lesson_id)
 
     render inertia: "Student/Courses/Learn", props: {
-      course: @course,
+      course: @course.as_json(
+        only: [ :id, :title, :description, :level, :subject ],
+        methods: [ :total_lessons, :total_duration_minutes ]
+      ).merge({
+        instructor: {
+          name: @course.instructor.user.name
+        }
+      }),
       modules: @course.course_modules.includes(:lessons).order(:position).map { |mod|
         {
           id: mod.id,

@@ -123,6 +123,7 @@ en:
     completed: "Completed"
     duration: "Duration"
     minutes: "minutes"
+    continue_learning: "Continue Learning"
 
   lessons:
     complete_continue: "Complete & Continue"

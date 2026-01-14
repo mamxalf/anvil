@@ -3,9 +3,12 @@ import { Link, router } from '@inertiajs/react'
 import StudentLayout from '@/Layouts/StudentLayout'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Clock, BookOpen, Users, Trophy } from 'lucide-react'
+
+import { Clock, BookOpen, Users, Trophy, Loader2 } from 'lucide-react'
 import { useTranslation } from '@/hooks/useTranslation'
 import { Course } from '@/types'
+import { Dialog, DialogContent } from '@/components/ui/dialog'
+import { useState } from 'react'
 
 interface CourseShowProps {
   course: Course
@@ -15,9 +18,17 @@ interface CourseShowProps {
 
 export default function Show({ course, modules, isEnrolled }: CourseShowProps) {
   const { t } = useTranslation()
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleEnroll = () => {
-    router.post(`/student/courses/${course.id}/enroll`)
+    setIsLoading(true)
+    router.post(`/student/courses/${course.id}/enroll`, {}, {
+      onFinish: () => setIsLoading(false)
+    })
+  }
+
+  const handleContinue = () => {
+    setIsLoading(true)
   }
 
   return (
@@ -136,10 +147,12 @@ export default function Show({ course, modules, isEnrolled }: CourseShowProps) {
                 <span className="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-md uppercase tracking-wider border border-emerald-100">Lifetime Access</span>
               </div>
 
+
               {isEnrolled ? (
                 <Button
-                  className="w-full text-lg h-14 font-bold bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 shadow-lg shadow-emerald-200 hover:shadow-emerald-300 rounded-2xl transition-all hover:scale-[1.02]"
+                  className="w-full text-lg h-14 font-bold bg-gradient-to-r from-emerald-400 to-emerald-600 hover:from-emerald-600 hover:to-emerald-400 shadow-lg shadow-emerald-200 hover:shadow-emerald-300 rounded-2xl transition-all hover:scale-[1.02]"
                   asChild
+                  onClick={handleContinue}
                 >
                   <Link href={`/student/courses/${course.id}/learn`}>
                     {t('courses.continue_learning', { defaultValue: 'Continue Learning' })}
@@ -148,8 +161,12 @@ export default function Show({ course, modules, isEnrolled }: CourseShowProps) {
               ) : (
                 <Button
                   onClick={handleEnroll}
-                  className="w-full text-lg h-14 shadow-lg shadow-orange-200 font-bold hover:scale-[1.02] transition-all bg-gradient-to-r from-orange-500 via-kodibot-orange to-yellow-500 text-white rounded-2xl"
+                  disabled={isLoading}
+                  className="w-full text-lg h-14 shadow-lg shadow-orange-200 font-bold hover:scale-[1.02] transition-all bg-gradient-to-r from-orange-500 via-kodibot-orange to-yellow-500 text-white rounded-2xl disabled:opacity-70"
                 >
+                  {isLoading ? (
+                    <Loader2 className="w-5 h-5 animate-spin mr-2" />
+                  ) : null}
                   {t('courses.enroll_now', { defaultValue: 'Enroll Now' })}
                 </Button>
               )}
@@ -202,6 +219,17 @@ export default function Show({ course, modules, isEnrolled }: CourseShowProps) {
           </Card>
         </div>
       </div>
+
+      {/* Loading Modal */}
+      <Dialog open={isLoading} onOpenChange={setIsLoading}>
+        <DialogContent className="sm:max-w-[425px] flex flex-col items-center justify-center py-10 gap-4">
+          <div className="relative">
+            <div className="absolute inset-0 bg-kodibot-orange/20 blur-xl rounded-full animate-pulse"></div>
+            <Loader2 className="w-12 h-12 text-kodibot-orange animate-spin relative z-10" />
+          </div>
+          <p className="text-lg font-bold text-gray-700 animate-pulse">{t('common.loading', { defaultValue: 'Memuat...' })}</p>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
