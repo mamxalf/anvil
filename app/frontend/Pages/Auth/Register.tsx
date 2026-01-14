@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { PageProps } from '@/types'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { PasswordInput } from '@/components/ui/password-input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { registerSchema, type RegisterFormData } from '@/lib/validations'
@@ -90,12 +91,12 @@ export default function Register({ errors: pageErrors = {}, translations }: Regi
 
       <Card className="w-full max-w-md shadow-2xl border-4 border-white/50 rounded-[2rem] bg-white/80 backdrop-blur-sm relative z-10 overflow-hidden my-8">
          <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-kodibot-green via-kodibot-yellow to-kodibot-orange" />
-        
+
         <CardHeader className="space-y-2 flex flex-col items-center pt-8">
           <div className="w-28 h-28 mb-2 relative hover:scale-110 transition-transform duration-300">
-             <img 
-              src={profileKodibot} 
-              alt="Kodibot" 
+             <img
+              src={profileKodibot}
+              alt="Kodibot"
               className="object-contain w-full h-full drop-shadow-lg"
             />
           </div>
@@ -142,9 +143,8 @@ export default function Register({ errors: pageErrors = {}, translations }: Regi
 
             <div className="space-y-2">
               <Label htmlFor="password" className="text-base font-bold text-gray-700 ml-1">{t.password || 'Password'}</Label>
-              <Input
+              <PasswordInput
                 id="password"
-                type="password"
                 placeholder={t.password_placeholder || "***"}
                 {...register('password')}
                 className="rounded-2xl border-2 border-gray-200 focus:border-primary focus:ring-4 focus:ring-primary/10 h-11 bg-white/50 transition-all duration-300"
@@ -160,9 +160,8 @@ export default function Register({ errors: pageErrors = {}, translations }: Regi
               <Label htmlFor="password_confirmation" className="text-base font-bold text-gray-700 ml-1">
                 {t.password_confirmation || 'Confirm Password'}
               </Label>
-              <Input
+              <PasswordInput
                 id="password_confirmation"
-                type="password"
                 placeholder={t.password_confirmation_placeholder || "***"}
                 {...register('password_confirmation')}
                 className="rounded-2xl border-2 border-gray-200 focus:border-primary focus:ring-4 focus:ring-primary/10 h-11 bg-white/50 transition-all duration-300"
@@ -174,9 +173,9 @@ export default function Register({ errors: pageErrors = {}, translations }: Regi
               )}
             </div>
 
-            <Button 
-                type="submit" 
-                disabled={isSubmitting} 
+            <Button
+                type="submit"
+                disabled={isSubmitting}
                 className="w-full bg-primary hover:bg-primary/90 text-primary-foreground text-lg font-black py-6 rounded-full shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 mt-4"
             >
               {isSubmitting ? 'Loading...' : t.register_button || 'Start Adventure!'}

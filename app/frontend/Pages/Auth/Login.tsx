@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { PageProps } from '@/types'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { PasswordInput } from '@/components/ui/password-input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { loginSchema, type LoginFormData } from '@/lib/validations'
@@ -82,15 +83,15 @@ export default function Login({ errors: pageErrors = {}, translations }: LoginPr
         {/* Decorative Background Blobs */}
         <div className="absolute top-10 left-10 w-32 h-32 bg-kodibot-yellow/30 rounded-full blur-3xl animate-pulse" />
         <div className="absolute bottom-10 right-10 w-40 h-40 bg-kodibot-green/20 rounded-full blur-3xl animate-pulse delay-700" />
-        
+
       <Card className="w-full max-w-md shadow-2xl border-4 border-white/50 rounded-[2rem] bg-white/80 backdrop-blur-sm relative z-10 overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-kodibot-orange via-kodibot-yellow to-kodibot-green" />
-        
+
         <CardHeader className="space-y-2 flex flex-col items-center pt-8">
           <div className="w-32 h-32 mb-2 relative hover:scale-110 transition-transform duration-300">
-             <img 
-              src={profileKodibot} 
-              alt="Kodibot" 
+             <img
+              src={profileKodibot}
+              alt="Kodibot"
               className="object-contain w-full h-full drop-shadow-lg"
             />
           </div>
@@ -125,9 +126,8 @@ export default function Login({ errors: pageErrors = {}, translations }: LoginPr
               <div className="flex items-center justify-between">
                 <Label htmlFor="password" className="text-base font-bold text-gray-700 ml-1">{t.password || 'Password'}</Label>
               </div>
-              <Input
+              <PasswordInput
                 id="password"
-                type="password"
                 placeholder={t.password_placeholder || "***"}
                 {...register('password')}
                 className="rounded-2xl border-2 border-gray-200 focus:border-primary focus:ring-4 focus:ring-primary/10 h-12 bg-white/50 transition-all duration-300"
@@ -151,9 +151,9 @@ export default function Login({ errors: pageErrors = {}, translations }: LoginPr
               </Label>
             </div>
 
-            <Button 
-                type="submit" 
-                disabled={isSubmitting} 
+            <Button
+                type="submit"
+                disabled={isSubmitting}
                 className="w-full bg-primary hover:bg-primary/90 text-primary-foreground text-lg font-black py-6 rounded-full shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 mt-4"
             >
               {isSubmitting ? 'Loading...' : t.login_button || "Let's Go!"}
