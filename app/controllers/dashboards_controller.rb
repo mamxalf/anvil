@@ -23,7 +23,7 @@ class DashboardsController < ApplicationController
   def render_instructor_dashboard
     @courses = current_user.instructor_profile&.courses || []
 
-    render inertia: "Instructor/Dashboard/Index", props: {
+    render inertia: "Dashboard/Index", props: {
       user: current_user.as_json(only: [ :id, :name, :email, :role ]),
       courses: @courses.map do |course|
         {

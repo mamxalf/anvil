@@ -1,34 +1,14 @@
-import React from 'react'
-import { Link, usePage } from '@inertiajs/react'
 import { PageProps, User } from '@/types'
 import Layout from '@/components/layout/layout'
 import { Button } from '@/components/ui/button'
-import StudentDashboard from './StudentDashboard'
-import InstructorDashboard from './InstructorDashboard'
-import ParentDashboard from './ParentDashboard'
-import StudentLayout from '@/Layouts/StudentLayout'
-import InstructorLayout from '@/Layouts/InstructorLayout'
-import ParentLayout from '@/Layouts/ParentLayout'
 
 interface DashboardProps extends PageProps {
   user: User
-  studentProfile?: any
-  recentBadges?: any[]
-  courses?: any[]
-  upcomingClasses?: any[]
-  instructorProfile?: any
-  children_profiles?: any[]
 }
 
-export default function Index({ 
-  user, 
+export default function Index({
+  user,
   locale,
-  studentProfile,
-  recentBadges,
-  courses,
-  upcomingClasses,
-  instructorProfile,
-  children_profiles
 }: DashboardProps) {
   // ... translations (kept same)
   const t = (key: string) => {
@@ -48,41 +28,6 @@ export default function Index({
     }
     const lang = (locale as string) || 'en'
     return translations[lang]?.[key] || key
-  }
-
-  // Role Routing
-  if (user.role === 'student' && studentProfile) {
-    return (
-      <StudentLayout>
-        <StudentDashboard 
-          studentProfile={studentProfile}
-          recentBadges={recentBadges || []}
-          courses={courses || []}
-          upcomingClasses={upcomingClasses || []}
-        />
-      </StudentLayout>
-    )
-  }
-
-  if (user.role === 'instructor' && instructorProfile) {
-    return (
-      <InstructorLayout>
-        <InstructorDashboard
-          instructorProfile={instructorProfile}
-          courses={courses || []}
-        />
-      </InstructorLayout>
-    )
-  }
-
-  if (user.role === 'parent') {
-    return (
-      <ParentLayout>
-        <ParentDashboard
-          children_profiles={children_profiles || []}
-        />
-      </ParentLayout>
-    )
   }
 
   // Default Dashboard (Admin/Fallback)

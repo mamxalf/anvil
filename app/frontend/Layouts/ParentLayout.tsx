@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import { Link, usePage } from '@inertiajs/react'
 import { PageProps } from '@/types'
-import { 
-  LayoutDashboard, 
-  Users, 
-  Menu, 
-  X, 
+import {
+  LayoutDashboard,
+  Users,
+  Menu,
+  X,
   LogOut,
   Bell,
   BookOpen,
@@ -64,14 +64,14 @@ export default function ParentLayout({ children }: ParentLayoutProps) {
     <div className="min-h-screen bg-green-50/30 flex font-sans">
       {/* Mobile Sidebar Overlay */}
       {isSidebarOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-black/50 z-40 lg:hidden backdrop-blur-sm transition-opacity"
           onClick={() => setIsSidebarOpen(false)}
         />
       )}
 
       {/* Sidebar */}
-      <aside 
+      <aside
         className={`fixed lg:sticky top-0 left-0 z-50 h-screen w-72 bg-white shadow-2xl shadow-green-100/50 transition-transform duration-300 ease-in-out lg:translate-x-0 ${
           isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
         } flex flex-col`}
@@ -89,7 +89,7 @@ export default function ParentLayout({ children }: ParentLayoutProps) {
               <span className="text-[10px] font-bold text-gray-400 tracking-widest uppercase">Parent Area</span>
             </div>
           </Link>
-          <button 
+          <button
             onClick={() => setIsSidebarOpen(false)}
             className="lg:hidden p-2 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-100"
           >
@@ -104,8 +104,8 @@ export default function ParentLayout({ children }: ParentLayoutProps) {
               key={item.href}
               href={item.href}
               className={`flex items-center gap-3 px-4 py-3.5 rounded-2xl transition-all duration-200 group relative ${
-                item.active 
-                  ? 'bg-gradient-to-r from-kodibot-green to-emerald-500 text-white shadow-lg shadow-green-200 font-bold' 
+                item.active
+                  ? 'bg-gradient-to-r from-kodibot-green to-emerald-500 text-white shadow-lg shadow-green-200 font-bold'
                   : 'text-gray-600 hover:bg-green-50 hover:text-kodibot-green font-medium'
               }`}
             >
@@ -124,10 +124,10 @@ export default function ParentLayout({ children }: ParentLayoutProps) {
         <div className="p-4 border-t border-gray-100 space-y-2">
           <div className="bg-gray-50 rounded-2xl p-3 flex items-center gap-3 hover:bg-gray-100 transition-colors cursor-pointer group">
              <div className="w-10 h-10 rounded-full border-2 border-white shadow-sm overflow-hidden bg-white shrink-0">
-                <img 
-                  src={auth.user?.avatar_url || `https://ui-avatars.com/api/?name=${auth.user?.name || 'User'}&background=random`} 
+                <img
+                  src={auth.user?.avatar_url || `https://ui-avatars.com/api/?name=${auth.user?.name || 'User'}&background=random`}
                   alt={auth.user?.name || 'User'}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                 />
              </div>
              <div className="min-w-0 flex-1">
@@ -135,10 +135,10 @@ export default function ParentLayout({ children }: ParentLayoutProps) {
                 <p className="text-xs text-gray-500 font-medium truncate">Parent</p>
              </div>
           </div>
-          
-          <Link 
-            href="/users/sign_out" 
-            method="delete" 
+
+          <Link
+            href="/users/sign_out"
+            method="delete"
             as="button"
             className="w-full flex items-center justify-center gap-2 p-3 text-red-500 hover:bg-red-50 rounded-xl text-sm font-bold transition-colors"
           >
@@ -150,10 +150,10 @@ export default function ParentLayout({ children }: ParentLayoutProps) {
 
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0">
-        
+
         {/* Top Header (Mobile Only / Accessories) */}
         <header className="bg-white/80 backdrop-blur-md sticky top-0 z-30 px-4 py-3 border-b border-gray-100 flex items-center justify-between lg:justify-end">
-           <button 
+           <button
              onClick={toggleSidebar}
              className="lg:hidden p-2 text-gray-600 hover:bg-gray-100 rounded-xl"
            >
@@ -165,14 +165,14 @@ export default function ParentLayout({ children }: ParentLayoutProps) {
                <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
                <span className="text-xs font-bold text-green-700 uppercase tracking-wider">Parent Portal</span>
              </div>
-             
+
              <div className="w-px h-6 bg-gray-200 mx-1 hidden sm:block"></div>
-             
-             <button className="relative p-2 text-gray-400 hover:text-kodibot-green hover:bg-green-50 rounded-full transition-all">
+
+             <Link href="/parent/notifications" className="relative p-2 text-gray-400 hover:text-kodibot-green hover:bg-green-50 rounded-full transition-all">
                 <Bell className="w-5 h-5" />
                 <span className="absolute top-1.5 right-2 w-2 h-2 bg-red-500 rounded-full border border-white"></span>
-             </button>
-             
+             </Link>
+
              <LanguageSwitcher className="" />
            </div>
         </header>
