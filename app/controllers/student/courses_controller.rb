@@ -86,6 +86,8 @@ class Student::CoursesController < ApplicationController
 
     @current_lesson = if params[:lesson_id]
       @course.lessons.find(params[:lesson_id])
+    elsif params[:done].present?
+      nil
     else
       @course.course_modules.order(:position).first&.lessons&.order(:position)&.first
     end
@@ -121,7 +123,7 @@ class Student::CoursesController < ApplicationController
         module_id: @current_lesson.course_module_id,
         title: @current_lesson.title,
         video_url: @current_lesson.youtube_embed_url,
-        content: @current_lesson.content,
+        content: @current_lesson.content.to_s,
         xp_reward: @current_lesson.xp_reward
       } : nil
     }

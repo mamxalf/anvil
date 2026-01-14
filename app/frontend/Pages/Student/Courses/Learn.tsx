@@ -8,7 +8,7 @@ import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/s
 import { cn } from '@/lib/utils'
 import { useTranslation } from '@/hooks/useTranslation'
 import { Course } from '@/types'
-import ReactMarkdown from 'react-markdown'
+
 
 interface LearnProps {
   course: Course
@@ -20,6 +20,7 @@ export default function Learn({ course, modules, currentLesson }: LearnProps) {
   const { t } = useTranslation()
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [isExpanded, setIsExpanded] = useState(false)
 
   const handleLessonSelect = (lessonId: string) => {
     if (isLoading) return
@@ -210,8 +211,37 @@ export default function Learn({ course, modules, currentLesson }: LearnProps) {
                     </div>
                   </div>
 
-                  <div className="prose prose-lg prose-orange max-w-none text-gray-600">
-                    <ReactMarkdown>{currentLesson.content}</ReactMarkdown>
+                  <div className="relative">
+                    <div className={cn(
+                      "prose prose-lg prose-orange max-w-none text-gray-600 transition-all duration-500 ease-in-out",
+                      !isExpanded && "max-h-[300px] overflow-hidden"
+                    )}>
+                      <div dangerouslySetInnerHTML={{ __html: currentLesson.content }} />
+                    </div>
+
+                    {!isExpanded && (
+                      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-white to-transparent pointer-events-none" />
+                    )}
+
+                    <div className={cn("text-center", !isExpanded ? "mt-4 absolute bottom-0 left-0 w-full z-10" : "mt-8")}>
+                      <Button
+                        onClick={() => setIsExpanded(!isExpanded)}
+                        variant="ghost"
+                        className="rounded-full bg-white/80 hover:bg-orange-50 text-kodibot-orange font-bold border border-orange-100 shadow-sm backdrop-blur-sm"
+                      >
+                        {isExpanded ? (
+                          <>
+                            <ChevronLeft className="w-4 h-4 mr-2 rotate-90" />
+                            Read Less
+                          </>
+                        ) : (
+                          <>
+                            Read More
+                            <ChevronRight className="w-4 h-4 ml-2 rotate-90" />
+                          </>
+                        )}
+                      </Button>
+                    </div>
                   </div>
                 </div>
 
@@ -232,7 +262,11 @@ export default function Learn({ course, modules, currentLesson }: LearnProps) {
                     size="lg"
                     className="w-full sm:w-auto h-14 bg-gradient-to-r from-emerald-400 to-emerald-600 hover:from-emerald-500 hover:to-emerald-700 text-white font-bold px-8 rounded-2xl shadow-lg shadow-emerald-200 hover:shadow-emerald-300 hover:scale-[1.02] transition-all"
                   >
-                    {isLoading ? "Saving..." : t('courses.complete_continue', { defaultValue: 'Complete & Continue' })}
+                    {isLoading ? "Saving..." : (
+                      modules[modules.length - 1]?.lessons[modules[modules.length - 1].lessons.length - 1]?.id === currentLesson.id
+                        ? t('courses.done', { defaultValue: 'Done' })
+                        : t('courses.complete_continue', { defaultValue: 'Complete & Continue' })
+                    )}
                     {!isLoading && <ChevronRight className="w-5 h-5 ml-2" />}
                   </Button>
                 </div>
@@ -242,16 +276,16 @@ export default function Learn({ course, modules, currentLesson }: LearnProps) {
                 <div className="w-24 h-24 bg-gradient-to-br from-orange-100 to-yellow-100 rounded-full flex items-center justify-center mb-6 animate-bounce">
                   <Trophy className="w-12 h-12 text-kodibot-orange" />
                 </div>
-                <h2 className="text-4xl font-black text-gray-900 mb-4">🎉 Course Completed!</h2>
+                <h2 className="text-4xl font-black text-gray-900 mb-4">{t('courses.course_completed', { defaultValue: '🎉 Course Completed!' })}</h2>
                 <p className="text-xl text-gray-500 max-w-md mb-8">
-                  Congratulations! You've finished all the lessons in this course. Great job!
+                  {t('courses.course_completed_message', { defaultValue: "Congratulations! You've finished all the lessons in this course. Great job!" })}
                 </p>
                 <Button
                   asChild
                   size="lg"
-                  className="h-14 px-8 bg-kodibot-orange hover:bg-kodibot-orange/90 rounded-2xl shadow-xl shadow-orange-200 font-bold text-lg"
+                  className="h-14 px-8 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 border border-emerald-500/20 backdrop-blur-md shadow-xl shadow-emerald-500/10 rounded-2xl font-bold text-lg transition-all hover:scale-105"
                 >
-                  <Link href="/student/dashboard">Back to Dashboard</Link>
+                  <Link href="/student/dashboard">{t('courses.back_to_dashboard', { defaultValue: 'Back to Dashboard' })}</Link>
                 </Button>
               </div>
             )}

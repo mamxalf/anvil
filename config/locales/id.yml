@@ -19,6 +19,12 @@ id:
     all_subjects: "Semua Subjek"
     newest: "Terbaru"
     popular: "Terpopuler"
+    done: "Selesai"
+    complete_continue: "Selesai & Lanjut"
+    previous: "Sebelumnya"
+    next: "Selanjutnya"
+    completed: "Pelajaran Selesai!"
+    xp_earned: "XP Diperoleh"
 
   menu:
     dashboard: "Dashboard"
@@ -124,6 +130,10 @@ id:
     duration: "Durasi"
     minutes: "menit"
     continue_learning: "Lanjut Belajar"
+    course_completed: "🎉 Kursus Selesai!"
+    course_completed_message: "Selamat! Kamu telah menyelesaikan semua pelajaran di kursus ini. Kerja bagus!"
+    back_to_dashboard: "Kembali ke Dashboard"
+
 
   lessons:
     complete_continue: "Selesai & Lanjut"

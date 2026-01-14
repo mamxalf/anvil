@@ -9,7 +9,7 @@ class Avo::Resources::Lesson < Avo::BaseResource
     field :id, as: :id
     field :course_module_id, as: :text
     field :title, as: :text
-    field :content, as: :textarea
+    field :content, as: :trix
     field :video_url, as: :text
     field :duration_minutes, as: :number
     field :position, as: :number

@@ -9,13 +9,13 @@ class Student::LessonsController < ApplicationController
     progress = current_user.student_profile.lesson_progresses.find_or_initialize_by(lesson: @lesson)
 
     if progress.new_record? || !progress.completed?
-      progress.completed = true
+
       progress.completed_at = Time.current
       progress.xp_earned = @lesson.xp_reward || 10
       progress.save!
 
       current_user.student_profile.increment!(:total_points, progress.xp_earned)
-      current_user.student_profile.update_streak!
+      current_user.student_profile.record_activity!
     end
 
     next_lesson = @module.lessons.where("position > ?", @lesson.position).order(:position).first
@@ -27,7 +27,7 @@ class Student::LessonsController < ApplicationController
     if next_lesson
       redirect_to learn_student_course_path(@course, lesson_id: next_lesson.id), notice: "Great job! +#{progress.xp_earned} XP"
     else
-      redirect_to learn_student_course_path(@course), notice: "Course completed! You are amazing!"
+      redirect_to learn_student_course_path(@course, done: true), notice: "Course completed! You are amazing!"
     end
   end
 

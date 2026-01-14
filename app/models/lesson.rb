@@ -1,6 +1,8 @@
 class Lesson < ApplicationRecord
   belongs_to :course_module
 
+  has_rich_text :content
+
   has_one :quiz, dependent: :destroy
   has_many :resources, dependent: :destroy
   has_many :lesson_progresses, dependent: :destroy

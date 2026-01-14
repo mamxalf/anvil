@@ -19,6 +19,12 @@ en:
     all_subjects: "All Subjects"
     newest: "Newest"
     popular: "Popular"
+    done: "Done"
+    complete_continue: "Complete & Continue"
+    previous: "Previous"
+    next: "Next"
+    completed: "Lesson Completed!"
+    xp_earned: "XP Earned"
 
   menu:
     dashboard: "Dashboard"
@@ -124,6 +130,10 @@ en:
     duration: "Duration"
     minutes: "minutes"
     continue_learning: "Continue Learning"
+    course_completed: "🎉 Course Completed!"
+    course_completed_message: "Congratulations! You've finished all the lessons in this course. Great job!"
+    back_to_dashboard: "Back to Dashboard"
+
 
   lessons:
     complete_continue: "Complete & Continue"
