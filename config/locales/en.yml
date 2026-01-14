@@ -29,13 +29,14 @@ en:
   auth:
     login: "Login"
     logout: "Logout"
+    sign_out: "Sign Out"
     register: "Register"
     forgot_password: "Forgot Password?"
     email: "Email"
     password: "Password"
     confirm_password: "Confirm Password"
     remember_me: "Remember Me"
-  
+
   auth_kids:
     login_title: "Welcome Back, Explorer!"
     login_description: "Ready for your next coding mission?"

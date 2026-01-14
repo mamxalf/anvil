@@ -29,13 +29,14 @@ id:
   auth:
     login: "Masuk"
     logout: "Keluar"
+    sign_out: "Keluar"
     register: "Daftar"
     forgot_password: "Lupa Kata Sandi?"
     email: "Email"
     password: "Kata Sandi"
     confirm_password: "Konfirmasi Kata Sandi"
     remember_me: "Ingat Saya"
-  
+
   auth_kids:
     login_title: "Selamat Datang Kembali, Penjelajah!"
     login_description: "Siap untuk misi koding berikutnya?"
