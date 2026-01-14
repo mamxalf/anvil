@@ -6,6 +6,7 @@ PreCommit:
   # Ruby code style checking
   RuboCop:
     enabled: true
+    command: ['bundle', 'exec', 'rubocop', '-A']
     on_warn: fail # Fail commit if RuboCop finds issues
     problem_on_unmodified_line: ignore
     include: '**/*.rb'
@@ -57,7 +58,19 @@ PreCommit:
     exclude:
       - 'node_modules/**/*'
       - 'vendor/**/*'
-      - '**/*.min.js'
+
+  # Check for code formatting
+  Prettier:
+    enabled: true
+    command: ['yarn', 'prettier', '--check']
+    include: '**/*.{js,jsx,ts,tsx,css,scss,html,json,md,yml,yaml}'
+    exclude:
+      - 'node_modules/**/*'
+      - 'vendor/**/*'
+      - 'db/schema.rb'
+      - 'Gemfile.lock'
+      - 'yarn.lock'
+
 
   # Prevent committing to main/master branches
   PreventNonAsyncFixup:

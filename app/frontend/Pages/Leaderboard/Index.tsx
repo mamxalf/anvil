@@ -21,7 +21,11 @@ interface LeaderboardProps {
   currentRank: number
 }
 
-export default function LeaderboardIndex({ weeklyLeaders, allTimeLeaders, currentRank }: LeaderboardProps) {
+export default function LeaderboardIndex({
+  weeklyLeaders,
+  allTimeLeaders,
+  currentRank,
+}: LeaderboardProps) {
   const { t } = useTranslation()
 
   const RankIcon = ({ rank }: { rank: number }) => {
@@ -31,10 +35,13 @@ export default function LeaderboardIndex({ weeklyLeaders, allTimeLeaders, curren
     return <span className="font-bold text-gray-500 text-lg w-6 text-center">{rank}</span>
   }
 
-  const LeaderList = ({ leaders, type }: { leaders: Leader[], type: 'weekly' | 'alltime' }) => (
+  const LeaderList = ({ leaders, type }: { leaders: Leader[]; type: 'weekly' | 'alltime' }) => (
     <div className="space-y-4">
       {leaders.map((leader, index) => (
-        <div key={leader.id} className={`flex items-center p-4 rounded-xl border ${index < 3 ? 'bg-gradient-to-r from-yellow-50 to-white border-yellow-200' : 'bg-white border-gray-100'}`}>
+        <div
+          key={leader.id}
+          className={`flex items-center p-4 rounded-xl border ${index < 3 ? 'bg-gradient-to-r from-yellow-50 to-white border-yellow-200' : 'bg-white border-gray-100'}`}
+        >
           <div className="mr-4 flex items-center justify-center w-8">
             <RankIcon rank={index + 1} />
           </div>
@@ -45,15 +52,17 @@ export default function LeaderboardIndex({ weeklyLeaders, allTimeLeaders, curren
             <div>
               <p className="font-bold text-gray-900">{leader.user.name}</p>
               {type === 'weekly' && (
-                <p className="text-xs text-gray-500">{leader.weekly_lessons || 0} Lessons this week</p>
+                <p className="text-xs text-gray-500">
+                  {leader.weekly_lessons || 0} Lessons this week
+                </p>
               )}
             </div>
           </div>
           <div className="text-right">
-             <div className="flex items-center gap-1 font-black text-primary">
-               <Star className="w-4 h-4 fill-primary" />
-               {leader.total_points} XP
-             </div>
+            <div className="flex items-center gap-1 font-black text-primary">
+              <Star className="w-4 h-4 fill-primary" />
+              {leader.total_points} XP
+            </div>
           </div>
         </div>
       ))}
@@ -62,39 +71,51 @@ export default function LeaderboardIndex({ weeklyLeaders, allTimeLeaders, curren
 
   return (
     <div className="max-w-4xl mx-auto py-8">
-       <div className="text-center mb-10">
-         <h1 className="text-4xl font-extrabold text-foreground mb-4">🏆 {t('gamification.leaderboard')}</h1>
-         <p className="text-xl text-muted-foreground">See who's leading the learning adventure!</p>
-         
-         {currentRank && (
-           <div className="mt-6 inline-block bg-primary/10 px-6 py-2 rounded-full border border-primary/20">
-             <span className="font-bold text-primary">Your Rank: #{currentRank}</span>
-           </div>
-         )}
-       </div>
+      <div className="text-center mb-10">
+        <h1 className="text-4xl font-extrabold text-foreground mb-4">
+          🏆 {t('gamification.leaderboard')}
+        </h1>
+        <p className="text-xl text-muted-foreground">See who's leading the learning adventure!</p>
 
-       <Tabs defaultValue="alltime" className="w-full">
-         <TabsList className="grid w-full grid-cols-2 mb-8 bg-gray-100 p-1 rounded-2xl h-14">
-           <TabsTrigger value="weekly" className="rounded-xl text-lg font-bold data-[state=active]:bg-white data-[state=active]:shadow-sm">This Week</TabsTrigger>
-           <TabsTrigger value="alltime" className="rounded-xl text-lg font-bold data-[state=active]:bg-white data-[state=active]:shadow-sm">All Time</TabsTrigger>
-         </TabsList>
-         
-         <TabsContent value="weekly">
-           <Card className="border-none shadow-none bg-transparent">
-             <CardContent className="p-0">
-               <LeaderList leaders={weeklyLeaders} type="weekly" />
-             </CardContent>
-           </Card>
-         </TabsContent>
-         
-         <TabsContent value="alltime">
-           <Card className="border-none shadow-none bg-transparent">
-             <CardContent className="p-0">
-               <LeaderList leaders={allTimeLeaders} type="alltime" />
-             </CardContent>
-           </Card>
-         </TabsContent>
-       </Tabs>
+        {currentRank && (
+          <div className="mt-6 inline-block bg-primary/10 px-6 py-2 rounded-full border border-primary/20">
+            <span className="font-bold text-primary">Your Rank: #{currentRank}</span>
+          </div>
+        )}
+      </div>
+
+      <Tabs defaultValue="alltime" className="w-full">
+        <TabsList className="grid w-full grid-cols-2 mb-8 bg-gray-100 p-1 rounded-2xl h-14">
+          <TabsTrigger
+            value="weekly"
+            className="rounded-xl text-lg font-bold data-[state=active]:bg-white data-[state=active]:shadow-sm"
+          >
+            This Week
+          </TabsTrigger>
+          <TabsTrigger
+            value="alltime"
+            className="rounded-xl text-lg font-bold data-[state=active]:bg-white data-[state=active]:shadow-sm"
+          >
+            All Time
+          </TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="weekly">
+          <Card className="border-none shadow-none bg-transparent">
+            <CardContent className="p-0">
+              <LeaderList leaders={weeklyLeaders} type="weekly" />
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="alltime">
+          <Card className="border-none shadow-none bg-transparent">
+            <CardContent className="p-0">
+              <LeaderList leaders={allTimeLeaders} type="alltime" />
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
     </div>
   )
 }

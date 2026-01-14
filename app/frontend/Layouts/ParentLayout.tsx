@@ -10,7 +10,7 @@ import {
   Bell,
   BookOpen,
   Trophy,
-  Medal
+  Medal,
 } from 'lucide-react'
 import { useTranslation } from '@/hooks/useTranslation'
 import LanguageSwitcher from '@/components/LanguageSwitcher'
@@ -32,32 +32,32 @@ export default function ParentLayout({ children }: ParentLayoutProps) {
       name: t('menu.dashboard', { defaultValue: 'Dashboard' }),
       href: '/parent/dashboard',
       icon: <LayoutDashboard className="w-5 h-5" />,
-      active: currentPath === '/parent/dashboard'
+      active: currentPath === '/parent/dashboard',
     },
     {
       name: t('menu.my_children', { defaultValue: 'My Children' }),
       href: '/parent/children',
       icon: <Users className="w-5 h-5" />,
-      active: currentPath.startsWith('/parent/children') && !currentPath.includes('/new')
+      active: currentPath.startsWith('/parent/children') && !currentPath.includes('/new'),
     },
     {
       name: t('menu.courses', { defaultValue: 'Courses' }),
       href: '/parent/courses',
       icon: <BookOpen className="w-5 h-5" />,
-      active: currentPath.startsWith('/parent/courses')
+      active: currentPath.startsWith('/parent/courses'),
     },
     {
       name: t('menu.achievements', { defaultValue: 'Achievements' }),
       href: '/parent/achievements',
       icon: <Trophy className="w-5 h-5" />,
-      active: currentPath.startsWith('/parent/achievements')
+      active: currentPath.startsWith('/parent/achievements'),
     },
     {
       name: t('menu.leaderboard', { defaultValue: 'Leaderboard' }),
       href: '/parent/leaderboard',
       icon: <Medal className="w-5 h-5" />,
-      active: currentPath.startsWith('/parent/leaderboard')
-    }
+      active: currentPath.startsWith('/parent/leaderboard'),
+    },
   ]
 
   return (
@@ -80,13 +80,19 @@ export default function ParentLayout({ children }: ParentLayoutProps) {
         <div className="p-6 flex items-center justify-between">
           <Link href="/parent/dashboard" className="flex items-center gap-3 group">
             <div className="bg-gradient-to-br from-kodibot-green to-emerald-500 p-2 rounded-xl shadow-lg shadow-green-200 group-hover:scale-105 transition-transform">
-               <img src="/assets/profile-kodibot.png" alt="Kodibot Logo" className="w-8 h-8 object-contain" />
+              <img
+                src="/assets/profile-kodibot.png"
+                alt="Kodibot Logo"
+                className="w-8 h-8 object-contain"
+              />
             </div>
             <div className="flex flex-col">
               <span className="text-2xl font-black text-gray-900 tracking-tight leading-none">
                 Kodi<span className="text-kodibot-green">learn</span>
               </span>
-              <span className="text-[10px] font-bold text-gray-400 tracking-widest uppercase">Parent Area</span>
+              <span className="text-[10px] font-bold text-gray-400 tracking-widest uppercase">
+                Parent Area
+              </span>
             </div>
           </Link>
           <button
@@ -109,7 +115,9 @@ export default function ParentLayout({ children }: ParentLayoutProps) {
                   : 'text-gray-600 hover:bg-green-50 hover:text-kodibot-green font-medium'
               }`}
             >
-              <div className={`${item.active ? 'text-white' : 'text-gray-400 group-hover:text-kodibot-green'} transition-colors`}>
+              <div
+                className={`${item.active ? 'text-white' : 'text-gray-400 group-hover:text-kodibot-green'} transition-colors`}
+              >
                 {item.icon}
               </div>
               <span className="tracking-wide">{item.name}</span>
@@ -123,17 +131,20 @@ export default function ParentLayout({ children }: ParentLayoutProps) {
         {/* User Profile / Footer */}
         <div className="p-4 border-t border-gray-100 space-y-2">
           <div className="bg-gray-50 rounded-2xl p-3 flex items-center gap-3 hover:bg-gray-100 transition-colors cursor-pointer group">
-             <div className="w-10 h-10 rounded-full border-2 border-white shadow-sm overflow-hidden bg-white shrink-0">
-                <img
-                  src={auth.user?.avatar_url || `https://ui-avatars.com/api/?name=${auth.user?.name || 'User'}&background=random`}
-                  alt={auth.user?.name || 'User'}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                />
-             </div>
-             <div className="min-w-0 flex-1">
-                <p className="text-sm font-bold text-gray-900 truncate">{auth.user?.name}</p>
-                <p className="text-xs text-gray-500 font-medium truncate">Parent</p>
-             </div>
+            <div className="w-10 h-10 rounded-full border-2 border-white shadow-sm overflow-hidden bg-white shrink-0">
+              <img
+                src={
+                  auth.user?.avatar_url ||
+                  `https://ui-avatars.com/api/?name=${auth.user?.name || 'User'}&background=random`
+                }
+                alt={auth.user?.name || 'User'}
+                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+              />
+            </div>
+            <div className="min-w-0 flex-1">
+              <p className="text-sm font-bold text-gray-900 truncate">{auth.user?.name}</p>
+              <p className="text-xs text-gray-500 font-medium truncate">Parent</p>
+            </div>
           </div>
 
           <Link
@@ -150,31 +161,35 @@ export default function ParentLayout({ children }: ParentLayoutProps) {
 
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0">
-
         {/* Top Header (Mobile Only / Accessories) */}
         <header className="bg-white/80 backdrop-blur-md sticky top-0 z-30 px-4 py-3 border-b border-gray-100 flex items-center justify-between lg:justify-end">
-           <button
-             onClick={toggleSidebar}
-             className="lg:hidden p-2 text-gray-600 hover:bg-gray-100 rounded-xl"
-           >
-             <Menu className="w-6 h-6" />
-           </button>
+          <button
+            onClick={toggleSidebar}
+            className="lg:hidden p-2 text-gray-600 hover:bg-gray-100 rounded-xl"
+          >
+            <Menu className="w-6 h-6" />
+          </button>
 
-           <div className="flex items-center gap-3">
-             <div className="hidden sm:flex items-center gap-2 bg-green-50 px-3 py-1.5 rounded-full border border-green-100">
-               <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-               <span className="text-xs font-bold text-green-700 uppercase tracking-wider">Parent Portal</span>
-             </div>
+          <div className="flex items-center gap-3">
+            <div className="hidden sm:flex items-center gap-2 bg-green-50 px-3 py-1.5 rounded-full border border-green-100">
+              <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+              <span className="text-xs font-bold text-green-700 uppercase tracking-wider">
+                Parent Portal
+              </span>
+            </div>
 
-             <div className="w-px h-6 bg-gray-200 mx-1 hidden sm:block"></div>
+            <div className="w-px h-6 bg-gray-200 mx-1 hidden sm:block"></div>
 
-             <Link href="/parent/notifications" className="relative p-2 text-gray-400 hover:text-kodibot-green hover:bg-green-50 rounded-full transition-all">
-                <Bell className="w-5 h-5" />
-                <span className="absolute top-1.5 right-2 w-2 h-2 bg-red-500 rounded-full border border-white"></span>
-             </Link>
+            <Link
+              href="/parent/notifications"
+              className="relative p-2 text-gray-400 hover:text-kodibot-green hover:bg-green-50 rounded-full transition-all"
+            >
+              <Bell className="w-5 h-5" />
+              <span className="absolute top-1.5 right-2 w-2 h-2 bg-red-500 rounded-full border border-white"></span>
+            </Link>
 
-             <LanguageSwitcher className="" />
-           </div>
+            <LanguageSwitcher className="" />
+          </div>
         </header>
 
         {/* Page Content */}

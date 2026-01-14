@@ -5,7 +5,14 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogFooter,
+} from '@/components/ui/dialog'
 import { Plus, Trash2, Video } from 'lucide-react'
 
 // ...
@@ -21,7 +28,7 @@ export default function Curriculum({ course, modules }: CurriculumProps) {
   // Forms
   const moduleForm = useForm({
     title: '',
-    description: ''
+    description: '',
   })
 
   const lessonForm = useForm({
@@ -29,7 +36,7 @@ export default function Curriculum({ course, modules }: CurriculumProps) {
     content: '',
     video_url: '',
     duration_minutes: 10,
-    free_preview: false
+    free_preview: false,
   })
 
   // Handlers
@@ -39,7 +46,7 @@ export default function Curriculum({ course, modules }: CurriculumProps) {
       onSuccess: () => {
         moduleForm.reset()
         // Close modal logic if manual control needed
-      }
+      },
     })
   }
 
@@ -55,7 +62,7 @@ export default function Curriculum({ course, modules }: CurriculumProps) {
     lessonForm.post(`/courses/${course.id}/course_modules/${activeModuleId}/lessons`, {
       onSuccess: () => {
         lessonForm.reset()
-      }
+      },
     })
   }
 
@@ -66,7 +73,6 @@ export default function Curriculum({ course, modules }: CurriculumProps) {
   }
 
   return (
-
     <div className="max-w-5xl mx-auto py-8">
       <div className="flex justify-between items-center mb-8">
         <div>
@@ -85,13 +91,15 @@ export default function Curriculum({ course, modules }: CurriculumProps) {
               </Button>
             </DialogTrigger>
             <DialogContent>
-              <DialogHeader><DialogTitle>Create New Module</DialogTitle></DialogHeader>
+              <DialogHeader>
+                <DialogTitle>Create New Module</DialogTitle>
+              </DialogHeader>
               <form onSubmit={handleCreateModule} className="space-y-4">
                 <div className="space-y-2">
                   <Label>Module Title</Label>
                   <Input
                     value={moduleForm.data.title}
-                    onChange={e => moduleForm.setData('title', e.target.value)}
+                    onChange={(e) => moduleForm.setData('title', e.target.value)}
                     placeholder="e.g., Getting Started"
                   />
                 </div>
@@ -99,12 +107,14 @@ export default function Curriculum({ course, modules }: CurriculumProps) {
                   <Label>Description</Label>
                   <Input
                     value={moduleForm.data.description}
-                    onChange={e => moduleForm.setData('description', e.target.value)}
+                    onChange={(e) => moduleForm.setData('description', e.target.value)}
                     placeholder="Short description of this section"
                   />
                 </div>
                 <DialogFooter>
-                  <Button type="submit" disabled={moduleForm.processing}>Create Module</Button>
+                  <Button type="submit" disabled={moduleForm.processing}>
+                    Create Module
+                  </Button>
                 </DialogFooter>
               </form>
             </DialogContent>
@@ -136,44 +146,63 @@ export default function Curriculum({ course, modules }: CurriculumProps) {
 
               <div className="p-4 space-y-2">
                 {/* Lessons List */}
-                {mod.lessons && mod.lessons.map((lesson: any, lIndex: number) => (
-                  <div key={lesson.id} className="flex justify-between items-center p-3 bg-white border rounded-lg hover:shadow-sm">
-                    <div className="flex items-center gap-3">
-                      <Video className="w-4 h-4 text-blue-500" />
-                      <span className="text-sm font-medium">{lIndex + 1}. {lesson.title}</span>
-                      {lesson.free_preview && (
-                        <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">Preview</span>
-                      )}
+                {mod.lessons &&
+                  mod.lessons.map((lesson: any, lIndex: number) => (
+                    <div
+                      key={lesson.id}
+                      className="flex justify-between items-center p-3 bg-white border rounded-lg hover:shadow-sm"
+                    >
+                      <div className="flex items-center gap-3">
+                        <Video className="w-4 h-4 text-blue-500" />
+                        <span className="text-sm font-medium">
+                          {lIndex + 1}. {lesson.title}
+                        </span>
+                        {lesson.free_preview && (
+                          <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">
+                            Preview
+                          </span>
+                        )}
+                      </div>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleDeleteLesson(mod.id, lesson.id)}
+                      >
+                        <Trash2 className="w-3 h-3 text-gray-400 hover:text-red-500" />
+                      </Button>
                     </div>
-                    <Button variant="ghost" size="sm" onClick={() => handleDeleteLesson(mod.id, lesson.id)}>
-                      <Trash2 className="w-3 h-3 text-gray-400 hover:text-red-500" />
-                    </Button>
-                  </div>
-                ))}
+                  ))}
 
                 {/* Add Lesson Button/Modal */}
                 <div className="mt-4 pt-2">
                   <Dialog>
                     <DialogTrigger asChild>
-                      <Button variant="ghost" size="sm" className="w-full border border-dashed text-gray-500" onClick={() => setActiveModuleId(mod.id)}>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="w-full border border-dashed text-gray-500"
+                        onClick={() => setActiveModuleId(mod.id)}
+                      >
                         <Plus className="w-3 h-3 mr-2" /> Add Lesson
                       </Button>
                     </DialogTrigger>
                     <DialogContent>
-                      <DialogHeader><DialogTitle>Add Lesson to "{mod.title}"</DialogTitle></DialogHeader>
+                      <DialogHeader>
+                        <DialogTitle>Add Lesson to "{mod.title}"</DialogTitle>
+                      </DialogHeader>
                       <form onSubmit={handleCreateLesson} className="space-y-4">
                         <div className="space-y-2">
                           <Label>Lesson Title</Label>
                           <Input
                             value={lessonForm.data.title}
-                            onChange={e => lessonForm.setData('title', e.target.value)}
+                            onChange={(e) => lessonForm.setData('title', e.target.value)}
                           />
                         </div>
                         <div className="space-y-2">
                           <Label>Video URL</Label>
                           <Input
                             value={lessonForm.data.video_url}
-                            onChange={e => lessonForm.setData('video_url', e.target.value)}
+                            onChange={(e) => lessonForm.setData('video_url', e.target.value)}
                             placeholder="YouTube or Vimeo URL"
                           />
                         </div>
@@ -182,12 +211,14 @@ export default function Curriculum({ course, modules }: CurriculumProps) {
                             type="checkbox"
                             id="free_preview"
                             checked={lessonForm.data.free_preview}
-                            onChange={e => lessonForm.setData('free_preview', e.target.checked)}
+                            onChange={(e) => lessonForm.setData('free_preview', e.target.checked)}
                           />
                           <Label htmlFor="free_preview">Free Preview?</Label>
                         </div>
                         <DialogFooter>
-                          <Button type="submit" disabled={lessonForm.processing}>Add Lesson</Button>
+                          <Button type="submit" disabled={lessonForm.processing}>
+                            Add Lesson
+                          </Button>
                         </DialogFooter>
                       </form>
                     </DialogContent>
@@ -199,7 +230,6 @@ export default function Curriculum({ course, modules }: CurriculumProps) {
         ))}
       </div>
     </div>
-
   )
 }
 

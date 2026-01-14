@@ -15,6 +15,10 @@ id:
     search: "Cari"
     filter: "Filter"
     sort: "Urutkan"
+    search_course: "Cari kursus..."
+    all_subjects: "Semua Subjek"
+    newest: "Terbaru"
+    popular: "Terpopuler"
 
   menu:
     dashboard: "Dashboard"

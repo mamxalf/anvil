@@ -6,10 +6,7 @@ interface DashboardProps extends PageProps {
   user: User
 }
 
-export default function Index({
-  user,
-  locale,
-}: DashboardProps) {
+export default function Index({ user, locale }: DashboardProps) {
   const t = (key: string) => {
     const translations: Record<string, Record<string, string>> = {
       en: {
@@ -33,9 +30,7 @@ export default function Index({
   return (
     <div className="max-w-7xl mx-auto">
       <div className="mb-8 p-8 bg-white rounded-3xl shadow-sm border border-gray-100">
-        <h1 className="text-4xl font-extrabold text-gray-900 mb-2">
-          {t('dashboard')}
-        </h1>
+        <h1 className="text-4xl font-extrabold text-gray-900 mb-2">{t('dashboard')}</h1>
         <p className="text-xl text-gray-600">
           {t('welcome')}, <span className="text-primary">{user.name}</span>!
         </p>
@@ -55,7 +50,9 @@ export default function Index({
             </p>
             <p className="text-gray-600 flex items-center gap-2">
               <span className="font-semibold text-gray-800">Role:</span>
-              <span className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-bold capitalize">{user.role}</span>
+              <span className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-bold capitalize">
+                {user.role}
+              </span>
             </p>
           </div>
         </div>
@@ -73,7 +70,9 @@ export default function Index({
         <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
           <h2 className="text-xl font-bold mb-4">Quick Actions</h2>
           <div className="space-y-2">
-            <p className="text-gray-500 italic">Dashboard features for {user.role} are coming soon...</p>
+            <p className="text-gray-500 italic">
+              Dashboard features for {user.role} are coming soon...
+            </p>
           </div>
         </div>
       </div>

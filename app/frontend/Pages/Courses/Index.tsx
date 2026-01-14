@@ -1,6 +1,13 @@
 import React from 'react'
 import { Link } from '@inertiajs/react'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { BookOpen, Clock, Users } from 'lucide-react'
@@ -30,7 +37,9 @@ export default function Index({ courses }: IndexProps) {
     <div className="space-y-8">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-gray-900">{t('courses.catalog')}</h1>
+          <h1 className="text-3xl font-bold tracking-tight text-gray-900">
+            {t('courses.catalog')}
+          </h1>
           <p className="text-muted-foreground mt-1">
             Temukan petualangan belajar coding dan robotik terbaik untukmu.
           </p>
@@ -45,7 +54,10 @@ export default function Index({ courses }: IndexProps) {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {courses.map((course) => (
-          <Card key={course.id} className="flex flex-col overflow-hidden hover:shadow-lg transition-shadow border-2 border-transparent hover:border-primary/20 bg-white">
+          <Card
+            key={course.id}
+            className="flex flex-col overflow-hidden hover:shadow-lg transition-shadow border-2 border-transparent hover:border-primary/20 bg-white"
+          >
             <div className="aspect-video w-full bg-gray-100 relative overflow-hidden group">
               {course.thumbnail ? (
                 <img
@@ -59,28 +71,32 @@ export default function Index({ courses }: IndexProps) {
                 </div>
               )}
               <div className="absolute top-2 right-2">
-                <Badge variant="secondary" className="font-bold bg-white/90 backdrop-blur-sm shadow-sm">
-                  {course.level === 'beginner' ? t('courses.beginner') :
-                    course.level === 'intermediate' ? t('courses.intermediate') :
-                      t('courses.advanced')}
+                <Badge
+                  variant="secondary"
+                  className="font-bold bg-white/90 backdrop-blur-sm shadow-sm"
+                >
+                  {course.level === 'beginner'
+                    ? t('courses.beginner')
+                    : course.level === 'intermediate'
+                      ? t('courses.intermediate')
+                      : t('courses.advanced')}
                 </Badge>
               </div>
             </div>
 
             <CardHeader className="p-4 pb-2">
               <div className="flex justify-between items-start gap-2 mb-2">
-                <Badge variant="outline" className="text-xs uppercase tracking-wider text-primary border-primary/30">
+                <Badge
+                  variant="outline"
+                  className="text-xs uppercase tracking-wider text-primary border-primary/30"
+                >
                   {course.subject === 'coding' ? t('courses.coding') : t('courses.robotics')}
                 </Badge>
               </div>
               <CardTitle className="text-xl line-clamp-2 hover:text-primary transition-colors">
-                <Link href={`/courses/${course.id}`}>
-                  {course.title}
-                </Link>
+                <Link href={`/courses/${course.id}`}>{course.title}</Link>
               </CardTitle>
-              <CardDescription className="line-clamp-2 mt-1">
-                {course.description}
-              </CardDescription>
+              <CardDescription className="line-clamp-2 mt-1">{course.description}</CardDescription>
             </CardHeader>
 
             <CardContent className="p-4 pt-0 grow">

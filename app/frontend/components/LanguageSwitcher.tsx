@@ -11,10 +11,14 @@ export default function LanguageSwitcher({ className = '' }: LanguageSwitcherPro
 
   const handleSwitch = (newLocale: string) => {
     // Send request to switch locale (will be stored in session)
-    router.get(window.location.pathname, { locale: newLocale }, {
-      preserveState: true,
-      preserveScroll: true,
-    })
+    router.get(
+      window.location.pathname,
+      { locale: newLocale },
+      {
+        preserveState: true,
+        preserveScroll: true,
+      }
+    )
   }
 
   return (

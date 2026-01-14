@@ -31,10 +31,13 @@ export default function Index({ weeklyLeaders, allTimeLeaders, currentRank }: Le
     return <span className="font-bold text-gray-500 text-lg w-6 text-center">{rank}</span>
   }
 
-  const LeaderList = ({ leaders, type }: { leaders: Leader[], type: 'weekly' | 'alltime' }) => (
+  const LeaderList = ({ leaders, type }: { leaders: Leader[]; type: 'weekly' | 'alltime' }) => (
     <div className="space-y-4">
       {leaders.map((leader, index) => (
-        <div key={leader.id} className={`flex items-center p-4 rounded-2xl border transition-all duration-200 hover:-translate-y-0.5 ${index < 3 ? 'bg-gradient-to-r from-kodibot-yellow/10 to-white border-kodibot-yellow/30 shadow-sm' : 'bg-white/80 backdrop-blur-sm border-gray-100 hover:border-kodibot-orange/20'}`}>
+        <div
+          key={leader.id}
+          className={`flex items-center p-4 rounded-2xl border transition-all duration-200 hover:-translate-y-0.5 ${index < 3 ? 'bg-gradient-to-r from-kodibot-yellow/10 to-white border-kodibot-yellow/30 shadow-sm' : 'bg-white/80 backdrop-blur-sm border-gray-100 hover:border-kodibot-orange/20'}`}
+        >
           <div className="mr-4 flex items-center justify-center w-10 h-10 rounded-xl bg-gray-50">
             <RankIcon rank={index + 1} />
           </div>
@@ -45,7 +48,9 @@ export default function Index({ weeklyLeaders, allTimeLeaders, currentRank }: Le
             <div>
               <p className="font-bold text-gray-900">{leader.user.name}</p>
               {type === 'weekly' && (
-                <p className="text-xs text-gray-500">{leader.weekly_lessons || 0} Lessons this week</p>
+                <p className="text-xs text-gray-500">
+                  {leader.weekly_lessons || 0} Lessons this week
+                </p>
               )}
             </div>
           </div>
@@ -59,9 +64,7 @@ export default function Index({ weeklyLeaders, allTimeLeaders, currentRank }: Le
       ))}
 
       {leaders.length === 0 && (
-        <div className="text-center py-12 text-gray-500">
-          No leaders yet. Be the first!
-        </div>
+        <div className="text-center py-12 text-gray-500">No leaders yet. Be the first!</div>
       )}
     </div>
   )
@@ -93,10 +96,16 @@ export default function Index({ weeklyLeaders, allTimeLeaders, currentRank }: Le
       {/* Tabs with Glassmorphism */}
       <Tabs defaultValue="alltime" className="w-full">
         <TabsList className="grid w-full grid-cols-2 mb-8 bg-white/80 backdrop-blur-sm p-1.5 rounded-2xl h-16 border border-gray-100 shadow-sm">
-          <TabsTrigger value="weekly" className="rounded-xl text-lg font-bold data-[state=active]:bg-gradient-to-r data-[state=active]:from-kodibot-orange data-[state=active]:to-kodibot-yellow data-[state=active]:text-white data-[state=active]:shadow-lg transition-all">
+          <TabsTrigger
+            value="weekly"
+            className="rounded-xl text-lg font-bold data-[state=active]:bg-gradient-to-r data-[state=active]:from-kodibot-orange data-[state=active]:to-kodibot-yellow data-[state=active]:text-white data-[state=active]:shadow-lg transition-all"
+          >
             This Week
           </TabsTrigger>
-          <TabsTrigger value="alltime" className="rounded-xl text-lg font-bold data-[state=active]:bg-gradient-to-r data-[state=active]:from-kodibot-orange data-[state=active]:to-kodibot-yellow data-[state=active]:text-white data-[state=active]:shadow-lg transition-all">
+          <TabsTrigger
+            value="alltime"
+            className="rounded-xl text-lg font-bold data-[state=active]:bg-gradient-to-r data-[state=active]:from-kodibot-orange data-[state=active]:to-kodibot-yellow data-[state=active]:text-white data-[state=active]:shadow-lg transition-all"
+          >
             All Time
           </TabsTrigger>
         </TabsList>

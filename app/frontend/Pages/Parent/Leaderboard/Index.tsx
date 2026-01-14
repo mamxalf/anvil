@@ -29,7 +29,6 @@ interface LeaderboardProps {
 }
 
 export default function Index({ weeklyLeaders, allTimeLeaders, childrenRanks }: LeaderboardProps) {
-
   const RankIcon = ({ rank }: { rank: number }) => {
     if (rank === 1) return <Trophy className="w-5 h-5 text-yellow-500" />
     if (rank === 2) return <Medal className="w-5 h-5 text-gray-400" />
@@ -37,10 +36,13 @@ export default function Index({ weeklyLeaders, allTimeLeaders, childrenRanks }: 
     return <span className="font-bold text-gray-500 text-sm">{rank}</span>
   }
 
-  const LeaderList = ({ leaders, type }: { leaders: Leader[], type: 'weekly' | 'alltime' }) => (
+  const LeaderList = ({ leaders, type }: { leaders: Leader[]; type: 'weekly' | 'alltime' }) => (
     <div className="space-y-3">
       {leaders.map((leader, index) => (
-        <div key={leader.id} className={`flex items-center p-3 rounded-lg border ${index < 3 ? 'bg-yellow-50/50 border-yellow-200' : 'bg-white border-gray-100'}`}>
+        <div
+          key={leader.id}
+          className={`flex items-center p-3 rounded-lg border ${index < 3 ? 'bg-yellow-50/50 border-yellow-200' : 'bg-white border-gray-100'}`}
+        >
           <div className="mr-3 flex items-center justify-center w-8 h-8 rounded-lg bg-gray-50">
             <RankIcon rank={index + 1} />
           </div>
@@ -61,11 +63,9 @@ export default function Index({ weeklyLeaders, allTimeLeaders, childrenRanks }: 
           </div>
         </div>
       ))}
-      
+
       {leaders.length === 0 && (
-        <div className="text-center py-8 text-gray-500 text-sm">
-          No data available
-        </div>
+        <div className="text-center py-8 text-gray-500 text-sm">No data available</div>
       )}
     </div>
   )
@@ -88,9 +88,17 @@ export default function Index({ weeklyLeaders, allTimeLeaders, childrenRanks }: 
                 <CardContent className="p-4 flex items-center gap-4">
                   <div className="w-12 h-12 rounded-lg bg-gray-100 overflow-hidden">
                     {child.avatar_url ? (
-                      <img src={child.avatar_url} alt={child.name} className="w-full h-full object-cover" />
+                      <img
+                        src={child.avatar_url}
+                        alt={child.name}
+                        className="w-full h-full object-cover"
+                      />
                     ) : (
-                      <img src="/assets/profile-kodibot.png" alt={child.name} className="w-full h-full object-cover" />
+                      <img
+                        src="/assets/profile-kodibot.png"
+                        alt={child.name}
+                        className="w-full h-full object-cover"
+                      />
                     )}
                   </div>
                   <div className="flex-grow">
@@ -119,14 +127,20 @@ export default function Index({ weeklyLeaders, allTimeLeaders, childrenRanks }: 
         <h2 className="text-lg font-semibold text-gray-900 mb-4">Global Leaderboard</h2>
         <Tabs defaultValue="alltime" className="w-full">
           <TabsList className="grid w-full max-w-md grid-cols-2 mb-6 bg-gray-100 p-1 rounded-lg h-12">
-            <TabsTrigger value="weekly" className="rounded-md font-medium data-[state=active]:bg-white data-[state=active]:shadow-sm">
+            <TabsTrigger
+              value="weekly"
+              className="rounded-md font-medium data-[state=active]:bg-white data-[state=active]:shadow-sm"
+            >
               This Week
             </TabsTrigger>
-            <TabsTrigger value="alltime" className="rounded-md font-medium data-[state=active]:bg-white data-[state=active]:shadow-sm">
+            <TabsTrigger
+              value="alltime"
+              className="rounded-md font-medium data-[state=active]:bg-white data-[state=active]:shadow-sm"
+            >
               All Time
             </TabsTrigger>
           </TabsList>
-          
+
           <TabsContent value="weekly">
             <Card>
               <CardContent className="p-4">
@@ -134,7 +148,7 @@ export default function Index({ weeklyLeaders, allTimeLeaders, childrenRanks }: 
               </CardContent>
             </Card>
           </TabsContent>
-          
+
           <TabsContent value="alltime">
             <Card>
               <CardContent className="p-4">

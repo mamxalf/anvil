@@ -11,7 +11,7 @@ export default function AddChild() {
   const { data, setData, post, processing, errors } = useForm({
     name: '',
     email: '',
-    birth_date: ''
+    birth_date: '',
   })
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -21,7 +21,10 @@ export default function AddChild() {
 
   return (
     <div className="max-w-md mx-auto py-12">
-      <Link href="/dashboard" className="flex items-center text-gray-500 hover:text-gray-900 mb-6 transition-colors">
+      <Link
+        href="/dashboard"
+        className="flex items-center text-gray-500 hover:text-gray-900 mb-6 transition-colors"
+      >
         <ArrowLeft className="w-4 h-4 mr-2" /> Back to Dashboard
       </Link>
 
@@ -36,7 +39,7 @@ export default function AddChild() {
               <Input
                 id="name"
                 value={data.name}
-                onChange={e => setData('name', e.target.value)}
+                onChange={(e) => setData('name', e.target.value)}
                 placeholder="e.g. Budi"
               />
               {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
@@ -48,10 +51,12 @@ export default function AddChild() {
                 id="email"
                 type="email"
                 value={data.email}
-                onChange={e => setData('email', e.target.value)}
+                onChange={(e) => setData('email', e.target.value)}
                 placeholder="Leave blank to generate automatically"
               />
-              <p className="text-xs text-gray-500">If left blank, we'll create a username for them.</p>
+              <p className="text-xs text-gray-500">
+                If left blank, we'll create a username for them.
+              </p>
               {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
             </div>
 
@@ -61,7 +66,7 @@ export default function AddChild() {
                 id="birth_date"
                 type="date"
                 value={data.birth_date}
-                onChange={e => setData('birth_date', e.target.value)}
+                onChange={(e) => setData('birth_date', e.target.value)}
               />
             </div>
 

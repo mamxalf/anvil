@@ -3,7 +3,14 @@ import Layout from '@/components/layout/layout'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { useTranslation } from '@/hooks/useTranslation'
-import { Calendar as CalendarIcon, Clock, Users, Video, ChevronLeft, ChevronRight } from 'lucide-react'
+import {
+  Calendar as CalendarIcon,
+  Clock,
+  Users,
+  Video,
+  ChevronLeft,
+  ChevronRight,
+} from 'lucide-react'
 import { Link, router } from '@inertiajs/react'
 
 interface CalendarEvent {
@@ -26,7 +33,11 @@ interface CalendarIndexProps {
   currentMonth: string
 }
 
-export default function CalendarIndex({ events, availableClasses, currentMonth }: CalendarIndexProps) {
+export default function CalendarIndex({
+  events,
+  availableClasses,
+  currentMonth,
+}: CalendarIndexProps) {
   const { t } = useTranslation()
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
 
@@ -36,19 +47,28 @@ export default function CalendarIndex({ events, availableClasses, currentMonth }
 
   const navigateMonth = (direction: number) => {
     const newDate = new Date(year, month - 1 + direction, 1)
-    router.get('/scheduled_classes', {
-      start_date: newDate.toISOString().split('T')[0],
-      end_date: new Date(newDate.getFullYear(), newDate.getMonth() + 1, 0).toISOString().split('T')[0]
-    }, { preserveState: true })
+    router.get(
+      '/scheduled_classes',
+      {
+        start_date: newDate.toISOString().split('T')[0],
+        end_date: new Date(newDate.getFullYear(), newDate.getMonth() + 1, 0)
+          .toISOString()
+          .split('T')[0],
+      },
+      { preserveState: true }
+    )
   }
 
   // Group events by date
-  const eventsByDate = events.reduce((acc, event) => {
-    const date = new Date(event.start).toDateString()
-    if (!acc[date]) acc[date] = []
-    acc[date].push(event)
-    return acc
-  }, {} as Record<string, CalendarEvent[]>)
+  const eventsByDate = events.reduce(
+    (acc, event) => {
+      const date = new Date(event.start).toDateString()
+      if (!acc[date]) acc[date] = []
+      acc[date].push(event)
+      return acc
+    },
+    {} as Record<string, CalendarEvent[]>
+  )
 
   // Generate calendar grid
   const daysInMonth = new Date(year, month, 0).getDate()
@@ -64,10 +84,14 @@ export default function CalendarIndex({ events, availableClasses, currentMonth }
 
   const getEventBadgeColor = (type: string) => {
     switch (type) {
-      case 'registered': return 'bg-green-500'
-      case 'teaching': return 'bg-blue-500'
-      case 'available': return 'bg-yellow-500'
-      default: return 'bg-gray-500'
+      case 'registered':
+        return 'bg-green-500'
+      case 'teaching':
+        return 'bg-blue-500'
+      case 'available':
+        return 'bg-yellow-500'
+      default:
+        return 'bg-gray-500'
     }
   }
 
@@ -101,8 +125,10 @@ export default function CalendarIndex({ events, availableClasses, currentMonth }
             <CardContent>
               {/* Weekday headers */}
               <div className="grid grid-cols-7 gap-1 mb-2">
-                {['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'].map(day => (
-                  <div key={day} className="text-center text-xs font-bold text-gray-500 py-2">{day}</div>
+                {['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'].map((day) => (
+                  <div key={day} className="text-center text-xs font-bold text-gray-500 py-2">
+                    {day}
+                  </div>
                 ))}
               </div>
 
@@ -125,12 +151,18 @@ export default function CalendarIndex({ events, availableClasses, currentMonth }
                         ${isSelected ? 'ring-2 ring-primary' : ''}
                         hover:bg-gray-50`}
                     >
-                      <div className={`text-sm font-bold ${isToday ? 'text-primary' : 'text-gray-700'}`}>
+                      <div
+                        className={`text-sm font-bold ${isToday ? 'text-primary' : 'text-gray-700'}`}
+                      >
                         {date.getDate()}
                       </div>
                       <div className="flex flex-wrap gap-0.5 mt-1">
                         {dayEvents.slice(0, 3).map((event) => (
-                          <div key={event.id} className={`w-2 h-2 rounded-full ${getEventBadgeColor(event.event_type)}`} title={event.title} />
+                          <div
+                            key={event.id}
+                            className={`w-2 h-2 rounded-full ${getEventBadgeColor(event.event_type)}`}
+                            title={event.title}
+                          />
                         ))}
                         {dayEvents.length > 3 && (
                           <span className="text-xs text-gray-400">+{dayEvents.length - 3}</span>
@@ -150,24 +182,39 @@ export default function CalendarIndex({ events, availableClasses, currentMonth }
             <Card>
               <CardHeader>
                 <CardTitle className="text-lg">
-                  {selectedDate.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long' })}
+                  {selectedDate.toLocaleDateString('id-ID', {
+                    weekday: 'long',
+                    day: 'numeric',
+                    month: 'long',
+                  })}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                {eventsByDate[selectedDate.toDateString()].map(event => (
-                  <Link key={event.id} href={`/scheduled_classes/${event.id}`} className="block p-3 rounded-xl border hover:bg-gray-50 transition-colors">
+                {eventsByDate[selectedDate.toDateString()].map((event) => (
+                  <Link
+                    key={event.id}
+                    href={`/scheduled_classes/${event.id}`}
+                    className="block p-3 rounded-xl border hover:bg-gray-50 transition-colors"
+                  >
                     <div className="flex items-start gap-3">
-                      <div className={`w-3 h-3 rounded-full mt-1.5 ${getEventBadgeColor(event.event_type)}`} />
+                      <div
+                        className={`w-3 h-3 rounded-full mt-1.5 ${getEventBadgeColor(event.event_type)}`}
+                      />
                       <div className="flex-grow">
                         <h4 className="font-bold text-gray-900">{event.title}</h4>
                         <p className="text-xs text-gray-500">{event.course_title}</p>
                         <div className="flex items-center gap-2 mt-1 text-xs text-gray-500">
                           <Clock className="w-3 h-3" />
-                          {new Date(event.start).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })}
+                          {new Date(event.start).toLocaleTimeString('id-ID', {
+                            hour: '2-digit',
+                            minute: '2-digit',
+                          })}
                         </div>
                       </div>
                       {event.in_progress && (
-                        <span className="px-2 py-0.5 bg-green-100 text-green-700 text-xs font-bold rounded-full">LIVE</span>
+                        <span className="px-2 py-0.5 bg-green-100 text-green-700 text-xs font-bold rounded-full">
+                          LIVE
+                        </span>
                       )}
                     </div>
                   </Link>
@@ -180,20 +227,39 @@ export default function CalendarIndex({ events, availableClasses, currentMonth }
                 <CardTitle className="text-lg">Kelas Tersedia</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                {availableClasses.length > 0 ? availableClasses.map(cls => (
-                  <Link key={cls.id} href={`/scheduled_classes/${cls.id}`} className="block p-3 rounded-xl border hover:bg-gray-50 transition-colors">
-                    <h4 className="font-bold text-gray-900">{cls.title}</h4>
-                    <p className="text-xs text-gray-500">{cls.course_title}</p>
-                    <div className="flex items-center gap-4 mt-2 text-xs text-gray-500">
-                      <span className="flex items-center gap-1"><CalendarIcon className="w-3 h-3" /> {new Date(cls.start).toLocaleDateString('id-ID')}</span>
-                      <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {new Date(cls.start).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })}</span>
-                      {cls.spots_remaining !== null && (
-                        <span className="flex items-center gap-1"><Users className="w-3 h-3" /> {cls.spots_remaining} spots</span>
-                      )}
-                    </div>
-                  </Link>
-                )) : (
-                  <p className="text-sm text-gray-500 text-center py-4">Tidak ada kelas baru saat ini.</p>
+                {availableClasses.length > 0 ? (
+                  availableClasses.map((cls) => (
+                    <Link
+                      key={cls.id}
+                      href={`/scheduled_classes/${cls.id}`}
+                      className="block p-3 rounded-xl border hover:bg-gray-50 transition-colors"
+                    >
+                      <h4 className="font-bold text-gray-900">{cls.title}</h4>
+                      <p className="text-xs text-gray-500">{cls.course_title}</p>
+                      <div className="flex items-center gap-4 mt-2 text-xs text-gray-500">
+                        <span className="flex items-center gap-1">
+                          <CalendarIcon className="w-3 h-3" />{' '}
+                          {new Date(cls.start).toLocaleDateString('id-ID')}
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <Clock className="w-3 h-3" />{' '}
+                          {new Date(cls.start).toLocaleTimeString('id-ID', {
+                            hour: '2-digit',
+                            minute: '2-digit',
+                          })}
+                        </span>
+                        {cls.spots_remaining !== null && (
+                          <span className="flex items-center gap-1">
+                            <Users className="w-3 h-3" /> {cls.spots_remaining} spots
+                          </span>
+                        )}
+                      </div>
+                    </Link>
+                  ))
+                ) : (
+                  <p className="text-sm text-gray-500 text-center py-4">
+                    Tidak ada kelas baru saat ini.
+                  </p>
                 )}
               </CardContent>
             </Card>
@@ -204,9 +270,15 @@ export default function CalendarIndex({ events, availableClasses, currentMonth }
             <CardContent className="p-4">
               <h4 className="font-bold text-sm mb-3">Legend</h4>
               <div className="space-y-2 text-sm">
-                <div className="flex items-center gap-2"><div className="w-3 h-3 rounded-full bg-green-500" /> Terdaftar</div>
-                <div className="flex items-center gap-2"><div className="w-3 h-3 rounded-full bg-blue-500" /> Mengajar</div>
-                <div className="flex items-center gap-2"><div className="w-3 h-3 rounded-full bg-yellow-500" /> Tersedia</div>
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full bg-green-500" /> Terdaftar
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full bg-blue-500" /> Mengajar
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full bg-yellow-500" /> Tersedia
+                </div>
               </div>
             </CardContent>
           </Card>

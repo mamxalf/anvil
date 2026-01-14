@@ -6,7 +6,14 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { PasswordInput } from '@/components/ui/password-input'
 import { Label } from '@/components/ui/label'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 import { loginSchema, type LoginFormData } from '@/lib/validations'
 import profileKodibot from '../../../assets/images/profile-kodibot.png'
 
@@ -80,16 +87,16 @@ export default function Login({ errors: pageErrors = {}, translations }: LoginPr
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50 via-white to-green-50 px-4 relative overflow-hidden">
-        {/* Decorative Background Blobs */}
-        <div className="absolute top-10 left-10 w-32 h-32 bg-kodibot-yellow/30 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-10 right-10 w-40 h-40 bg-kodibot-green/20 rounded-full blur-3xl animate-pulse delay-700" />
+      {/* Decorative Background Blobs */}
+      <div className="absolute top-10 left-10 w-32 h-32 bg-kodibot-yellow/30 rounded-full blur-3xl animate-pulse" />
+      <div className="absolute bottom-10 right-10 w-40 h-40 bg-kodibot-green/20 rounded-full blur-3xl animate-pulse delay-700" />
 
       <Card className="w-full max-w-md shadow-2xl border-4 border-white/50 rounded-[2rem] bg-white/80 backdrop-blur-sm relative z-10 overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-kodibot-orange via-kodibot-yellow to-kodibot-green" />
 
         <CardHeader className="space-y-2 flex flex-col items-center pt-8">
           <div className="w-32 h-32 mb-2 relative hover:scale-110 transition-transform duration-300">
-             <img
+            <img
               src={profileKodibot}
               alt="Kodibot"
               className="object-contain w-full h-full drop-shadow-lg"
@@ -124,11 +131,13 @@ export default function Login({ errors: pageErrors = {}, translations }: LoginPr
 
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <Label htmlFor="password" className="text-base font-bold text-gray-700 ml-1">{t.password || 'Password'}</Label>
+                <Label htmlFor="password" className="text-base font-bold text-gray-700 ml-1">
+                  {t.password || 'Password'}
+                </Label>
               </div>
               <PasswordInput
                 id="password"
-                placeholder={t.password_placeholder || "***"}
+                placeholder={t.password_placeholder || '***'}
                 {...register('password')}
                 className="rounded-2xl border-2 border-gray-200 focus:border-primary focus:ring-4 focus:ring-primary/10 h-12 bg-white/50 transition-all duration-300"
               />
@@ -146,15 +155,18 @@ export default function Login({ errors: pageErrors = {}, translations }: LoginPr
                 {...register('remember_me')}
                 className="h-5 w-5 rounded-md border-2 border-gray-300 text-primary focus:ring-primary cursor-pointer"
               />
-              <Label htmlFor="remember_me" className="text-sm font-semibold text-gray-600 cursor-pointer select-none">
+              <Label
+                htmlFor="remember_me"
+                className="text-sm font-semibold text-gray-600 cursor-pointer select-none"
+              >
                 {t.remember_me || 'Remember me'}
               </Label>
             </div>
 
             <Button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground text-lg font-black py-6 rounded-full shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 mt-4"
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground text-lg font-black py-6 rounded-full shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 mt-4"
             >
               {isSubmitting ? 'Loading...' : t.login_button || "Let's Go!"}
             </Button>
@@ -163,7 +175,10 @@ export default function Login({ errors: pageErrors = {}, translations }: LoginPr
         <CardFooter className="flex flex-col space-y-4 pb-8">
           <div className="text-sm text-center font-medium text-gray-500">
             {t.dont_have_account || "Don't have an account?"}{' '}
-            <Link href="/users/sign_up" className="text-primary hover:text-primary/80 hover:underline font-bold transition-all text-base ml-1">
+            <Link
+              href="/users/sign_up"
+              className="text-primary hover:text-primary/80 hover:underline font-bold transition-all text-base ml-1"
+            >
               {t.register_button || 'Start My Journey!'}
             </Link>
           </div>
@@ -172,4 +187,3 @@ export default function Login({ errors: pageErrors = {}, translations }: LoginPr
     </div>
   )
 }
-

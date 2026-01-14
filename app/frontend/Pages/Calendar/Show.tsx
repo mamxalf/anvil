@@ -47,7 +47,10 @@ export default function CalendarShow({ scheduledClass, isRegistered }: CalendarS
 
   return (
     <div className="max-w-3xl mx-auto py-8">
-      <Link href="/scheduled_classes" className="inline-flex items-center gap-2 text-gray-500 hover:text-primary mb-6 transition-colors">
+      <Link
+        href="/scheduled_classes"
+        className="inline-flex items-center gap-2 text-gray-500 hover:text-primary mb-6 transition-colors"
+      >
         <ArrowLeft className="w-4 h-4" />
         Kembali ke Kalender
       </Link>
@@ -69,7 +72,14 @@ export default function CalendarShow({ scheduledClass, isRegistered }: CalendarS
               <Calendar className="w-6 h-6 text-primary" />
               <div>
                 <div className="text-xs text-gray-500">Tanggal</div>
-                <div className="font-bold">{startTime.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</div>
+                <div className="font-bold">
+                  {startTime.toLocaleDateString('id-ID', {
+                    weekday: 'long',
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric',
+                  })}
+                </div>
               </div>
             </div>
             <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-xl">
@@ -77,7 +87,8 @@ export default function CalendarShow({ scheduledClass, isRegistered }: CalendarS
               <div>
                 <div className="text-xs text-gray-500">Waktu</div>
                 <div className="font-bold">
-                  {startTime.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })} - {endTime.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })}
+                  {startTime.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })} -{' '}
+                  {endTime.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })}
                 </div>
               </div>
             </div>
@@ -106,14 +117,22 @@ export default function CalendarShow({ scheduledClass, isRegistered }: CalendarS
           {scheduledClass.max_participants && (
             <div className="flex items-center gap-2 text-sm text-gray-500">
               <Users className="w-4 h-4" />
-              <span>{scheduledClass.spots_remaining} dari {scheduledClass.max_participants} tempat tersisa</span>
+              <span>
+                {scheduledClass.spots_remaining} dari {scheduledClass.max_participants} tempat
+                tersisa
+              </span>
             </div>
           )}
 
           {/* Actions */}
           <div className="flex gap-4 pt-4 border-t">
             {scheduledClass['in_progress?'] && scheduledClass.meeting_url && (
-              <a href={scheduledClass.meeting_url} target="_blank" rel="noopener noreferrer" className="flex-1">
+              <a
+                href={scheduledClass.meeting_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1"
+              >
                 <Button className="w-full gap-2 bg-green-500 hover:bg-green-600">
                   <Video className="w-4 h-4" />
                   Gabung Sekarang (LIVE)

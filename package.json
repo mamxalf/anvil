@@ -2,7 +2,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "lint": "eslint app/frontend --ext .ts,.tsx"
+    "lint": "eslint app/frontend --ext .ts,.tsx",
+    "lint:fix": "eslint app/frontend --ext .ts,.tsx --fix",
+    "format": "prettier --write app/frontend/**/*.{js,jsx,ts,tsx}",
+    "format:check": "prettier --check app/frontend/**/*.{js,jsx,ts,tsx}"
   },
   "devDependencies": {
     "@eslint/compat": "^1.4.1",

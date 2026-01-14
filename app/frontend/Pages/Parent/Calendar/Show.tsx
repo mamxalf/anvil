@@ -14,14 +14,19 @@ export default function Show({ scheduledClass }: ScheduledClassShowProps) {
 
   return (
     <div className="space-y-8 max-w-4xl mx-auto">
-      <Link href="/parent/scheduled_classes" className="flex items-center gap-2 text-gray-500 hover:text-kodibot-green transition-colors font-medium">
+      <Link
+        href="/parent/scheduled_classes"
+        className="flex items-center gap-2 text-gray-500 hover:text-kodibot-green transition-colors font-medium"
+      >
         <ArrowLeft className="w-4 h-4" />
         {t('common.back_to_calendar', { defaultValue: 'Back to Calendar' })}
       </Link>
 
       <Card className="rounded-2xl overflow-hidden">
         <div className="bg-gradient-to-r from-kodibot-green to-emerald-500 p-8 text-white">
-          <h1 className="text-3xl font-bold mb-2">{scheduledClass.title || scheduledClass.course?.title}</h1>
+          <h1 className="text-3xl font-bold mb-2">
+            {scheduledClass.title || scheduledClass.course?.title}
+          </h1>
           <p className="text-white/80">{scheduledClass.description}</p>
         </div>
 
@@ -33,8 +38,17 @@ export default function Show({ scheduledClass }: ScheduledClassShowProps) {
                   <Calendar className="w-5 h-5 text-kodibot-green" />
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500">{t('calendar.date', { defaultValue: 'Date' })}</p>
-                  <p className="font-bold">{new Date(scheduledClass.start_time).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</p>
+                  <p className="text-sm text-gray-500">
+                    {t('calendar.date', { defaultValue: 'Date' })}
+                  </p>
+                  <p className="font-bold">
+                    {new Date(scheduledClass.start_time).toLocaleDateString('id-ID', {
+                      weekday: 'long',
+                      day: 'numeric',
+                      month: 'long',
+                      year: 'numeric',
+                    })}
+                  </p>
                 </div>
               </div>
 
@@ -43,10 +57,19 @@ export default function Show({ scheduledClass }: ScheduledClassShowProps) {
                   <Clock className="w-5 h-5 text-kodibot-green" />
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500">{t('calendar.time', { defaultValue: 'Time' })}</p>
+                  <p className="text-sm text-gray-500">
+                    {t('calendar.time', { defaultValue: 'Time' })}
+                  </p>
                   <p className="font-bold">
-                    {new Date(scheduledClass.start_time).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })} - 
-                    {new Date(scheduledClass.end_time).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })}
+                    {new Date(scheduledClass.start_time).toLocaleTimeString('id-ID', {
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    })}{' '}
+                    -
+                    {new Date(scheduledClass.end_time).toLocaleTimeString('id-ID', {
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    })}
                   </p>
                 </div>
               </div>
@@ -56,8 +79,13 @@ export default function Show({ scheduledClass }: ScheduledClassShowProps) {
                   <Users className="w-5 h-5 text-kodibot-green" />
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500">{t('calendar.spots', { defaultValue: 'Available Spots' })}</p>
-                  <p className="font-bold">{scheduledClass.spots_remaining} {t('calendar.spots_left', { defaultValue: 'spots left' })}</p>
+                  <p className="text-sm text-gray-500">
+                    {t('calendar.spots', { defaultValue: 'Available Spots' })}
+                  </p>
+                  <p className="font-bold">
+                    {scheduledClass.spots_remaining}{' '}
+                    {t('calendar.spots_left', { defaultValue: 'spots left' })}
+                  </p>
                 </div>
               </div>
             </div>
@@ -69,7 +97,9 @@ export default function Show({ scheduledClass }: ScheduledClassShowProps) {
                     {scheduledClass.instructor_profile.user?.name?.charAt(0) || 'T'}
                   </div>
                   <div>
-                    <p className="text-sm text-gray-500">{t('calendar.instructor', { defaultValue: 'Instructor' })}</p>
+                    <p className="text-sm text-gray-500">
+                      {t('calendar.instructor', { defaultValue: 'Instructor' })}
+                    </p>
                     <p className="font-bold">{scheduledClass.instructor_profile.user?.name}</p>
                   </div>
                 </div>
@@ -81,7 +111,9 @@ export default function Show({ scheduledClass }: ScheduledClassShowProps) {
                     <Video className="w-5 h-5 text-blue-600" />
                   </div>
                   <div>
-                    <p className="text-sm text-gray-500">{t('calendar.meeting', { defaultValue: 'Meeting' })}</p>
+                    <p className="text-sm text-gray-500">
+                      {t('calendar.meeting', { defaultValue: 'Meeting' })}
+                    </p>
                     <p className="font-bold text-blue-600">Online Class</p>
                   </div>
                 </div>

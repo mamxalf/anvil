@@ -6,6 +6,26 @@ class Student::CoursesController < ApplicationController
   def index
     @courses = Course.published.includes(instructor: :user)
 
+    # Search
+    if params[:search].present?
+      @courses = @courses.where("title ILIKE ? OR description ILIKE ?", "%#{params[:search]}%", "%#{params[:search]}%")
+    end
+
+    # Filter by Subject
+    if params[:filter].present? && params[:filter] != "all"
+      @courses = @courses.where(subject: params[:filter])
+    end
+
+    # Sort
+    case params[:sort]
+    when "popular"
+      # TODO: Implement better popularity metric (enrollments count)
+      # For now, sorting by created_at asc as a placeholder or maybe random
+      @courses = @courses.order(created_at: :asc)
+    else # 'newest' or default
+      @courses = @courses.order(created_at: :desc)
+    end
+
     render inertia: "Student/Courses/Index", props: {
       courses: @courses.map do |course|
         {
@@ -19,7 +39,12 @@ class Student::CoursesController < ApplicationController
             name: course.instructor.user.name
           }
         }
-      end
+      end,
+      filters: {
+        search: params[:search],
+        filter: params[:filter],
+        sort: params[:sort]
+      }
     }
   end
 

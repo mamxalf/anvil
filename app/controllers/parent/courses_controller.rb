@@ -63,4 +63,3 @@ class Parent::CoursesController < ApplicationController
     end
   end
 end
-

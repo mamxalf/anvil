@@ -15,6 +15,10 @@ en:
     search: "Search"
     filter: "Filter"
     sort: "Sort"
+    search_course: "Search courses..."
+    all_subjects: "All Subjects"
+    newest: "Newest"
+    popular: "Popular"
 
   menu:
     dashboard: "Dashboard"

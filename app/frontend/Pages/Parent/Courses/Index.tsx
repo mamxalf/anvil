@@ -1,6 +1,13 @@
 import React from 'react'
 import ParentLayout from '@/Layouts/ParentLayout'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { BookOpen, Clock, Users, ShoppingCart, CheckCircle } from 'lucide-react'
@@ -38,18 +45,12 @@ export default function Index({ courses, children }: IndexProps) {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Browse Courses</h1>
-          <p className="text-gray-500 mt-1">
-            Find the best courses for your children
-          </p>
+          <p className="text-gray-500 mt-1">Find the best courses for your children</p>
         </div>
-        
+
         <div className="flex gap-2">
-          <Button variant="outline">
-            {t('common.filter')}
-          </Button>
-          <Button variant="outline">
-            {t('common.sort')}
-          </Button>
+          <Button variant="outline">{t('common.filter')}</Button>
+          <Button variant="outline">{t('common.sort')}</Button>
         </div>
       </div>
 
@@ -60,7 +61,11 @@ export default function Index({ courses, children }: IndexProps) {
             <div className="flex items-center gap-4 flex-wrap">
               <span className="text-sm font-medium text-gray-600">Purchase for:</span>
               {children.map((child) => (
-                <Badge key={child.id} variant="secondary" className="px-3 py-1 cursor-pointer hover:bg-kodibot-green/10">
+                <Badge
+                  key={child.id}
+                  variant="secondary"
+                  className="px-3 py-1 cursor-pointer hover:bg-kodibot-green/10"
+                >
                   {child.name}
                 </Badge>
               ))}
@@ -72,12 +77,15 @@ export default function Index({ courses, children }: IndexProps) {
       {/* Course Grid - Clean Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {courses.map((course) => (
-          <Card key={course.id} className="flex flex-col overflow-hidden hover:shadow-md transition-shadow border">
+          <Card
+            key={course.id}
+            className="flex flex-col overflow-hidden hover:shadow-md transition-shadow border"
+          >
             <div className="aspect-video w-full bg-gray-100 relative overflow-hidden">
               {course.thumbnail ? (
-                <img 
-                  src={course.thumbnail} 
-                  alt={course.title} 
+                <img
+                  src={course.thumbnail}
+                  alt={course.title}
                   className="w-full h-full object-cover"
                 />
               ) : (
@@ -87,9 +95,11 @@ export default function Index({ courses, children }: IndexProps) {
               )}
               <div className="absolute top-3 right-3">
                 <Badge variant="secondary" className="font-medium bg-white shadow-sm">
-                  {course.level === 'beginner' ? t('courses.beginner') : 
-                   course.level === 'intermediate' ? t('courses.intermediate') : 
-                   t('courses.advanced')}
+                  {course.level === 'beginner'
+                    ? t('courses.beginner')
+                    : course.level === 'intermediate'
+                      ? t('courses.intermediate')
+                      : t('courses.advanced')}
                 </Badge>
               </div>
               {course.enrolled_children_count > 0 && (
@@ -101,21 +111,17 @@ export default function Index({ courses, children }: IndexProps) {
                 </div>
               )}
             </div>
-            
+
             <CardHeader className="p-4 pb-2">
               <div className="flex justify-between items-start gap-2 mb-2">
                 <Badge variant="outline" className="text-xs uppercase tracking-wider">
                   {course.subject === 'coding' ? t('courses.coding') : t('courses.robotics')}
                 </Badge>
               </div>
-              <CardTitle className="text-lg line-clamp-2">
-                {course.title}
-              </CardTitle>
-              <CardDescription className="line-clamp-2 mt-1">
-                {course.description}
-              </CardDescription>
+              <CardTitle className="text-lg line-clamp-2">{course.title}</CardTitle>
+              <CardDescription className="line-clamp-2 mt-1">{course.description}</CardDescription>
             </CardHeader>
-            
+
             <CardContent className="p-4 pt-0 grow">
               <div className="flex items-center gap-2 text-sm text-gray-500 mt-3">
                 <div className="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-xs font-bold shrink-0">

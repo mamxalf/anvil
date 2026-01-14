@@ -20,7 +20,10 @@ export default function Curriculum({ course, modules }: CurriculumProps) {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <div className="flex items-center gap-2 text-gray-500 mb-2">
-            <Link href={`/student/courses/${course.id}`} className="flex items-center gap-1 hover:text-kodibot-orange transition-colors">
+            <Link
+              href={`/student/courses/${course.id}`}
+              className="flex items-center gap-1 hover:text-kodibot-orange transition-colors"
+            >
               <ArrowLeft className="w-4 h-4" />
               {t('common.back', { defaultValue: 'Back to Course' })}
             </Link>
@@ -31,7 +34,10 @@ export default function Curriculum({ course, modules }: CurriculumProps) {
           </h1>
           <p className="text-gray-500">{course.title}</p>
         </div>
-        <Button asChild className="bg-kodibot-orange hover:bg-kodibot-orange/90 rounded-xl font-bold">
+        <Button
+          asChild
+          className="bg-kodibot-orange hover:bg-kodibot-orange/90 rounded-xl font-bold"
+        >
           <Link href={`/student/courses/${course.id}/learn`}>
             {t('courses.start_learning', { defaultValue: 'Start Learning' })}
           </Link>
@@ -63,24 +69,32 @@ export default function Curriculum({ course, modules }: CurriculumProps) {
               </div>
 
               <div className="divide-y divide-gray-50">
-                {mod.lessons && mod.lessons.map((lesson: any, lIndex: number) => (
-                  <div key={lesson.id} className="flex items-center gap-4 p-4 hover:bg-orange-50/50 transition-colors">
-                    <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center shrink-0">
-                      <Video className="w-4 h-4 text-gray-400" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <span className="text-sm font-medium text-gray-900">{lIndex + 1}. {lesson.title}</span>
-                      {lesson.duration_minutes && (
-                        <span className="text-xs text-gray-400 ml-2">{lesson.duration_minutes} min</span>
+                {mod.lessons &&
+                  mod.lessons.map((lesson: any, lIndex: number) => (
+                    <div
+                      key={lesson.id}
+                      className="flex items-center gap-4 p-4 hover:bg-orange-50/50 transition-colors"
+                    >
+                      <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center shrink-0">
+                        <Video className="w-4 h-4 text-gray-400" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <span className="text-sm font-medium text-gray-900">
+                          {lIndex + 1}. {lesson.title}
+                        </span>
+                        {lesson.duration_minutes && (
+                          <span className="text-xs text-gray-400 ml-2">
+                            {lesson.duration_minutes} min
+                          </span>
+                        )}
+                      </div>
+                      {lesson.free_preview && (
+                        <span className="text-xs bg-kodibot-green/10 text-kodibot-green px-2 py-0.5 rounded-full font-bold">
+                          {t('courses.preview', { defaultValue: 'Preview' })}
+                        </span>
                       )}
                     </div>
-                    {lesson.free_preview && (
-                      <span className="text-xs bg-kodibot-green/10 text-kodibot-green px-2 py-0.5 rounded-full font-bold">
-                        {t('courses.preview', { defaultValue: 'Preview' })}
-                      </span>
-                    )}
-                  </div>
-                ))}
+                  ))}
               </div>
             </CardContent>
           </Card>

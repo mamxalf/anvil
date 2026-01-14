@@ -19,7 +19,10 @@ export default function Curriculum({ course, modules }: CurriculumProps) {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <div className="flex items-center gap-2 text-gray-500 mb-2">
-            <Link href={`/parent/courses/${course.id}`} className="flex items-center gap-1 hover:text-kodibot-green transition-colors">
+            <Link
+              href={`/parent/courses/${course.id}`}
+              className="flex items-center gap-1 hover:text-kodibot-green transition-colors"
+            >
               <ArrowLeft className="w-4 h-4" />
               {t('common.back', { defaultValue: 'Back to Course' })}
             </Link>
@@ -57,19 +60,27 @@ export default function Curriculum({ course, modules }: CurriculumProps) {
               </div>
 
               <div className="divide-y divide-gray-50">
-                {mod.lessons && mod.lessons.map((lesson: any, lIndex: number) => (
-                  <div key={lesson.id} className="flex items-center gap-4 p-4 hover:bg-green-50/50 transition-colors">
-                    <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center shrink-0">
-                      <Video className="w-4 h-4 text-gray-400" />
+                {mod.lessons &&
+                  mod.lessons.map((lesson: any, lIndex: number) => (
+                    <div
+                      key={lesson.id}
+                      className="flex items-center gap-4 p-4 hover:bg-green-50/50 transition-colors"
+                    >
+                      <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center shrink-0">
+                        <Video className="w-4 h-4 text-gray-400" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <span className="text-sm font-medium text-gray-900">
+                          {lIndex + 1}. {lesson.title}
+                        </span>
+                        {lesson.duration_minutes && (
+                          <span className="text-xs text-gray-400 ml-2">
+                            {lesson.duration_minutes} min
+                          </span>
+                        )}
+                      </div>
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <span className="text-sm font-medium text-gray-900">{lIndex + 1}. {lesson.title}</span>
-                      {lesson.duration_minutes && (
-                        <span className="text-xs text-gray-400 ml-2">{lesson.duration_minutes} min</span>
-                      )}
-                    </div>
-                  </div>
-                ))}
+                  ))}
               </div>
             </CardContent>
           </Card>
