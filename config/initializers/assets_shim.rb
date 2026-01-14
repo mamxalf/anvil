@@ -9,7 +9,7 @@ end
 
 if !Rails.application.respond_to?(:assets_manifest)
   require "ostruct"
-  
+
   Rails::Application.class_eval do
     def assets_manifest
       OpenStruct.new(assets: {})

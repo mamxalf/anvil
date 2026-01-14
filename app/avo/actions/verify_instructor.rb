@@ -11,7 +11,6 @@ class Avo::Actions::VerifyInstructor < Avo::BaseAction
       # Execute the verification logic here
       # model.update(verified: true)
     end
-    
     succeed "Instructor verified!"
   end
 end
