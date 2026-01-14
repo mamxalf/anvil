@@ -3,13 +3,15 @@ import { Link, router } from '@inertiajs/react'
 import confetti from 'canvas-confetti'
 import StudentLayout from '@/Layouts/StudentLayout'
 import { Button } from '@/components/ui/button'
-import { CheckCircle, PlayCircle, Menu, ArrowLeft } from 'lucide-react'
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
+import { CheckCircle, PlayCircle, Menu, ArrowLeft, ChevronLeft, ChevronRight, BookOpen, Trophy } from 'lucide-react'
+import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/sheet'
 import { cn } from '@/lib/utils'
 import { useTranslation } from '@/hooks/useTranslation'
+import { Course } from '@/types'
+import ReactMarkdown from 'react-markdown'
 
 interface LearnProps {
-  course: any
+  course: Course
   modules: any[]
   currentLesson: any
 }
@@ -17,13 +19,19 @@ interface LearnProps {
 export default function Learn({ course, modules, currentLesson }: LearnProps) {
   const { t } = useTranslation()
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleLessonSelect = (lessonId: string) => {
-    router.visit(`/student/courses/${course.id}/learn?lesson_id=${lessonId}`)
+    if (isLoading) return
+    setIsLoading(true)
+    router.visit(`/student/courses/${course.id}/learn?lesson_id=${lessonId}`, {
+      onFinish: () => setIsLoading(false)
+    })
   }
 
   const handleComplete = () => {
-    if (!currentLesson) return
+    if (!currentLesson || isLoading) return
+    setIsLoading(true)
     router.post(
       `/student/courses/${course.id}/course_modules/${currentLesson.module_id}/lessons/${currentLesson.id}/complete`,
       {},
@@ -36,38 +44,77 @@ export default function Learn({ course, modules, currentLesson }: LearnProps) {
             colors: ['#E18914', '#1D8536', '#F9DB2B'],
           })
         },
+        onFinish: () => setIsLoading(false)
       }
     )
   }
 
   const SidebarContent = () => (
-    <div className="h-full overflow-y-auto py-4">
-      <h2 className="px-4 text-lg font-bold mb-4">{course.title}</h2>
-      <div className="space-y-4">
+    <div className="h-full overflow-y-auto bg-white">
+      <div className="p-6 border-b border-gray-100 bg-gradient-to-r from-orange-500 via-kodibot-orange to-yellow-500 text-white">
+        <h2 className="text-lg font-black leading-tight mb-1">{course.title}</h2>
+        <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-gray-300">
+          <BookOpen className="w-3 h-3" />
+          <span>Course Content</span>
+        </div>
+      </div>
+
+      <div className="p-4 space-y-6">
         {modules.map((mod: any, index: number) => (
-          <div key={mod.id}>
-            <div className="px-4 py-2 bg-kodibot-orange/10 font-bold text-sm text-kodibot-orange uppercase tracking-wider">
-              Module {index + 1}: {mod.title}
+          <div key={mod.id} className="space-y-3">
+            <div className="px-2 flex items-center gap-2 text-xs font-bold text-gray-400 uppercase tracking-widest">
+              <span className="w-6 h-6 rounded-lg bg-gray-100 flex items-center justify-center text-gray-600">{index + 1}</span>
+              <span className="line-clamp-1">{mod.title}</span>
             </div>
-            <div>
+            <div className="space-y-2">
               {mod.lessons.map((les: any) => (
                 <button
                   key={les.id}
                   onClick={() => handleLessonSelect(les.id)}
                   className={cn(
-                    'w-full text-left px-4 py-3 flex items-center gap-3 hover:bg-orange-50 transition-colors border-b border-gray-50',
-                    les.isCurrent ? 'bg-kodibot-orange/10 border-l-4 border-l-kodibot-orange' : '',
-                    les.isCompleted ? 'text-gray-500' : 'text-gray-900'
+                    'w-full text-left flex items-center gap-4 p-4 rounded-[1.5rem] border transition-all duration-200 group relative overflow-hidden',
+                    les.isCurrent
+                      ? 'bg-gradient-to-r from-orange-500 via-kodibot-orange to-yellow-500 border-transparent shadow-lg shadow-orange-200 scale-[1.02] z-10'
+                      : 'bg-white border-gray-100 hover:bg-gray-50 hover:border-gray-200 text-gray-600 hover:text-gray-900 shadow-sm'
                   )}
                 >
-                  {les.isCompleted ? (
-                    <CheckCircle className="w-5 h-5 text-kodibot-green shrink-0" />
-                  ) : les.isCurrent ? (
-                    <PlayCircle className="w-5 h-5 text-kodibot-orange shrink-0" />
-                  ) : (
-                    <div className="w-5 h-5 border-2 border-gray-300 rounded-full shrink-0" />
-                  )}
-                  <span className="text-sm font-medium line-clamp-1">{les.title}</span>
+                  <div className={cn(
+                    "w-10 h-10 rounded-full flex items-center justify-center shrink-0 shadow-md transition-colors",
+                    les.isCurrent ? "bg-white/20 backdrop-blur-md border border-white/30 text-white" : "bg-gray-100 text-gray-400 group-hover:bg-white group-hover:text-kodibot-orange"
+                  )}>
+                    {les.isCompleted ? (
+                      <CheckCircle className={cn("w-6 h-6", les.isCurrent ? "text-white" : "text-emerald-500")} />
+                    ) : les.isCurrent ? (
+                      <div className="w-8 h-8 rounded-full border-4 border-white bg-transparent animate-pulse" />
+                    ) : (
+                      <div className="w-8 h-8 rounded-full border-4 border-gray-300 bg-white group-hover:border-kodibot-orange transition-colors" />
+                    )}
+                  </div>
+
+                  <div className="flex-grow min-w-0">
+                    <span className={cn(
+                      "text-sm font-bold block line-clamp-1 mb-0.5",
+                      les.isCurrent ? "text-white" : "text-gray-800"
+                    )}>
+                      {les.title}
+                    </span>
+                    <span className={cn(
+                      "text-xs font-bold flex items-center gap-1",
+                      les.isCurrent ? "text-yellow-100" : "text-gray-400"
+                    )}>
+                      {les.isCompleted ? (
+                        <span className={cn("flex items-center gap-1", les.isCurrent ? "text-emerald-100" : "text-emerald-600")}>
+                          {t('common.completed', { defaultValue: 'Completed' })}
+                        </span>
+                      ) : (
+                        <span className="flex items-center gap-1">
+                          {les.duration_minutes}m
+                          {les.isCurrent && <span className="w-1 h-1 rounded-full bg-white/50 mx-1" />}
+                          {les.isCurrent && "Playing Now"}
+                        </span>
+                      )}
+                    </span>
+                  </div>
                 </button>
               ))}
             </div>
@@ -78,101 +125,131 @@ export default function Learn({ course, modules, currentLesson }: LearnProps) {
   )
 
   return (
-    <div className="min-h-screen flex flex-col -m-4 sm:-m-6 lg:-m-8">
+    <div className="min-h-screen flex flex-col bg-gray-50">
       {/* Top Bar */}
-      <header className="h-16 bg-white border-b flex items-center px-4 justify-between shrink-0 z-10">
+      <header className="h-20 bg-white border-b border-gray-100 flex items-center px-4 justify-between shrink-0 z-20 shadow-sm sticky top-0">
         <div className="flex items-center gap-4">
           <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="lg:hidden">
+              <Button variant="ghost" size="icon" className="lg:hidden hover:bg-orange-50 text-gray-500">
                 <Menu className="w-6 h-6" />
               </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="p-0 w-80">
+            <SheetContent side="left" className="p-0 w-80 border-r-0">
+              <SheetTitle className="sr-only">Course Navigation</SheetTitle>
               <SidebarContent />
             </SheetContent>
           </Sheet>
 
-          <Link
-            href="/student/dashboard"
-            className="font-bold text-xl text-kodibot-orange font-heading"
-          >
-            Kodilearn
-          </Link>
-          <div className="h-6 w-px bg-gray-200 mx-2 hidden md:block" />
-          <span className="font-medium text-gray-600 hidden md:block">{course.title}</span>
-        </div>
-
-        <div className="flex items-center gap-4">
-          <Link
-            href="/student/courses"
-            className="flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-kodibot-orange transition-colors"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            {t('common.back', { defaultValue: 'Back' })}
-          </Link>
+          <div className="flex items-center gap-3">
+            <Link
+              href={`/student/courses/${course.id}`}
+              className="w-10 h-10 flex items-center justify-center rounded-xl bg-gray-100 hover:bg-orange-100 text-gray-500 hover:text-kodibot-orange transition-all"
+            >
+              <ArrowLeft className="w-5 h-5" />
+            </Link>
+            <div>
+              <Link
+                href="/student/dashboard"
+                className="font-black text-xl text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-yellow-500 hidden md:block"
+              >
+                Kodilearn
+              </Link>
+              <div className="text-xs font-bold text-gray-400 uppercase tracking-wider hidden md:block">Student Portal</div>
+            </div>
+          </div>
         </div>
       </header>
 
       <div className="flex-1 flex overflow-hidden">
         {/* Desktop Sidebar */}
-        <aside className="w-80 bg-white border-r hidden lg:block overflow-hidden flex-shrink-0">
+        <aside className="w-96 bg-white border-r border-gray-100 hidden lg:block overflow-hidden flex-shrink-0 shadow-[4px_0_24px_-12px_rgba(0,0,0,0.1)] z-10">
           <SidebarContent />
         </aside>
 
         {/* Main Content */}
-        <main className="flex-1 overflow-y-auto bg-orange-50/30 p-4 md:p-8">
-          <div className="max-w-4xl mx-auto">
+        <main className="flex-1 overflow-y-auto bg-gray-50/50 p-4 md:p-8">
+          <div className="max-w-5xl mx-auto space-y-6">
             {currentLesson ? (
-              <div className="space-y-6">
+              <>
                 {/* Video Player */}
-                <div className="aspect-video bg-black rounded-2xl overflow-hidden shadow-lg relative group">
-                  {currentLesson.video_url ? (
-                    <iframe
-                      src={currentLesson.video_url}
-                      className="w-full h-full"
-                      allowFullScreen
-                      title={currentLesson.title}
-                    />
-                  ) : (
-                    <div className="absolute inset-0 flex items-center justify-center text-white bg-gradient-to-br from-kodibot-orange to-kodibot-yellow">
-                      <div className="text-center">
-                        <PlayCircle className="w-16 h-16 mx-auto opacity-80 mb-4" />
-                        <p className="font-bold">No video content provided.</p>
+                <div className="rounded-[2rem] overflow-hidden shadow-2xl shadow-orange-100 ring-1 ring-black/5 bg-black">
+                  <div className="aspect-video relative group">
+                    {currentLesson.video_url ? (
+                      <iframe
+                        src={currentLesson.video_url}
+                        className="w-full h-full"
+                        allowFullScreen
+                        title={currentLesson.title}
+                      />
+                    ) : (
+                      <div className="absolute inset-0 flex items-center justify-center text-white bg-gradient-to-br from-kodibot-orange to-kodibot-yellow">
+                        <div className="text-center p-8">
+                          <div className="w-20 h-20 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center mx-auto mb-6">
+                            <PlayCircle className="w-10 h-10 text-white" />
+                          </div>
+                          <h3 className="text-2xl font-black mb-2">No video content</h3>
+                          <p className="font-medium text-white/80">This lesson relies on the reading completion.</p>
+                        </div>
                       </div>
-                    </div>
-                  )}
-                </div>
-
-                <div className="prose max-w-none">
-                  <h1 className="text-3xl font-bold text-gray-900">{currentLesson.title}</h1>
-                  <div className="bg-white p-6 rounded-2xl shadow-sm border">
-                    <p>{currentLesson.content}</p>
+                    )}
                   </div>
                 </div>
 
-                <div className="flex justify-between items-center pt-8">
-                  <Button variant="outline" className="rounded-xl font-bold">
+                {/* Content Card */}
+                <div className="bg-white rounded-[2rem] shadow-sm border border-gray-100 p-8 md:p-12">
+                  <div className="flex items-start justify-between gap-4 mb-8 pb-8 border-b border-gray-100">
+                    <div>
+                      <h1 className="text-3xl md:text-4xl font-black text-gray-900 mb-2">{currentLesson.title}</h1>
+                      <p className="text-gray-500 font-medium">Lesson Content & Instructions</p>
+                    </div>
+                    <div className="hidden sm:block">
+                      <div className="px-4 py-2 bg-emerald-50 text-emerald-600 rounded-xl text-sm font-bold border border-emerald-100">
+                        {currentLesson.xp_reward || 10} XP
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="prose prose-lg prose-orange max-w-none text-gray-600">
+                    <ReactMarkdown>{currentLesson.content}</ReactMarkdown>
+                  </div>
+                </div>
+
+                {/* Navigation Buttons */}
+                <div className="flex flex-col sm:flex-row justify-between items-center gap-4 pt-4 pb-12">
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    className="w-full sm:w-auto rounded-2xl h-14 font-bold border-2 border-gray-200 text-gray-600 hover:border-gray-300 hover:bg-gray-50"
+                  >
+                    <ChevronLeft className="w-5 h-5 mr-2" />
                     Previous Lesson
                   </Button>
+
                   <Button
                     onClick={handleComplete}
+                    disabled={isLoading}
                     size="lg"
-                    className="bg-kodibot-green hover:bg-kodibot-green/90 text-white font-bold px-8 rounded-xl shadow-lg"
+                    className="w-full sm:w-auto h-14 bg-gradient-to-r from-emerald-400 to-emerald-600 hover:from-emerald-500 hover:to-emerald-700 text-white font-bold px-8 rounded-2xl shadow-lg shadow-emerald-200 hover:shadow-emerald-300 hover:scale-[1.02] transition-all"
                   >
-                    {t('courses.complete_continue', { defaultValue: 'Complete & Continue' })} 🎉
+                    {isLoading ? "Saving..." : t('courses.complete_continue', { defaultValue: 'Complete & Continue' })}
+                    {!isLoading && <ChevronRight className="w-5 h-5 ml-2" />}
                   </Button>
                 </div>
-              </div>
+              </>
             ) : (
-              <div className="text-center py-20 bg-white rounded-2xl">
-                <h2 className="text-2xl font-bold text-gray-700">🎉 Course Completed!</h2>
-                <p className="text-gray-500 mt-2">
-                  Select a lesson to review or return to dashboard.
+              <div className="min-h-[60vh] flex flex-col items-center justify-center text-center p-8">
+                <div className="w-24 h-24 bg-gradient-to-br from-orange-100 to-yellow-100 rounded-full flex items-center justify-center mb-6 animate-bounce">
+                  <Trophy className="w-12 h-12 text-kodibot-orange" />
+                </div>
+                <h2 className="text-4xl font-black text-gray-900 mb-4">🎉 Course Completed!</h2>
+                <p className="text-xl text-gray-500 max-w-md mb-8">
+                  Congratulations! You've finished all the lessons in this course. Great job!
                 </p>
                 <Button
                   asChild
-                  className="mt-6 bg-kodibot-orange hover:bg-kodibot-orange/90 rounded-xl"
+                  size="lg"
+                  className="h-14 px-8 bg-kodibot-orange hover:bg-kodibot-orange/90 rounded-2xl shadow-xl shadow-orange-200 font-bold text-lg"
                 >
                   <Link href="/student/dashboard">Back to Dashboard</Link>
                 </Button>

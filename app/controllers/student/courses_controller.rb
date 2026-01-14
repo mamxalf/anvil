@@ -120,7 +120,7 @@ class Student::CoursesController < ApplicationController
         id: @current_lesson.id,
         module_id: @current_lesson.course_module_id,
         title: @current_lesson.title,
-        video_url: @current_lesson.video_url,
+        video_url: @current_lesson.youtube_embed_url,
         content: @current_lesson.content,
         xp_reward: @current_lesson.xp_reward
       } : nil
