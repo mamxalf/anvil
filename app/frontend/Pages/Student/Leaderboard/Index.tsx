@@ -50,14 +50,14 @@ export default function Index({ weeklyLeaders, allTimeLeaders, currentRank }: Le
             </div>
           </div>
           <div className="text-right">
-             <div className="flex items-center gap-1.5 font-black text-kodibot-orange bg-kodibot-orange/10 px-3 py-1.5 rounded-xl">
-               <Star className="w-4 h-4 fill-kodibot-orange" />
-               {leader.total_points} XP
-             </div>
+            <div className="flex items-center gap-1.5 font-black text-kodibot-orange bg-kodibot-orange/10 px-3 py-1.5 rounded-xl">
+              <Star className="w-4 h-4 fill-kodibot-orange" />
+              {leader.total_points} XP
+            </div>
           </div>
         </div>
       ))}
-      
+
       {leaders.length === 0 && (
         <div className="text-center py-12 text-gray-500">
           No leaders yet. Be the first!
@@ -69,10 +69,10 @@ export default function Index({ weeklyLeaders, allTimeLeaders, currentRank }: Le
   return (
     <div className="max-w-4xl mx-auto py-8">
       {/* Glassmorphism Header */}
-      <div className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-kodibot-orange to-kodibot-yellow p-8 text-white text-center mb-10">
+      <div className="relative overflow-hidden rounded-[2rem] bg-gradient-to-r from-orange-500 via-kodibot-orange to-yellow-500 p-8 text-white text-center mb-10">
         <div className="absolute -top-20 -right-20 w-72 h-72 bg-white/20 rounded-full blur-3xl"></div>
         <div className="absolute -bottom-20 -left-20 w-72 h-72 bg-orange-600/30 rounded-full blur-3xl"></div>
-        
+
         <div className="relative z-10">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-sm font-bold mb-4">
             <Sparkles className="w-4 h-4" />
@@ -80,7 +80,7 @@ export default function Index({ weeklyLeaders, allTimeLeaders, currentRank }: Le
           </div>
           <h1 className="text-4xl font-black mb-4">🏆 {t('gamification.leaderboard')}</h1>
           <p className="text-xl text-white/80">See who's leading the learning adventure!</p>
-          
+
           {currentRank && (
             <div className="mt-6 inline-flex items-center gap-2 bg-white/20 backdrop-blur-md px-6 py-3 rounded-full border border-white/30">
               <Trophy className="w-5 h-5" />
@@ -100,7 +100,7 @@ export default function Index({ weeklyLeaders, allTimeLeaders, currentRank }: Le
             All Time
           </TabsTrigger>
         </TabsList>
-        
+
         <TabsContent value="weekly">
           <Card className="border-none shadow-none bg-transparent">
             <CardContent className="p-0">
@@ -108,7 +108,7 @@ export default function Index({ weeklyLeaders, allTimeLeaders, currentRank }: Le
             </CardContent>
           </Card>
         </TabsContent>
-        
+
         <TabsContent value="alltime">
           <Card className="border-none shadow-none bg-transparent">
             <CardContent className="p-0">
