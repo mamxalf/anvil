@@ -12,7 +12,8 @@ class Notification < ApplicationRecord
     daily_summary: 7,
     new_course: 8,
     scheduled_class_reminder: 9,
-    enrollment_approved: 10
+    enrollment_approved: 10,
+    achievement: 11
   }
 
   # Validations

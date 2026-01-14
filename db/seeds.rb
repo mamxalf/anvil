@@ -54,6 +54,44 @@ end
 puts "Created #{Badge.count} badges"
 
 # ===========================================
+# Default Achievements for Gamification
+# ===========================================
+puts "Creating default achievements..."
+
+achievements = [
+  # XP Milestones
+  { title: "First Steps", description: "Earn your first 10 XP!", criteria_type: :total_xp, criteria_value: 10, xp_reward: 5, icon_key: "first_steps" },
+  { title: "XP Beginner", description: "Earn 50 XP total!", criteria_type: :total_xp, criteria_value: 50, xp_reward: 10, icon_key: "xp_beginner" },
+  { title: "XP Collector", description: "Earn 100 XP total!", criteria_type: :total_xp, criteria_value: 100, xp_reward: 25, icon_key: "xp_collector" },
+  { title: "XP Hunter", description: "Earn 500 XP total!", criteria_type: :total_xp, criteria_value: 500, xp_reward: 50, icon_key: "xp_hunter" },
+  { title: "XP Master", description: "Earn 1000 XP total!", criteria_type: :total_xp, criteria_value: 1000, xp_reward: 100, icon_key: "xp_master" },
+
+  # Course Completions
+  { title: "Course Graduate", description: "Complete your first course!", criteria_type: :courses_completed, criteria_value: 1, xp_reward: 50, icon_key: "course_graduate" },
+  { title: "Dedicated Learner", description: "Complete 3 courses!", criteria_type: :courses_completed, criteria_value: 3, xp_reward: 150, icon_key: "dedicated_learner" },
+  { title: "Knowledge Seeker", description: "Complete 5 courses!", criteria_type: :courses_completed, criteria_value: 5, xp_reward: 300, icon_key: "knowledge_seeker" },
+  { title: "Course Champion", description: "Complete 10 courses!", criteria_type: :courses_completed, criteria_value: 10, xp_reward: 500, icon_key: "course_champion" },
+
+  # Login Streaks
+  { title: "Getting Started", description: "Login for 2 days in a row!", criteria_type: :login_streak, criteria_value: 2, xp_reward: 10, icon_key: "getting_started" },
+  { title: "Consistent Learner", description: "Login for 5 days in a row!", criteria_type: :login_streak, criteria_value: 5, xp_reward: 30, icon_key: "consistent_learner" },
+  { title: "Week Warrior", description: "Login for 7 days in a row!", criteria_type: :login_streak, criteria_value: 7, xp_reward: 70, icon_key: "week_warrior" },
+  { title: "Monthly Champion", description: "Login for 30 days in a row!", criteria_type: :login_streak, criteria_value: 30, xp_reward: 300, icon_key: "monthly_champion" },
+]
+
+achievements.each do |achievement_data|
+  Achievement.find_or_create_by!(title: achievement_data[:title]) do |achievement|
+    achievement.description = achievement_data[:description]
+    achievement.criteria_type = achievement_data[:criteria_type]
+    achievement.criteria_value = achievement_data[:criteria_value]
+    achievement.xp_reward = achievement_data[:xp_reward]
+    achievement.icon_key = achievement_data[:icon_key]
+  end
+end
+
+puts "Created #{Achievement.count} achievements"
+
+# ===========================================
 # Sample Admin User (Development Only)
 # ===========================================
 if Rails.env.development?
