@@ -58,11 +58,13 @@ class Student::CoursesController < ApplicationController
         only: [ :id, :title, :description, :level, :subject, :status ],
         methods: [ :total_lessons, :total_duration_minutes ]
       ).merge({
+        instructor: {
+          name: @course.instructor.user.name
+        },
         thumbnail: @course.thumbnail.attached? ? url_for(@course.thumbnail) : nil
       }),
       modules: @course.course_modules.includes(:lessons).order(:position).as_json(include: :lessons),
       isEnrolled: is_enrolled,
-      canEdit: false
     }
   end
 

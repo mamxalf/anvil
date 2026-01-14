@@ -21,18 +21,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { Course } from '@/types'
 
-interface Course {
-  id: string
-  title: string
-  description: string
-  thumbnail: string | null
-  level: string
-  subject: string
-  instructor: {
-    name: string
-  }
-}
+
 
 interface IndexProps {
   courses: Course[]
