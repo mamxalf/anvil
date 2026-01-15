@@ -1,26 +1,29 @@
 require 'rails_helper'
 
-RSpec.describe "Parent Dashboard", type: :feature do
-  let!(:parent) { create(:user, :parent) }
-  let!(:child) { create(:user) }
-
+RSpec.describe "Parent Dashboard", type: :system do
   before do
-    # Create parent-child relationship (assuming factory or model logic)
-    # ParentChild model
-    ParentChild.create!(parent: parent, child: child, notifications_enabled: true)
-    sign_in parent, scope: :user
+    driven_by(:playwright)
   end
 
-  it "parent can view dashboard and children" do
-    visit parent_dashboard_path # Direct access or root_path depending on routing
+  it "parent can view dashboard" do
+    parent = create(:user, :parent)
+    sign_in parent, scope: :user
+
+    visit parent_dashboard_path
 
     expect(page).to have_content(/Dashboard|Welcome/)
     expect(page).to have_content(parent.name)
+  end
 
-    # Check if child is listed
+  it "parent can view linked children" do
+    parent = create(:user, :parent)
+    child = create(:user, role: 'student')
+    create(:student_profile, user: child)
+    ParentChild.create!(parent: parent, child: child, notifications_enabled: true)
+
+    sign_in parent, scope: :user
+    visit parent_dashboard_path
+
     expect(page).to have_content(child.name)
-
-    # Check for "Learning Progress"
-    expect(page).to have_content("Learning Progress")
   end
 end

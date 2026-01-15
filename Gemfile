@@ -92,3 +92,5 @@ group :test do
   gem "capybara"
   gem "capybara-playwright-driver"
 end
+
+gem "database_cleaner", "~> 2.1", group: :test

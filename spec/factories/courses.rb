@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :course do
     title { Faker::Educator.course_name }
-    sequence(:slug) { |n| "course-#{n}" }
+    sequence(:slug) { |n| "course-#{n}-#{SecureRandom.hex(4)}" }
     description { Faker::Lorem.paragraph }
     level { "beginner" }
     subject { "coding" }
