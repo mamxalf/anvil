@@ -162,6 +162,7 @@ en:
     complete_quiz: "Complete 1 Quiz"
     watch_video: "Watch 1 Video"
     complete_and_earn: "Complete and earn"
+    lessons_this_week: "%{count} Lessons this week"
 
   quiz:
     title: "Quiz"

@@ -196,7 +196,7 @@ export default function Show({
                       href={certificateUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-full flex items-center justify-center gap-2 text-lg h-14 font-bold bg-gradient-to-r from-yellow-400 to-kodibot-orange hover:from-kodibot-orange hover:to-yellow-400 shadow-lg shadow-orange-200 hover:shadow-orange-300 rounded-2xl transition-all hover:scale-[1.02] text-white mb-4"
+                      className="w-full flex items-center justify-center gap-2 text-lg h-14 font-bold bg-gradient-to-r from-orange-500 via-kodibot-orange to-yellow-500 text-white shadow-lg shadow-orange-200 hover:shadow-orange-300 rounded-2xl transition-all hover:scale-[1.02] text-white mb-4"
                     >
                       <Download className="w-5 h-5" />
                       {t('courses.download_certificate', { defaultValue: 'Download Certificate' })}

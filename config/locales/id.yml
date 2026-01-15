@@ -163,6 +163,7 @@ id:
     complete_quiz: "Selesaikan 1 Kuis"
     watch_video: "Tonton 1 Video"
     complete_and_earn: "Selesaikan dan Dapatkan"
+    lessons_this_week: "%{count} Pelajaran minggu ini"
 
   quiz:
     title: "Kuis"

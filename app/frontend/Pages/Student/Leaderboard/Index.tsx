@@ -42,14 +42,14 @@ export default function Index({ weeklyLeaders, allTimeLeaders, currentRank }: Le
             <RankIcon rank={index + 1} />
           </div>
           <div className="flex items-center gap-3 flex-grow">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-kodibot-orange to-kodibot-yellow flex items-center justify-center font-bold text-white text-lg shadow-sm">
+            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-500 via-kodibot-orange to-yellow-500 flex items-center justify-center font-bold text-white text-lg shadow-sm">
               {leader.user.name.charAt(0)}
             </div>
             <div>
               <p className="font-bold text-gray-900">{leader.user.name}</p>
               {type === 'weekly' && (
                 <p className="text-xs text-gray-500">
-                  {leader.weekly_lessons || 0} Lessons this week
+                  {t('gamification.lessons_this_week', { count: String(leader.weekly_lessons || 0) })}
                 </p>
               )}
             </div>
@@ -95,16 +95,17 @@ export default function Index({ weeklyLeaders, allTimeLeaders, currentRank }: Le
 
       {/* Tabs with Glassmorphism */}
       <Tabs defaultValue="alltime" className="w-full">
-        <TabsList className="grid w-full grid-cols-2 mb-8 bg-white/80 backdrop-blur-sm p-1.5 rounded-2xl h-16 border border-gray-100 shadow-sm">
+        <TabsList className="grid w-full grid-cols-2 mb-8 bg-gradient-to-b from-[#00A86B] to-emerald-600 shadow-xl shadow-emerald-100/50 p-4 rounded-[2rem] h-20 border-0 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none"></div>
           <TabsTrigger
             value="weekly"
-            className="rounded-xl text-lg font-bold data-[state=active]:bg-gradient-to-r data-[state=active]:from-kodibot-orange data-[state=active]:to-kodibot-yellow data-[state=active]:text-white data-[state=active]:shadow-lg transition-all"
+            className="rounded-xl h-12 text-lg font-bold z-10 text-white/80 hover:bg-white/20 hover:text-white data-[state=active]:bg-white data-[state=active]:text-emerald-700 data-[state=active]:shadow-lg transition-all"
           >
             This Week
           </TabsTrigger>
           <TabsTrigger
             value="alltime"
-            className="rounded-xl text-lg font-bold data-[state=active]:bg-gradient-to-r data-[state=active]:from-kodibot-orange data-[state=active]:to-kodibot-yellow data-[state=active]:text-white data-[state=active]:shadow-lg transition-all"
+            className="rounded-xl h-12 text-lg font-bold z-10 text-white/80 hover:bg-white/20 hover:text-white data-[state=active]:bg-white data-[state=active]:text-emerald-700 data-[state=active]:shadow-lg transition-all"
           >
             All Time
           </TabsTrigger>
