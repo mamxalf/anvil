@@ -34,6 +34,7 @@ Rails.application.routes.draw do
     end
     resources :achievements, only: [ :index ]
     get "leaderboard", to: "leaderboard#index", as: :leaderboard
+    get "playground", to: "playground#index", as: :playground
     resources :scheduled_classes, only: [ :index, :show ] do
       member do
         post :register
