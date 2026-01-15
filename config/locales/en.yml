@@ -173,6 +173,11 @@ en:
     title: "Notifications"
     no_notifications: "No notifications"
     mark_read: "Mark as Read"
+    mark_all_read: "Mark All as Read"
+    clear_all: "Clear All"
+    course_completed:
+      title: "Course Completed"
+      message: "Congratulations! You've finished all the lessons in this course. Great job!"
 
   settings:
     title: "Settings"
