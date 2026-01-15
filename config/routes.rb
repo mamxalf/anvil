@@ -35,6 +35,7 @@ Rails.application.routes.draw do
     resources :achievements, only: [ :index ]
     get "leaderboard", to: "leaderboard#index", as: :leaderboard
     get "playground", to: "playground#index", as: :playground
+    post "maze_game/complete", to: "maze_game#complete"
     resources :scheduled_classes, only: [ :index, :show ] do
       member do
         post :register

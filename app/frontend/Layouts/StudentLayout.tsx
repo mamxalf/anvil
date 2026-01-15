@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Link, usePage } from '@inertiajs/react'
 import { PageProps } from '@/types'
-import { LayoutDashboard, BookOpen, Trophy, Medal, Menu, X, LogOut, Bell } from 'lucide-react'
+import { LayoutDashboard, BookOpen, Trophy, Medal, Menu, X, LogOut, Bell, Gamepad2 } from 'lucide-react'
 import { useTranslation } from '@/hooks/useTranslation'
 import LanguageSwitcher from '@/components/LanguageSwitcher'
 
@@ -43,6 +43,12 @@ export default function StudentLayout({ children }: StudentLayoutProps) {
       icon: <Medal className="w-5 h-5" />,
       active: currentPath.startsWith('/student/leaderboard'),
     },
+    {
+      name: t('menu.playground', { defaultValue: 'Playground' }),
+      href: '/student/playground',
+      icon: <Gamepad2 className="w-5 h-5" />,
+      active: currentPath.startsWith('/student/playground'),
+    },
   ]
 
   return (
@@ -57,9 +63,8 @@ export default function StudentLayout({ children }: StudentLayoutProps) {
 
       {/* Sidebar */}
       <aside
-        className={`fixed lg:sticky top-0 left-0 z-50 h-screen w-72 bg-white shadow-2xl shadow-orange-100/50 transition-transform duration-300 ease-in-out lg:translate-x-0 ${
-          isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-        } flex flex-col`}
+        className={`fixed lg:sticky top-0 left-0 z-50 h-screen w-72 bg-white shadow-2xl shadow-orange-100/50 transition-transform duration-300 ease-in-out lg:translate-x-0 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
+          } flex flex-col`}
       >
         {/* Logo Area */}
         <div className="p-6 flex items-center justify-between">
@@ -94,11 +99,10 @@ export default function StudentLayout({ children }: StudentLayoutProps) {
             <Link
               key={item.href}
               href={item.href}
-              className={`flex items-center gap-3 px-4 py-3.5 rounded-2xl transition-all duration-200 group relative ${
-                item.active
-                  ? 'bg-gradient-to-r from-orange-500 via-kodibot-orange to-yellow-500 text-white shadow-lg shadow-orange-200 font-bold'
-                  : 'text-gray-600 hover:bg-orange-50 hover:text-kodibot-orange font-medium'
-              }`}
+              className={`flex items-center gap-3 px-4 py-3.5 rounded-2xl transition-all duration-200 group relative ${item.active
+                ? 'bg-gradient-to-r from-orange-500 via-kodibot-orange to-yellow-500 text-white shadow-lg shadow-orange-200 font-bold'
+                : 'text-gray-600 hover:bg-orange-50 hover:text-kodibot-orange font-medium'
+                }`}
             >
               <div
                 className={`${item.active ? 'text-white' : 'text-gray-400 group-hover:text-kodibot-orange'} transition-colors`}

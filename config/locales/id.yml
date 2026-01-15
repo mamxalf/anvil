@@ -35,6 +35,7 @@ id:
     add_child: "Tambah Anak"
     my_courses: "Kursus Saya"
     create_course: "Buat Kursus"
+    playground: "Playground"
 
   auth:
     login: "Masuk"
@@ -224,3 +225,45 @@ id:
     not_found: "Halaman tidak ditemukan"
     unauthorized: "Anda tidak memiliki akses"
     server_error: "Terjadi kesalahan server"
+
+  maze_game:
+    title: "Labirin Kelinci"
+    subtitle: "Bantu kelinci mencapai tujuan!"
+    level: "Level %{level}/%{total}"
+    reset: "Ulang"
+    run: "Jalankan"
+    running: "Jalan..."
+    block_limit: "Batas blok"
+    instructions:
+      title: "📋 Petunjuk"
+      step1: "1. Tarik blok untuk membuat program"
+      step2: "2. Klik Jalankan untuk mulai"
+      step3: "3. Pandu kelinci 🐰 ke tujuan 🏁"
+      collect: "🥕 Kumpulkan %{count} wortel!"
+    generated_code: "KODE PROGRAM"
+    success:
+      title: "🎉 Selamat!"
+      message: "Kamu menyelesaikan Level %{level}!"
+      xp_earned: "+%{points} XP Didapat!"
+      close: "Tutup"
+      next_level: "Level Berikutnya →"
+    failure:
+      title: "😢 Coba Lagi!"
+      crash: "Kelinci menabrak dinding!"
+      not_reached: "Kelinci belum sampai tujuan."
+      try_again: "Coba Lagi"
+    blocks:
+      move_forward: "🐰 Maju"
+      turn_right: "🐰 Belok Kanan ↻"
+      turn_left: "🐰 Belok Kiri ↺"
+      collect: "🥕 Ambil"
+      if_path: "jika jalan"
+      if_else: "jika / lainnya"
+      repeat: "ulangi"
+      do: "lakukan"
+      else: "lainnya"
+      times: "kali"
+      directions:
+        ahead: "ke depan"
+        left: "ke kiri ↺"
+        right: "ke kanan ↻"

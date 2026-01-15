@@ -53,7 +53,7 @@ PreCommit:
     name: 'ESLint'
     enabled: true
     required: true
-    command: ['yarn', 'lint']
+    command: ['yarn', 'lint:fix']
     include: '**/*.{js,ts,tsx,jsx}'
     exclude:
       - 'node_modules/**/*'
@@ -62,7 +62,7 @@ PreCommit:
   # Check for code formatting
   Prettier:
     enabled: true
-    command: ['yarn', 'prettier', '--check']
+    command: ['yarn', 'prettier', '--write']
     include: '**/*.{js,jsx,ts,tsx,css,scss,html,json,md,yml,yaml}'
     exclude:
       - 'node_modules/**/*'

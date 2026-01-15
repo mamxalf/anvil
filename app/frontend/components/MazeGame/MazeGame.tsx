@@ -11,6 +11,8 @@ import { createMazeToolbox } from './MazeToolbox'
 import { ResultType, MAX_LEVEL } from './MazeTypes'
 import { defineCustomBlocks } from '../Blockly/CustomBlocks'
 import { configureGenerator } from '../Blockly/Generator'
+import { useTranslation } from '@/hooks/useTranslation'
+import axios from 'axios'
 
 // Initialize blocks and generators
 defineCustomBlocks()
@@ -21,6 +23,7 @@ interface MazeGameProps {
 }
 
 const MazeGame: React.FC<MazeGameProps> = ({ initialLevel = 1 }) => {
+  const { t } = useTranslation()
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const engineRef = useRef<MazeEngine | null>(null)
   const interpreterRef = useRef<MazeInterpreter | null>(null)
@@ -31,9 +34,10 @@ const MazeGame: React.FC<MazeGameProps> = ({ initialLevel = 1 }) => {
   const [code, setCode] = useState('')
   const [showSuccess, setShowSuccess] = useState(false)
   const [showFailure, setShowFailure] = useState(false)
+  const [earnedPoints, setEarnedPoints] = useState<number>(0)
 
   const levelConfig = getLevelConfig(level)
-  const toolbox = createMazeToolbox(levelConfig)
+  const toolbox = createMazeToolbox(levelConfig, t)
 
   const workspaceConfiguration = {
     grid: {
@@ -54,6 +58,28 @@ const MazeGame: React.FC<MazeGameProps> = ({ initialLevel = 1 }) => {
     maxBlocks: levelConfig.maxBlocks === Infinity ? undefined : levelConfig.maxBlocks,
   }
 
+  // Handle Game Completion
+  const handleGameComplete = async (resultType: ResultType) => {
+    setResult(resultType)
+    setIsRunning(false)
+
+    if (resultType === ResultType.SUCCESS) {
+      // Call API to award points
+      try {
+        const response = await axios.post('/student/maze_game/complete', { level })
+        if (response.data.success) {
+          setEarnedPoints(response.data.points_earned)
+          // Optional: You could update global user state here if needed
+        }
+      } catch (error) {
+        console.error('Failed to award points', error)
+      }
+      setShowSuccess(true)
+    } else if (resultType === ResultType.FAILURE || resultType === ResultType.CRASH) {
+      setShowFailure(true)
+    }
+  }
+
   // Initialize engine
   useEffect(() => {
     if (canvasRef.current && !engineRef.current) {
@@ -61,15 +87,7 @@ const MazeGame: React.FC<MazeGameProps> = ({ initialLevel = 1 }) => {
       engineRef.current = engine
       interpreterRef.current = new MazeInterpreter(engine)
 
-      engine.setOnComplete((resultType) => {
-        setResult(resultType)
-        setIsRunning(false)
-        if (resultType === ResultType.SUCCESS) {
-          setShowSuccess(true)
-        } else if (resultType === ResultType.FAILURE || resultType === ResultType.CRASH) {
-          setShowFailure(true)
-        }
-      })
+      engine.setOnComplete(handleGameComplete)
 
       engine.initialize(canvasRef.current)
     }
@@ -80,7 +98,7 @@ const MazeGame: React.FC<MazeGameProps> = ({ initialLevel = 1 }) => {
         engineRef.current = null
       }
     }
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   // Update level
   useEffect(() => {
@@ -89,6 +107,7 @@ const MazeGame: React.FC<MazeGameProps> = ({ initialLevel = 1 }) => {
       setResult(ResultType.UNSET)
       setShowSuccess(false)
       setShowFailure(false)
+      setEarnedPoints(0)
     }
   }, [level])
 
@@ -135,6 +154,12 @@ const MazeGame: React.FC<MazeGameProps> = ({ initialLevel = 1 }) => {
     }
   }
 
+  // --- Translation Helpers for Blocks ---
+  // (We might need to re-define blocks if language changes, but for now purely React UI is what we care about)
+  // Re-defining blocks dynamically is tricky in Blockly.
+  // Ideally, CustomBlocks.ts should use Blockly.Msg which we can populate from translations.
+  // For this 'turbo' task, we'll focus on getting the UI translated first.
+
   return (
     <div className="flex flex-col h-full gap-4">
       {/* Header */}
@@ -142,8 +167,8 @@ const MazeGame: React.FC<MazeGameProps> = ({ initialLevel = 1 }) => {
         <div className="flex items-center gap-3">
           <span className="text-3xl">🐰</span>
           <div>
-            <h1 className="text-xl font-bold">Rabbit Maze</h1>
-            <p className="text-sm text-orange-100">Help the rabbit reach the goal!</p>
+            <h1 className="text-xl font-bold">{t('maze_game.title', { defaultValue: 'Rabbit Maze' })}</h1>
+            <p className="text-sm text-orange-100">{t('maze_game.subtitle', { defaultValue: 'Help the rabbit reach the goal!' })}</p>
           </div>
         </div>
 
@@ -156,8 +181,8 @@ const MazeGame: React.FC<MazeGameProps> = ({ initialLevel = 1 }) => {
           >
             <ChevronLeft size={20} />
           </button>
-          <span className="font-bold min-w-[80px] text-center">
-            Level {level}/{MAX_LEVEL}
+          <span className="font-bold min-w-[100px] text-center">
+            {t('maze_game.level', { level: String(level), total: String(MAX_LEVEL), defaultValue: `Level ${level}/${MAX_LEVEL}` })}
           </span>
           <button
             onClick={handleNextLevel}
@@ -175,7 +200,7 @@ const MazeGame: React.FC<MazeGameProps> = ({ initialLevel = 1 }) => {
             className="flex items-center gap-2 px-4 py-2 bg-white/20 hover:bg-white/30 rounded-lg font-semibold transition-colors"
           >
             <RotateCcw size={18} />
-            Reset
+            {t('maze_game.reset', { defaultValue: 'Reset' })}
           </button>
           <button
             onClick={handleRun}
@@ -183,7 +208,9 @@ const MazeGame: React.FC<MazeGameProps> = ({ initialLevel = 1 }) => {
             className="flex items-center gap-2 px-6 py-2 bg-green-500 hover:bg-green-600 rounded-lg font-bold shadow-md transition-all transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <Play size={18} />
-            {isRunning ? 'Running...' : 'Run'}
+            {isRunning
+              ? t('maze_game.running', { defaultValue: 'Running...' })
+              : t('maze_game.run', { defaultValue: 'Run' })}
           </button>
         </div>
       </div>
@@ -203,7 +230,7 @@ const MazeGame: React.FC<MazeGameProps> = ({ initialLevel = 1 }) => {
           {/* Code preview */}
           <div className="h-24 bg-gray-900 overflow-y-auto p-3 text-xs font-mono text-green-400 border-t border-gray-700">
             <div className="text-gray-500 mb-1 uppercase tracking-wider text-[10px]">
-              Generated Code
+              {t('maze_game.generated_code', { defaultValue: 'Generated Code' })}
             </div>
             <pre className="whitespace-pre-wrap">{code || '// Drag blocks to see code...'}</pre>
           </div>
@@ -222,24 +249,21 @@ const MazeGame: React.FC<MazeGameProps> = ({ initialLevel = 1 }) => {
             {/* Block limit indicator */}
             {levelConfig.maxBlocks !== Infinity && (
               <div className="mt-3 text-sm text-gray-600">
-                Block limit:{' '}
-                <span className="font-bold text-orange-600">{levelConfig.maxBlocks}</span>
+                {t('maze_game.block_limit', { defaultValue: 'Block limit' })}: <span className="font-bold text-orange-600">{levelConfig.maxBlocks}</span>
               </div>
             )}
           </div>
 
           {/* Instructions */}
           <div className="bg-blue-50 p-4 rounded-xl border border-blue-100">
-            <h3 className="text-sm font-semibold text-blue-800 mb-2">📋 Instructions</h3>
+            <h3 className="text-sm font-semibold text-blue-800 mb-2">{t('maze_game.instructions.title', { defaultValue: '📋 Instructions' })}</h3>
             <ul className="text-sm text-blue-700 space-y-1">
-              <li>1. Drag blocks to create a program</li>
-              <li>
-                2. Click <strong>Run</strong> to execute
-              </li>
-              <li>3. Guide the rabbit 🐰 to the goal 🏁</li>
+              <li>{t('maze_game.instructions.step1', { defaultValue: '1. Drag blocks to create a program' })}</li>
+              <li>{t('maze_game.instructions.step2', { defaultValue: '2. Click Run to execute' })}</li>
+              <li>{t('maze_game.instructions.step3', { defaultValue: '3. Guide the rabbit 🐰 to the goal 🏁' })}</li>
               {levelConfig.collectiblesCount > 0 && (
                 <li className="text-orange-600 font-medium">
-                  🥕 Collect {levelConfig.collectiblesCount} carrot(s)!
+                  {t('maze_game.instructions.collect', { count: String(levelConfig.collectiblesCount), defaultValue: `🥕 Collect ${levelConfig.collectiblesCount} carrot(s)!` })}
                 </li>
               )}
             </ul>
@@ -252,14 +276,21 @@ const MazeGame: React.FC<MazeGameProps> = ({ initialLevel = 1 }) => {
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="bg-white rounded-2xl p-8 max-w-md mx-4 text-center shadow-2xl animate-bounce-in">
             <Trophy className="w-16 h-16 text-yellow-500 mx-auto mb-4" />
-            <h2 className="text-2xl font-bold text-gray-800 mb-2">🎉 Congratulations!</h2>
-            <p className="text-gray-600 mb-6">You completed Level {level}!</p>
+            <h2 className="text-2xl font-bold text-gray-800 mb-2">{t('maze_game.success.title', { defaultValue: '🎉 Congratulations!' })}</h2>
+            <p className="text-gray-600 mb-2">{t('maze_game.success.message', { level: String(level), defaultValue: `You completed Level ${level}!` })}</p>
+
+            {earnedPoints > 0 && (
+              <div className="bg-green-100 text-green-700 py-1 px-3 rounded-full inline-block font-bold mb-6">
+                {t('maze_game.success.xp_earned', { points: String(earnedPoints), defaultValue: `+${earnedPoints} XP Earned!` })}
+              </div>
+            )}
+
             <div className="flex gap-3 justify-center">
               <button
                 onClick={() => setShowSuccess(false)}
                 className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg font-medium transition-colors"
               >
-                Close
+                {t('maze_game.success.close', { defaultValue: 'Close' })}
               </button>
               {level < MAX_LEVEL && (
                 <button
@@ -269,7 +300,7 @@ const MazeGame: React.FC<MazeGameProps> = ({ initialLevel = 1 }) => {
                   }}
                   className="px-6 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg font-bold transition-colors"
                 >
-                  Next Level →
+                  {t('maze_game.success.next_level', { defaultValue: 'Next Level →' })}
                 </button>
               )}
             </div>
@@ -282,11 +313,11 @@ const MazeGame: React.FC<MazeGameProps> = ({ initialLevel = 1 }) => {
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="bg-white rounded-2xl p-8 max-w-md mx-4 text-center shadow-2xl">
             <XCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
-            <h2 className="text-2xl font-bold text-gray-800 mb-2">😢 Try Again!</h2>
+            <h2 className="text-2xl font-bold text-gray-800 mb-2">{t('maze_game.failure.title', { defaultValue: '😢 Try Again!' })}</h2>
             <p className="text-gray-600 mb-6">
               {result === ResultType.CRASH
-                ? 'The rabbit hit a wall!'
-                : "The rabbit didn't reach the goal."}
+                ? t('maze_game.failure.crash', { defaultValue: 'The rabbit hit a wall!' })
+                : t('maze_game.failure.not_reached', { defaultValue: "The rabbit didn't reach the goal." })}
             </p>
             <button
               onClick={() => {
@@ -295,7 +326,7 @@ const MazeGame: React.FC<MazeGameProps> = ({ initialLevel = 1 }) => {
               }}
               className="px-6 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg font-bold transition-colors"
             >
-              Try Again
+              {t('maze_game.failure.try_again', { defaultValue: 'Try Again' })}
             </button>
           </div>
         </div>

@@ -35,6 +35,7 @@ en:
     add_child: "Add Child"
     my_courses: "My Courses"
     create_course: "Create Course"
+    playground: "Playground"
 
   auth:
     login: "Login"
@@ -223,3 +224,45 @@ en:
     not_found: "Page not found"
     unauthorized: "You are not authorized"
     server_error: "Server error occurred"
+
+  maze_game:
+    title: "Rabbit Maze"
+    subtitle: "Help the rabbit reach the goal!"
+    level: "Level %{level}/%{total}"
+    reset: "Reset"
+    run: "Run"
+    running: "Running..."
+    block_limit: "Block limit"
+    instructions:
+      title: "📋 Instructions"
+      step1: "1. Drag blocks to create a program"
+      step2: "2. Click Run to execute"
+      step3: "3. Guide the rabbit 🐰 to the goal 🏁"
+      collect: "🥕 Collect %{count} carrot(s)!"
+    generated_code: "GENERATED CODE"
+    success:
+      title: "🎉 Congratulations!"
+      message: "You completed Level %{level}!"
+      xp_earned: "+%{points} XP Earned!"
+      close: "Close"
+      next_level: "Next Level →"
+    failure:
+      title: "😢 Try Again!"
+      crash: "The rabbit hit a wall!"
+      not_reached: "The rabbit didn't reach the goal."
+      try_again: "Try Again"
+    blocks:
+      move_forward: "🐰 Move Forward"
+      turn_right: "🐰 Turn Right ↻"
+      turn_left: "🐰 Turn Left ↺"
+      collect: "🥕 Collect"
+      if_path: "if path"
+      if_else: "if / else"
+      repeat: "repeat"
+      do: "do"
+      else: "else"
+      times: "times"
+      directions:
+        ahead: "ahead"
+        left: "to the left ↺"
+        right: "to the right ↻"
