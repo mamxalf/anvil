@@ -75,6 +75,11 @@ group :development, :test do
 
   # Git hooks manager [https://github.com/sds/overcommit]
   gem "overcommit", require: false
+
+  gem "rspec-rails"
+  gem "factory_bot_rails"
+  gem "faker"
+  gem "bullet"
 end
 
 group :development do
@@ -85,5 +90,5 @@ end
 group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
-  gem "selenium-webdriver"
+  gem "capybara-playwright-driver"
 end

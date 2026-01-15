@@ -110,7 +110,7 @@ class Student::CoursesController < ApplicationController
         {
           id: mod.id,
           title: mod.title,
-          lessons: mod.lessons.order(:position).map { |les|
+          lessons: mod.lessons.sort_by(&:position).map { |les|
             {
               id: les.id,
               title: les.title,

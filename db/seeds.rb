@@ -76,7 +76,7 @@ achievements = [
   { title: "Getting Started", description: "Login for 2 days in a row!", criteria_type: :login_streak, criteria_value: 2, xp_reward: 10, icon_key: "getting_started" },
   { title: "Consistent Learner", description: "Login for 5 days in a row!", criteria_type: :login_streak, criteria_value: 5, xp_reward: 30, icon_key: "consistent_learner" },
   { title: "Week Warrior", description: "Login for 7 days in a row!", criteria_type: :login_streak, criteria_value: 7, xp_reward: 70, icon_key: "week_warrior" },
-  { title: "Monthly Champion", description: "Login for 30 days in a row!", criteria_type: :login_streak, criteria_value: 30, xp_reward: 300, icon_key: "monthly_champion" },
+  { title: "Monthly Champion", description: "Login for 30 days in a row!", criteria_type: :login_streak, criteria_value: 30, xp_reward: 300, icon_key: "monthly_champion" }
 ]
 
 achievements.each do |achievement_data|
