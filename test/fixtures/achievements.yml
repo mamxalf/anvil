@@ -1,9 +1,0 @@
-# Empty fixtures to prevent FK errors
-# one:
-#   title: MyString
-#   description: MyText
-#   icon_key: MyString
-#   criteria_type: 1
-#   criteria_value: 1
-#   xp_reward: 1
-#   badge: one
