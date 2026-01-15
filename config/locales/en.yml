@@ -136,6 +136,8 @@ en:
     complete_continue: "Complete & Continue"
     done: "Done"
     your_progress: "Your Progress"
+    download_certificate: "Download Certificate"
+    relearn: "Relearn Course"
 
   lessons:
     complete_continue: "Complete & Continue"

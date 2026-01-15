@@ -136,6 +136,8 @@ id:
     complete_continue: "Selesai & Lanjut"
     done: "Selesai"
     your_progress: "Progressmu"
+    download_certificate: "Unduh Sertifikat"
+    relearn: "Ulangi Kursus"
 
 
   lessons:

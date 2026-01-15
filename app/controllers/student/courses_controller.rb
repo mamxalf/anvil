@@ -55,6 +55,12 @@ class Student::CoursesController < ApplicationController
     enrollment = @course.course_enrollments.find_by(student_profile: current_user.student_profile)
     progress_percentage = enrollment&.progress_percentage || 0
 
+    # Certificate info
+    certificate_url = nil
+    if enrollment&.completed? && enrollment.certificate.present?
+      certificate_url = student_enrollment_certificate_path(enrollment, format: :pdf)
+    end
+
     render inertia: "Student/Courses/Show", props: {
       course: @course.as_json(
         only: [ :id, :title, :description, :level, :subject, :status ],
@@ -67,7 +73,8 @@ class Student::CoursesController < ApplicationController
       }),
       modules: @course.course_modules.includes(:lessons).order(:position).as_json(include: :lessons),
       isEnrolled: is_enrolled,
-      progressPercentage: progress_percentage
+      progressPercentage: progress_percentage,
+      certificateUrl: certificate_url
     }
   end
 

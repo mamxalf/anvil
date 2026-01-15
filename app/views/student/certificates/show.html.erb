@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        @page {
+            size: A4 landscape;
+            margin: 0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: white;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        .certificate {
+            background: white;
+            width: 297mm;
+            height: 210mm;
+            padding: 10mm;
+            position: relative;
+            border: 10px solid #E18914;
+            box-sizing: border-box;
+            overflow: hidden;
+            margin: 0 auto;
+        }
+
+        .certificate-inner {
+            border: 3px solid #1D8536;
+            height: 100%;
+            width: 100%;
+            padding: 5mm 20mm;
+            position: relative;
+            z-index: 2;
+            box-sizing: border-box;
+        }
+
+        .watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 350px;
+            height: 350px;
+            margin-left: -175px;
+            margin-top: -175px;
+            z-index: 1;
+            opacity: 0.05;
+            pointer-events: none;
+            display: block;
+        }
+
+        .watermark img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            opacity: 0.5;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 2mm;
+            margin-top: 15mm;
+        }
+
+        .logo-text {
+            font-size: 32px;
+            font-weight: bold;
+            color: #E18914;
+            letter-spacing: 4px;
+        }
+
+        .certificate-title {
+            text-align: center;
+            font-size: 42px;
+            color: #1D8536;
+            margin: 5mm 0;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .certificate-text {
+            text-align: center;
+            font-size: 16px;
+            color: #555;
+            margin: 3mm 0;
+            line-height: 1.4;
+        }
+
+        .student-name {
+            font-size: 48px;
+            color: #000;
+            font-weight: bold;
+            text-align: center;
+            margin: 5mm 0;
+            font-style: italic;
+            text-decoration: underline;
+            text-decoration-color: #1D8536;
+            text-underline-offset: 5px;
+        }
+
+        .course-name {
+            font-size: 24px;
+            color: #1D8536;
+            font-weight: bold;
+            text-align: center;
+            margin: 6mm 0;
+        }
+
+        .footer-section {
+            position: absolute;
+            bottom: 25mm;
+            left: 20mm;
+            right: 20mm;
+        }
+
+        .footer-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .footer-table td {
+            width: 33.33%;
+            text-align: center;
+            vertical-align: bottom;
+            padding: 0 5mm;
+        }
+
+        .signature-line {
+            width: 50mm;
+            height: 2px;
+            background: #333;
+            margin: 0 auto 3mm;
+        }
+
+        .signature-name {
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .signature-title {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .date-label {
+            font-size: 10px;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 2mm;
+        }
+
+        .date-value {
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .cert-number {
+            font-size: 11px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .decoration {
+            position: absolute;
+            font-size: 60px;
+            opacity: 0.2;
+            color: #F9DB2B;
+            z-index: 3;
+        }
+
+        .decoration.top-left {
+            top: 2mm;
+            left: 2mm;
+        }
+
+        .decoration.top-right {
+            top: 2mm;
+            right: 2mm;
+        }
+
+        .decoration.bottom-left {
+            bottom: 2mm;
+            left: 2mm;
+        }
+
+        .decoration.bottom-right {
+            bottom: 2mm;
+            right: 2mm;
+        }
+    </style>
+</head>
+<body>
+    <div class="certificate">
+        <div class="watermark">
+            <%
+               # Manually read and base64 encode file to avoid asset pipeline issues in PDF generation
+               image_path = Rails.root.join('app', 'assets', 'images', 'profile-kodibot.png')
+               if File.exist?(image_path)
+                 image_data = Base64.strict_encode64(File.read(image_path))
+                 concat image_tag("data:image/png;base64,#{image_data}")
+               end
+            %>
+        </div>
+        <div class="certificate-inner">
+            <div class="decoration top-left">★</div>
+            <div class="decoration top-right">★</div>
+            <div class="decoration bottom-left">★</div>
+            <div class="decoration bottom-right">★</div>
+
+            <div class="logo">
+                <div class="logo-text">KODILEARN</div>
+            </div>
+
+            <div class="certificate-title">Certificate of Completion</div>
+
+            <div class="certificate-text">
+                This certificate is proudly presented to
+            </div>
+
+            <div class="student-name"><%= @certificate.student_name %></div>
+
+            <div class="certificate-text">
+                for successfully completing the course
+            </div>
+
+            <div class="course-name"><%= @certificate.course_title %></div>
+
+            <div class="certificate-text">
+                Demonstrating dedication, creativity, and excellence<br>
+                in learning coding and technology skills
+            </div>
+
+            <div class="footer-section">
+                <table class="footer-table">
+                    <tr>
+                        <td>
+                            <div class="date-label">Date Issued</div>
+                            <div class="date-value"><%= @certificate.issued_at.strftime("%B %d, %Y") %></div>
+                        </td>
+                        <td>
+                            <div class="signature-line"></div>
+                            <div class="signature-name">Kodibot Academy</div>
+                            <div class="signature-title">Course Instructor</div>
+                        </td>
+                        <td>
+                            <div class="date-label">Certificate No.</div>
+                            <div class="cert-number"><%= @certificate.certificate_number %></div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

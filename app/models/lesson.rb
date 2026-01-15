@@ -85,10 +85,9 @@ class Lesson < ApplicationRecord
     progress = (completed_lessons.to_f / total_lessons * 100).round(2)
     enrollment.update!(progress_percentage: progress)
 
-    # Mark course as completed if 100%
-    if progress >= 100 && enrollment.completed_at.nil?
-      enrollment.update!(completed_at: Time.current, status: :completed)
-      Notification.notify_course_completed(student_profile.user, course)
+    # Mark course as completed if 100% - use complete! to generate certificate
+    if progress >= 100 && !enrollment.completed?
+      enrollment.complete!
     end
   end
 end

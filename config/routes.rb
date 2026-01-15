@@ -58,6 +58,11 @@ Rails.application.routes.draw do
         post :complete
       end
     end
+
+    # Certificate routes
+    resources :enrollments, only: [] do
+      resource :certificate, only: [ :show ]
+    end
   end
 
   # ============================================

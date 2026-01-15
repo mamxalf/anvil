@@ -60,6 +60,10 @@ gem "sentry-rails", "~> 5.0"
 # logging
 gem "lograge", "~> 0.14.0"
 
+# PDF generation
+gem "wicked_pdf"
+gem "wkhtmltopdf-binary"
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"

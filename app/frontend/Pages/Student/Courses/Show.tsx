@@ -4,7 +4,7 @@ import StudentLayout from '@/Layouts/StudentLayout'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 
-import { Clock, BookOpen, Users, Trophy, Loader2 } from 'lucide-react'
+import { Clock, BookOpen, Users, Trophy, Loader2, Download } from 'lucide-react'
 import { useTranslation } from '@/hooks/useTranslation'
 import { Course } from '@/types'
 import { Dialog, DialogContent } from '@/components/ui/dialog'
@@ -16,17 +16,28 @@ interface CourseShowProps {
   modules: any[]
   isEnrolled: boolean
   progressPercentage: number
+  certificateUrl?: string | null
 }
 
-export default function Show({ course, modules, isEnrolled, progressPercentage }: CourseShowProps) {
+export default function Show({
+  course,
+  modules,
+  isEnrolled,
+  progressPercentage,
+  certificateUrl,
+}: CourseShowProps) {
   const { t } = useTranslation()
   const [isLoading, setIsLoading] = useState(false)
 
   const handleEnroll = () => {
     setIsLoading(true)
-    router.post(`/student/courses/${course.id}/enroll`, {}, {
-      onFinish: () => setIsLoading(false)
-    })
+    router.post(
+      `/student/courses/${course.id}/enroll`,
+      {},
+      {
+        onFinish: () => setIsLoading(false),
+      }
+    )
   }
 
   const handleContinue = () => {
@@ -45,9 +56,11 @@ export default function Show({ course, modules, isEnrolled, progressPercentage }
                 {course.subject === 'coding' ? t('courses.coding') : t('courses.robotics')}
               </span>
               <span className="px-3 py-1 bg-yellow-400 text-yellow-900 shadow-lg shadow-yellow-900/20 rounded-xl text-xs font-bold uppercase tracking-wider">
-                {course.level === 'beginner' ? t('courses.beginner') :
-                  course.level === 'intermediate' ? t('courses.intermediate') :
-                    t('courses.advanced')}
+                {course.level === 'beginner'
+                  ? t('courses.beginner')
+                  : course.level === 'intermediate'
+                    ? t('courses.intermediate')
+                    : t('courses.advanced')}
               </span>
             </div>
 
@@ -61,7 +74,9 @@ export default function Show({ course, modules, isEnrolled, progressPercentage }
 
             <div className="flex flex-wrap gap-6 text-sm font-bold text-white/80 pt-2">
               <div className="flex items-center gap-2">
-                <div className="p-2 bg-white/20 rounded-full"><Clock className="w-4 h-4" /></div>
+                <div className="p-2 bg-white/20 rounded-full">
+                  <Clock className="w-4 h-4" />
+                </div>
                 <span>
                   {course.total_duration_minutes
                     ? Math.round(course.total_duration_minutes / 60)
@@ -70,11 +85,15 @@ export default function Show({ course, modules, isEnrolled, progressPercentage }
                 </span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="p-2 bg-white/20 rounded-full"><BookOpen className="w-4 h-4" /></div>
+                <div className="p-2 bg-white/20 rounded-full">
+                  <BookOpen className="w-4 h-4" />
+                </div>
                 <span>{course.total_lessons || 0} Lessons</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="p-2 bg-white/20 rounded-full"><Users className="w-4 h-4" /></div>
+                <div className="p-2 bg-white/20 rounded-full">
+                  <Users className="w-4 h-4" />
+                </div>
                 <span>120 Students</span>
               </div>
             </div>
@@ -114,7 +133,9 @@ export default function Show({ course, modules, isEnrolled, progressPercentage }
                 ))
               ) : (
                 <div className="p-12 text-center bg-gray-50/50 rounded-[2rem] border-2 border-dashed border-gray-200">
-                  <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl grayscale opacity-50">📂</div>
+                  <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl grayscale opacity-50">
+                    📂
+                  </div>
                   <p className="text-gray-500 font-medium">No content available yet.</p>
                 </div>
               )}
@@ -128,7 +149,11 @@ export default function Show({ course, modules, isEnrolled, progressPercentage }
             <div className="relative h-56 group overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10" />
               {course.thumbnail ? (
-                <img src={course.thumbnail} alt={course.title} className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" />
+                <img
+                  src={course.thumbnail}
+                  alt={course.title}
+                  className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+                />
               ) : (
                 <div className="w-full h-full bg-gradient-to-br from-kodibot-orange to-kodibot-yellow flex items-center justify-center text-white text-4xl font-black">
                   {course.title?.charAt(0) || 'C'}
@@ -146,20 +171,37 @@ export default function Show({ course, modules, isEnrolled, progressPercentage }
                 <span className="text-3xl font-black text-gray-900">
                   {course.enrollment_type === 'paid' ? '$49.99' : 'Free'}
                 </span>
-                <span className="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-md uppercase tracking-wider border border-emerald-100">Lifetime Access</span>
+                <span className="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-md uppercase tracking-wider border border-emerald-100">
+                  Lifetime Access
+                </span>
               </div>
-
 
               {isEnrolled ? (
                 <>
                   {/* Progress Bar */}
                   <div className="mb-4 p-4 bg-emerald-50/50 rounded-2xl border border-emerald-100">
                     <div className="flex justify-between items-center mb-2">
-                      <span className="font-bold text-sm text-gray-700">{t('courses.your_progress', { defaultValue: 'Your Progress' })}</span>
-                      <span className="font-bold text-emerald-600">{Math.round(progressPercentage)}%</span>
+                      <span className="font-bold text-sm text-gray-700">
+                        {t('courses.your_progress', { defaultValue: 'Your Progress' })}
+                      </span>
+                      <span className="font-bold text-emerald-600">
+                        {Math.round(progressPercentage)}%
+                      </span>
                     </div>
                     <Progress value={progressPercentage} className="h-3 rounded-full bg-gray-100" />
                   </div>
+
+                  {certificateUrl && (
+                    <a
+                      href={certificateUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full flex items-center justify-center gap-2 text-lg h-14 font-bold bg-gradient-to-r from-yellow-400 to-kodibot-orange hover:from-kodibot-orange hover:to-yellow-400 shadow-lg shadow-orange-200 hover:shadow-orange-300 rounded-2xl transition-all hover:scale-[1.02] text-white mb-4"
+                    >
+                      <Download className="w-5 h-5" />
+                      {t('courses.download_certificate', { defaultValue: 'Download Certificate' })}
+                    </a>
+                  )}
 
                   <Button
                     className="w-full text-lg h-14 font-bold bg-gradient-to-r from-emerald-400 to-emerald-600 hover:from-emerald-600 hover:to-emerald-400 shadow-lg shadow-emerald-200 hover:shadow-emerald-300 rounded-2xl transition-all hover:scale-[1.02]"
@@ -167,7 +209,9 @@ export default function Show({ course, modules, isEnrolled, progressPercentage }
                     onClick={handleContinue}
                   >
                     <Link href={`/student/courses/${course.id}/learn`}>
-                      {t('courses.continue_learning', { defaultValue: 'Continue Learning' })}
+                      {certificateUrl
+                        ? t('courses.relearn', { defaultValue: 'Relearn Course' })
+                        : t('courses.continue_learning', { defaultValue: 'Continue Learning' })}
                     </Link>
                   </Button>
                 </>
@@ -177,27 +221,29 @@ export default function Show({ course, modules, isEnrolled, progressPercentage }
                   disabled={isLoading}
                   className="w-full text-lg h-14 shadow-lg shadow-orange-200 font-bold hover:scale-[1.02] transition-all bg-gradient-to-r from-orange-500 via-kodibot-orange to-yellow-500 text-white rounded-2xl disabled:opacity-70"
                 >
-                  {isLoading ? (
-                    <Loader2 className="w-5 h-5 animate-spin mr-2" />
-                  ) : null}
+                  {isLoading ? <Loader2 className="w-5 h-5 animate-spin mr-2" /> : null}
                   {t('courses.enroll_now', { defaultValue: 'Enroll Now' })}
                 </Button>
               )}
 
               <div className="pt-6 border-t border-gray-100 space-y-4">
-                <h4 className="font-bold text-gray-900 text-sm uppercase tracking-wider mb-2">Course Details</h4>
+                <h4 className="font-bold text-gray-900 text-sm uppercase tracking-wider mb-2">
+                  Course Details
+                </h4>
                 <div className="flex justify-between items-center text-sm p-3 hover:bg-gray-50 rounded-xl transition-colors">
                   <div className="flex items-center gap-3 text-gray-500">
-                    <div className="p-2 bg-orange-50 text-orange-500 rounded-lg"><Trophy className="w-4 h-4" /></div>
+                    <div className="p-2 bg-orange-50 text-orange-500 rounded-lg">
+                      <Trophy className="w-4 h-4" />
+                    </div>
                     <span className="font-medium">Difficulty</span>
                   </div>
-                  <span className="font-bold capitalize text-gray-800">
-                    {course.level}
-                  </span>
+                  <span className="font-bold capitalize text-gray-800">{course.level}</span>
                 </div>
                 <div className="flex justify-between items-center text-sm p-3 hover:bg-gray-50 rounded-xl transition-colors">
                   <div className="flex items-center gap-3 text-gray-500">
-                    <div className="p-2 bg-blue-50 text-blue-500 rounded-lg"><Clock className="w-4 h-4" /></div>
+                    <div className="p-2 bg-blue-50 text-blue-500 rounded-lg">
+                      <Clock className="w-4 h-4" />
+                    </div>
                     <span className="font-medium">Duration</span>
                   </div>
                   <span className="font-bold text-gray-800">
@@ -209,10 +255,14 @@ export default function Show({ course, modules, isEnrolled, progressPercentage }
                 </div>
                 <div className="flex justify-between items-center text-sm p-3 hover:bg-gray-50 rounded-xl transition-colors">
                   <div className="flex items-center gap-3 text-gray-500">
-                    <div className="p-2 bg-purple-50 text-purple-500 rounded-lg"><BookOpen className="w-4 h-4" /></div>
+                    <div className="p-2 bg-purple-50 text-purple-500 rounded-lg">
+                      <BookOpen className="w-4 h-4" />
+                    </div>
                     <span className="font-medium">Total Lessons</span>
                   </div>
-                  <span className="font-bold text-gray-800">{course.total_lessons || 0} Lessons</span>
+                  <span className="font-bold text-gray-800">
+                    {course.total_lessons || 0} Lessons
+                  </span>
                 </div>
               </div>
 
@@ -223,7 +273,9 @@ export default function Show({ course, modules, isEnrolled, progressPercentage }
                     {course.instructor.name.charAt(0) || 'I'}
                   </div>
                   <div>
-                    <p className="text-xs text-gray-500 font-bold uppercase tracking-wider">Instructor</p>
+                    <p className="text-xs text-gray-500 font-bold uppercase tracking-wider">
+                      Instructor
+                    </p>
                     <p className="font-bold text-gray-900 line-clamp-1">{course.instructor.name}</p>
                   </div>
                 </div>
@@ -240,7 +292,9 @@ export default function Show({ course, modules, isEnrolled, progressPercentage }
             <div className="absolute inset-0 bg-kodibot-orange/20 blur-xl rounded-full animate-pulse"></div>
             <Loader2 className="w-12 h-12 text-kodibot-orange animate-spin relative z-10" />
           </div>
-          <p className="text-lg font-bold text-gray-700 animate-pulse">{t('common.loading', { defaultValue: 'Memuat...' })}</p>
+          <p className="text-lg font-bold text-gray-700 animate-pulse">
+            {t('common.loading', { defaultValue: 'Memuat...' })}
+          </p>
         </DialogContent>
       </Dialog>
     </div>

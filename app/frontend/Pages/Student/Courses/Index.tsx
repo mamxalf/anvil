@@ -23,8 +23,6 @@ import {
 } from '@/components/ui/select'
 import { Course } from '@/types'
 
-
-
 interface IndexProps {
   courses: Course[]
   filters?: {
