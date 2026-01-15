@@ -3,8 +3,8 @@
 class Student::QuizAttemptsController < ApplicationController
   before_action :authenticate_user!
   before_action :ensure_student!
-  before_action :set_quiz, only: [:create]
-  before_action :set_quiz_attempt, only: [:show, :submit_answer, :complete]
+  before_action :set_quiz, only: [ :create ]
+  before_action :set_quiz_attempt, only: [ :show, :submit_answer, :complete ]
 
   # POST /student/quizzes/:quiz_id/quiz_attempts
   def create
