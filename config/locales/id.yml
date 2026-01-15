@@ -162,6 +162,34 @@ id:
     watch_video: "Tonton 1 Video"
     complete_and_earn: "Selesaikan dan Dapatkan"
 
+  quiz:
+    title: "Kuis"
+    start_quiz: "Mulai Kuis"
+    continue_quiz: "Lanjutkan Kuis"
+    retake_quiz: "Ulangi Kuis"
+    submit: "Kumpulkan Kuis"
+    next_question: "Soal Berikutnya"
+    previous_question: "Soal Sebelumnya"
+    question: "Soal"
+    of: "dari"
+    time_remaining: "Waktu Tersisa"
+    no_attempts_remaining: "Tidak ada kesempatan tersisa"
+    already_answered: "Sudah dijawab"
+    already_completed: "Kuis sudah selesai"
+    passed: "Kamu Lulus!"
+    failed: "Kuis Belum Lulus"
+    your_score: "Skormu"
+    passing_score: "Skor Lulus"
+    xp_earned: "XP Diperoleh"
+    try_again: "Coba Lagi"
+    attempts_remaining: "Kesempatan Tersisa"
+    unlimited: "Tidak Terbatas"
+    best_score: "Skor Terbaik"
+    quiz_passed: "Kuis Lulus!"
+    complete_lesson_first: "Selesaikan konten pelajaran dulu sebelum mengerjakan kuis"
+    true: "Benar"
+    false: "Salah"
+
   mascot:
     messages:
       welcome: "Ayo lanjut belajar!"
@@ -176,6 +204,7 @@ id:
     mark_read: "Tandai Sudah Dibaca"
     mark_all_read: "Tandai Semua Sudah Dibaca"
     clear_all: "Hapus Semua"
+    empty: "Tidak ada notifikasi"
     course_completed:
       title: "Kursus Selesai"
       message: "Selamat! Kamu telah menyelesaikan kursus ini."

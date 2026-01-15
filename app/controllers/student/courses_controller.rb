@@ -121,14 +121,7 @@ class Student::CoursesController < ApplicationController
           }
         }
       },
-      currentLesson: @current_lesson ? {
-        id: @current_lesson.id,
-        module_id: @current_lesson.course_module_id,
-        title: @current_lesson.title,
-        video_url: @current_lesson.youtube_embed_url,
-        content: @current_lesson.content.to_s,
-        xp_reward: @current_lesson.xp_reward
-      } : nil
+      currentLesson: @current_lesson ? build_lesson_props(@current_lesson) : nil
     }
   end
 
@@ -152,5 +145,33 @@ class Student::CoursesController < ApplicationController
     unless current_user.student? && current_user.student_profile
       redirect_to root_path, alert: "Access denied. Students only."
     end
+  end
+
+  def build_lesson_props(lesson)
+    quiz = lesson.quiz
+    quiz_attempt = quiz ? current_user.student_profile.quiz_attempts.in_progress.find_by(quiz: quiz) : nil
+
+    {
+      id: lesson.id,
+      module_id: lesson.course_module_id,
+      title: lesson.title,
+      video_url: lesson.youtube_embed_url,
+      content: lesson.content.to_s,
+      xp_reward: lesson.xp_reward,
+      quiz: quiz ? {
+        id: quiz.id,
+        title: quiz.title,
+        description: quiz.description,
+        passing_score: quiz.passing_score,
+        time_limit_minutes: quiz.time_limit_minutes,
+        xp_reward: quiz.xp_reward,
+        total_questions: quiz.questions.count,
+        can_attempt: quiz.can_attempt?(current_user.student_profile),
+        remaining_attempts: quiz.remaining_attempts(current_user.student_profile),
+        passed: quiz.passed_by?(current_user.student_profile),
+        best_score: quiz.best_attempt(current_user.student_profile)&.score,
+        current_attempt_id: quiz_attempt&.id
+      } : nil
+    }
   end
 end

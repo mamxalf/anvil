@@ -185,6 +185,71 @@ if Rails.env.development?
     )
 
     puts "Created sample course: #{course.title}"
+
+    # Create quizzes for lessons
+    puts "Creating sample quizzes..."
+    course.lessons.each_with_index do |lesson, index|
+      quiz = lesson.create_quiz!(
+        title: "Kuis: #{lesson.title}",
+        description: "Uji pemahamanmu tentang #{lesson.title}",
+        passing_score: 70,
+        time_limit_minutes: 10,
+        max_attempts: 3,
+        xp_reward: 25
+      )
+
+      # Question 1: Multiple choice
+      q1 = quiz.questions.create!(
+        content: index == 0 ? "Siapa yang mengembangkan Scratch?" : "Apa langkah pertama membuat proyek Scratch?",
+        question_type: :multiple_choice,
+        points: 10,
+        position: 0
+      )
+
+      if index == 0
+        q1.answers.create!(content: "MIT (Massachusetts Institute of Technology)", is_correct: true, position: 0)
+        q1.answers.create!(content: "Google", is_correct: false, position: 1)
+        q1.answers.create!(content: "Microsoft", is_correct: false, position: 2)
+        q1.answers.create!(content: "Apple", is_correct: false, position: 3)
+      else
+        q1.answers.create!(content: "Klik 'Create' di halaman utama", is_correct: true, position: 0)
+        q1.answers.create!(content: "Download aplikasi", is_correct: false, position: 1)
+        q1.answers.create!(content: "Beli lisensi", is_correct: false, position: 2)
+        q1.answers.create!(content: "Hubungi admin", is_correct: false, position: 3)
+      end
+
+      # Question 2: True/False
+      q2 = quiz.questions.create!(
+        content: index == 0 ? "Scratch adalah bahasa pemrograman berbasis teks." : "Proyek Scratch bisa dibagikan ke komunitas online.",
+        question_type: :true_false,
+        points: 10,
+        position: 1
+      )
+      q2.answers.create!(content: "Benar", is_correct: index != 0, position: 0)
+      q2.answers.create!(content: "Salah", is_correct: index == 0, position: 1)
+
+      # Question 3: Multiple choice
+      q3 = quiz.questions.create!(
+        content: index == 0 ? "Untuk usia berapa Scratch cocok digunakan?" : "Apa yang disebut 'sprite' di Scratch?",
+        question_type: :multiple_choice,
+        points: 10,
+        position: 2
+      )
+
+      if index == 0
+        q3.answers.create!(content: "8-16 tahun", is_correct: true, position: 0)
+        q3.answers.create!(content: "18+ tahun saja", is_correct: false, position: 1)
+        q3.answers.create!(content: "Hanya untuk dewasa", is_correct: false, position: 2)
+        q3.answers.create!(content: "Tidak ada batasan usia", is_correct: false, position: 3)
+      else
+        q3.answers.create!(content: "Karakter atau objek yang bisa diprogram", is_correct: true, position: 0)
+        q3.answers.create!(content: "Jenis minuman", is_correct: false, position: 1)
+        q3.answers.create!(content: "Nama perusahaan", is_correct: false, position: 2)
+        q3.answers.create!(content: "Tombol keyboard", is_correct: false, position: 3)
+      end
+
+      puts "  Created quiz: #{quiz.title} with #{quiz.questions.count} questions"
+    end
   end
 end
 

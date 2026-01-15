@@ -47,6 +47,17 @@ Rails.application.routes.draw do
         post :mark_all_as_read
       end
     end
+
+    # Quiz routes
+    resources :quizzes, only: [] do
+      resources :quiz_attempts, only: [ :create ]
+    end
+    resources :quiz_attempts, only: [ :show ] do
+      member do
+        post :submit_answer
+        post :complete
+      end
+    end
   end
 
   # ============================================

@@ -161,6 +161,34 @@ en:
     watch_video: "Watch 1 Video"
     complete_and_earn: "Complete and earn"
 
+  quiz:
+    title: "Quiz"
+    start_quiz: "Start Quiz"
+    continue_quiz: "Continue Quiz"
+    retake_quiz: "Retake Quiz"
+    submit: "Submit Quiz"
+    next_question: "Next Question"
+    previous_question: "Previous Question"
+    question: "Question"
+    of: "of"
+    time_remaining: "Time Remaining"
+    no_attempts_remaining: "No attempts remaining"
+    already_answered: "Already answered"
+    already_completed: "Quiz already completed"
+    passed: "You Passed!"
+    failed: "Quiz Not Passed"
+    your_score: "Your Score"
+    passing_score: "Passing Score"
+    xp_earned: "XP Earned"
+    try_again: "Try Again"
+    attempts_remaining: "Attempts Remaining"
+    unlimited: "Unlimited"
+    best_score: "Best Score"
+    quiz_passed: "Quiz Passed!"
+    complete_lesson_first: "Complete the lesson content before taking the quiz"
+    true: "True"
+    false: "False"
+
   mascot:
     messages:
       welcome: "Let's keep learning!"
@@ -175,6 +203,7 @@ en:
     mark_read: "Mark as Read"
     mark_all_read: "Mark All as Read"
     clear_all: "Clear All"
+    empty: "No notifications"
     course_completed:
       title: "Course Completed"
       message: "Congratulations! You've finished all the lessons in this course. Great job!"

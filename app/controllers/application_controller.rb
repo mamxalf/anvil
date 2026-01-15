@@ -24,7 +24,7 @@ class ApplicationController < ActionController::Base
       },
       errors: session.delete(:errors) || {},
       locale: I18n.locale,
-      translations: i18n_translations_for_namespaces(%w[auth auth_kids menu dashboard common courses lessons gamification mascot notifications settings errors])
+      translations: i18n_translations_for_namespaces(%w[auth auth_kids menu dashboard common courses lessons gamification mascot notifications settings errors quiz])
     }
   end
 
@@ -85,9 +85,16 @@ class ApplicationController < ActionController::Base
     translations = I18n.t(namespace, default: {})
     return {} unless translations.is_a?(Hash)
 
-    # Remove nested keys (like success:, error:) and return only top-level keys
-    # Or return all keys recursively depending on your needs
-    translations.transform_keys(&:to_sym).except(:success, :error)
+    # Recursively convert keys to symbols and handle all value types
+    deep_symbolize_keys(translations)
+  end
+
+  def deep_symbolize_keys(hash)
+    hash.each_with_object({}) do |(key, value), result|
+      # Handle keys that might be booleans (from YAML parsing of true/false keys)
+      sym_key = key.respond_to?(:to_sym) ? key.to_sym : key.to_s.to_sym
+      result[sym_key] = value.is_a?(Hash) ? deep_symbolize_keys(value) : value
+    end
   end
 
   private

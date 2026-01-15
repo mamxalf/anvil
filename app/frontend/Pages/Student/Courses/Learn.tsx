@@ -3,11 +3,12 @@ import { Link, router } from '@inertiajs/react'
 import confetti from 'canvas-confetti'
 import StudentLayout from '@/Layouts/StudentLayout'
 import { Button } from '@/components/ui/button'
-import { CheckCircle, PlayCircle, Menu, ArrowLeft, ChevronLeft, ChevronRight, BookOpen, Trophy } from 'lucide-react'
+import { CheckCircle, PlayCircle, Menu, ArrowLeft, ChevronLeft, ChevronRight, BookOpen, Trophy, HelpCircle } from 'lucide-react'
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/sheet'
 import { cn } from '@/lib/utils'
 import { useTranslation } from '@/hooks/useTranslation'
 import { Course } from '@/types'
+import QuizPlayer from '@/components/Quiz/QuizPlayer'
 
 
 interface LearnProps {
@@ -244,6 +245,26 @@ export default function Learn({ course, modules, currentLesson }: LearnProps) {
                     </div>
                   </div>
                 </div>
+
+                {/* Quiz Section */}
+                {currentLesson.quiz && (
+                  <div className="mt-6">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-10 h-10 bg-gradient-to-br from-purple-100 to-pink-100 rounded-full flex items-center justify-center">
+                        <HelpCircle className="w-5 h-5 text-purple-600" />
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-bold text-gray-900">{t('quiz.title', { defaultValue: 'Quiz' })}</h3>
+                        <p className="text-sm text-gray-500">{t('quiz.complete_lesson_first', { defaultValue: 'Test your knowledge' })}</p>
+                      </div>
+                    </div>
+                    <QuizPlayer
+                      quiz={currentLesson.quiz}
+                      lessonId={currentLesson.id}
+                      courseId={course.id}
+                    />
+                  </div>
+                )}
 
                 {/* Navigation Buttons */}
                 <div className="flex flex-col sm:flex-row justify-between items-center gap-4 pt-4 pb-12">
