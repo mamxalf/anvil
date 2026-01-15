@@ -49,7 +49,9 @@ export default function Index({ weeklyLeaders, allTimeLeaders, currentRank }: Le
               <p className="font-bold text-gray-900">{leader.user.name}</p>
               {type === 'weekly' && (
                 <p className="text-xs text-gray-500">
-                  {t('gamification.lessons_this_week', { count: String(leader.weekly_lessons || 0) })}
+                  {t('gamification.lessons_this_week', {
+                    count: String(leader.weekly_lessons || 0),
+                  })}
                 </p>
               )}
             </div>
