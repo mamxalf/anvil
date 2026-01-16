@@ -14,6 +14,8 @@ class StudentProfile < ApplicationRecord
   has_many :quiz_attempts, dependent: :destroy
   has_many :lesson_progresses, dependent: :destroy
   has_many :class_registrations, dependent: :destroy
+  has_many :portfolios, dependent: :destroy
+
 
   # Validations
   validates :user_id, uniqueness: true

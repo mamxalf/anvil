@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_14_084907) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_16_032559) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -240,6 +240,19 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_14_084907) do
     t.index ["parent_id"], name: "index_parent_children_on_parent_id"
   end
 
+  create_table "portfolios", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.jsonb "content", default: [], null: false
+    t.datetime "created_at", null: false
+    t.boolean "published", default: false, null: false
+    t.string "slug", null: false
+    t.uuid "student_profile_id", null: false
+    t.string "theme", default: "modern", null: false
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
+    t.index ["slug"], name: "index_portfolios_on_slug", unique: true
+    t.index ["student_profile_id"], name: "index_portfolios_on_student_profile_id"
+  end
+
   create_table "questions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.text "content", null: false
     t.datetime "created_at", null: false
@@ -408,6 +421,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_14_084907) do
   add_foreign_key "notifications", "users"
   add_foreign_key "parent_children", "users", column: "child_id"
   add_foreign_key "parent_children", "users", column: "parent_id"
+  add_foreign_key "portfolios", "student_profiles"
   add_foreign_key "questions", "quizzes"
   add_foreign_key "quiz_attempts", "quizzes"
   add_foreign_key "quiz_attempts", "student_profiles"

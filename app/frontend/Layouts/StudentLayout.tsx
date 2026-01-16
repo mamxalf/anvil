@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Link, usePage } from '@inertiajs/react'
 import { PageProps } from '@/types'
-import { LayoutDashboard, BookOpen, Trophy, Medal, Menu, X, LogOut, Bell, Gamepad2 } from 'lucide-react'
+import { LayoutDashboard, BookOpen, Trophy, Medal, Menu, X, LogOut, Bell, Gamepad2, Palette } from 'lucide-react'
 import { useTranslation } from '@/hooks/useTranslation'
 import LanguageSwitcher from '@/components/LanguageSwitcher'
 
@@ -48,6 +48,12 @@ export default function StudentLayout({ children }: StudentLayoutProps) {
       href: '/student/playground',
       icon: <Gamepad2 className="w-5 h-5" />,
       active: currentPath.startsWith('/student/playground'),
+    },
+    {
+      name: t('menu.portfolio', { defaultValue: 'Portfolio' }),
+      href: '/student/portfolios',
+      icon: <Palette className="w-5 h-5" />,
+      active: currentPath.startsWith('/student/portfolios'),
     },
   ]
 

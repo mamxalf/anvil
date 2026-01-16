@@ -65,7 +65,21 @@ Rails.application.routes.draw do
     resources :enrollments, only: [] do
       resource :certificate, only: [ :show ]
     end
+
+    # Portfolio routes
+    resources :portfolios do
+      resources :assets, controller: "portfolio_assets", only: [ :create, :destroy ]
+    end
+
+    # AI Lab
+    get "ai_lab", to: "ai_lab#index", as: :ai_lab
   end
+
+  # ============================================
+  # Public Portfolio Route
+  # ============================================
+  get "p/:slug", to: "public_portfolios#show", as: :public_portfolio
+
 
   # ============================================
   # Parent Namespace Routes

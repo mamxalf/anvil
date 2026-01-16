@@ -36,6 +36,8 @@ id:
     my_courses: "Kursus Saya"
     create_course: "Buat Kursus"
     playground: "Playground"
+    portfolio: "Portfolio"
+
 
   auth:
     login: "Masuk"
@@ -267,3 +269,42 @@ id:
         ahead: "ke depan"
         left: "ke kiri ↺"
         right: "ke kanan ↻"
+
+  portfolio:
+    title: "Portfolio Saya"
+    description: "Buat website portfolio pribadimu dengan builder drag-and-drop yang mudah. Tunjukkan skill dan proyekmu!"
+    create_new: "Buat Portfolio Baru"
+    edit: "Edit"
+    delete: "Hapus"
+    save: "Simpan"
+    saving: "Menyimpan..."
+    publish: "Publikasikan"
+    unpublish: "Batalkan Publikasi"
+    published: "Dipublikasikan"
+    draft: "Draft"
+    view_live: "Lihat Portfolio"
+    back: "Kembali"
+    theme: "Tema"
+    add_blocks: "Tambah Blok"
+    tips:
+      title: "Tips"
+      drag: "Tarik blok ke kanvas"
+      click: "Klik untuk pilih & edit"
+      reorder: "Tarik pegangan untuk urutan"
+      save: "Jangan lupa simpan!"
+    blocks:
+      header: "Header"
+      text: "Teks"
+      image: "Gambar"
+      video: "Video YouTube"
+      skills: "Keahlian"
+      projects: "Proyek"
+      contact: "Kontak"
+      spacer: "Spasi"
+    empty:
+      title: "Mulai Bangun!"
+      description: "Tarik blok dari sidebar atau klik untuk menambahkan ke portfoliomu"
+    no_portfolios:
+      title: "Belum Ada Portfolio"
+      description: "Buat portfolio pertamamu dan mulai tampilkan proyek dan skill keren kamu ke dunia!"
+      button: "Buat Portfolio Pertamaku"

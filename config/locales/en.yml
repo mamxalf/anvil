@@ -36,6 +36,8 @@ en:
     my_courses: "My Courses"
     create_course: "Create Course"
     playground: "Playground"
+    portfolio: "Portfolio"
+
 
   auth:
     login: "Login"
@@ -266,3 +268,42 @@ en:
         ahead: "ahead"
         left: "to the left ↺"
         right: "to the right ↻"
+
+  portfolio:
+    title: "My Portfolios"
+    description: "Build your personal portfolio website with our easy drag-and-drop builder. Show off your skills and projects!"
+    create_new: "Create New Portfolio"
+    edit: "Edit"
+    delete: "Delete"
+    save: "Save"
+    saving: "Saving..."
+    publish: "Publish"
+    unpublish: "Unpublish"
+    published: "Published"
+    draft: "Draft"
+    view_live: "View Live"
+    back: "Back"
+    theme: "Theme"
+    add_blocks: "Add Blocks"
+    tips:
+      title: "Tips"
+      drag: "Drag blocks to canvas"
+      click: "Click to select & edit"
+      reorder: "Drag handle to reorder"
+      save: "Don't forget to save!"
+    blocks:
+      header: "Header"
+      text: "Text"
+      image: "Image"
+      video: "YouTube Video"
+      skills: "Skills"
+      projects: "Projects"
+      contact: "Contact"
+      spacer: "Spacer"
+    empty:
+      title: "Start Building!"
+      description: "Drag blocks from the sidebar or click them to add to your portfolio"
+    no_portfolios:
+      title: "No Portfolios Yet"
+      description: "Create your first portfolio and start showcasing your amazing projects and skills to the world!"
+      button: "Create My First Portfolio"
