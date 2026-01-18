@@ -15,6 +15,7 @@ en:
     search: "Search"
     filter: "Filter"
     sort: "Sort"
+    back_to_playground: "Back to Playground"
     search_course: "Search courses..."
     all_subjects: "All Subjects"
     newest: "Newest"
@@ -323,7 +324,13 @@ en:
       title: "Arduino Lab"
       description: "Build circuits and program Arduino with visual blocks"
       badge: "Robotics"
+      badge: "Robotics"
       open: "Open Lab"
+    community:
+      title: "Community Showcase"
+      description: "Discover and play amazing projects created by other students"
+      badge: "Inspiration"
+      explore: "Explore"
 
   arduino:
     title: "Arduino Playground"
@@ -339,6 +346,10 @@ en:
     saving: "Saving..."
     open: "Open"
     new: "New"
+    publish: "Publish"
+    published: "Published"
+    save_before_publish: "Save first to publish"
+    processing: "Processing..."
     examples: "Examples"
     example_projects: "Example Projects"
     choose_example: "Choose an example to get started"
@@ -406,4 +417,17 @@ en:
         description: "Display text on LCD screen"
       empty:
         name: "Blank Project"
+      empty:
+        name: "Blank Project"
         description: "Start from scratch with empty project"
+
+  community:
+    title: "Community Showcase"
+    hero_title: "Community Showcase"
+    hero_subtitle: "Explore amazing projects created by students like you!"
+    search_placeholder: "Search projects or makers..."
+    no_results: "No projects found"
+    no_projects: "No projects published yet"
+    no_results_desc: "Try adjusting your search terms"
+    no_projects_desc: "Be the first one to publish a project!"
+    create_project: "Create Project"

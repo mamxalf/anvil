@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_18_031921) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_18_035752) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -84,8 +84,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_18_031921) do
     t.datetime "created_at", null: false
     t.jsonb "modules", default: []
     t.string "name"
+    t.boolean "published", default: false
+    t.datetime "published_at"
     t.uuid "student_profile_id", null: false
     t.datetime "updated_at", null: false
+    t.index ["published"], name: "index_arduino_sketches_on_published"
     t.index ["student_profile_id"], name: "index_arduino_sketches_on_student_profile_id"
   end
 

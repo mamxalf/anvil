@@ -77,7 +77,13 @@ Rails.application.routes.draw do
 
     # Arduino Playground (under playground namespace)
     get "playground/arduino", to: "arduino_playground#index", as: :playground_arduino
-    resources :arduino_sketches, only: [ :index, :show, :create, :update, :destroy ]
+    resources :arduino_sketches, only: [ :index, :show, :create, :update, :destroy ] do
+      member do
+        post :publish
+        post :unpublish
+      end
+    end
+    resources :community, only: [ :index, :show ]
   end
 
   # ============================================

@@ -15,6 +15,7 @@ id:
     search: "Cari"
     filter: "Filter"
     sort: "Urutkan"
+    back_to_playground: "Kembali ke Playground"
     search_course: "Cari kursus..."
     all_subjects: "Semua Subjek"
     newest: "Terbaru"
@@ -325,6 +326,11 @@ id:
       description: "Bangun rangkaian dan program Arduino dengan blok visual"
       badge: "Robotika"
       open: "Buka Lab"
+    community:
+      title: "Pameran Komunitas"
+      description: "Temukan dan mainkan proyek keren buatan siswa lain"
+      badge: "Inspirasi"
+      explore: "Jelajahi"
 
   arduino:
     title: "Arduino Playground"
@@ -340,6 +346,10 @@ id:
     saving: "Menyimpan..."
     open: "Buka"
     new: "Baru"
+    publish: "Terbitkan"
+    published: "Diterbitkan"
+    save_before_publish: "Simpan dulu untuk menerbitkan"
+    processing: "Memproses..."
     examples: "Contoh"
     example_projects: "Contoh Proyek"
     choose_example: "Pilih contoh untuk memulai"
@@ -408,3 +418,14 @@ id:
       empty:
         name: "Proyek Kosong"
         description: "Mulai dari awal dengan proyek kosong"
+
+  community:
+    title: "Pameran Komunitas"
+    hero_title: "Pameran Komunitas"
+    hero_subtitle: "Jelajahi proyek keren buatan siswa sepertimu!"
+    search_placeholder: "Cari proyek atau pembuat..."
+    no_results: "Tidak ada proyek ditemukan"
+    no_projects: "Belum ada proyek diterbitkan"
+    no_results_desc: "Coba ubah kata kuncimu"
+    no_projects_desc: "Jadilah yang pertama menerbitkan proyek!"
+    create_project: "Buat Proyek"

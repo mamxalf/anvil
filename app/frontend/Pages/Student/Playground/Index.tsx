@@ -1,7 +1,7 @@
 import { Head, Link } from '@inertiajs/react'
 import StudentLayout from '@/Layouts/StudentLayout'
 import { useTranslation } from '@/hooks/useTranslation'
-import { Cpu, Gamepad2, Sparkles, ArrowRight } from 'lucide-react'
+import { Cpu, Gamepad2, Sparkles, ArrowRight, Globe } from 'lucide-react'
 
 export default function PlaygroundHub() {
   const { t } = useTranslation()
@@ -22,6 +22,22 @@ export default function PlaygroundHub() {
       shadowColor: 'shadow-green-200',
       hoverShadow: 'hover:shadow-green-300',
       bgPattern: 'bg-gradient-to-br from-emerald-100 to-teal-50',
+    },
+    {
+      id: 'community',
+      title: t('playground.community.title', { defaultValue: 'Community Showcase' }),
+      description: t('playground.community.description', {
+        defaultValue: 'Discover and play amazing projects created by other students',
+      }),
+      badge: t('playground.community.badge', { defaultValue: 'Inspiration' }),
+      buttonText: t('playground.community.explore', { defaultValue: 'Explore' }),
+      href: '/student/community',
+      icon: <Globe className="w-8 h-8" />,
+      emoji: '🌍',
+      gradient: 'from-indigo-500 via-purple-500 to-pink-500',
+      shadowColor: 'shadow-purple-200',
+      hoverShadow: 'hover:shadow-purple-300',
+      bgPattern: 'bg-gradient-to-br from-indigo-100 to-pink-50',
     },
     {
       id: 'arduino',
@@ -69,7 +85,7 @@ export default function PlaygroundHub() {
         </section>
 
         {/* Playground Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {playgrounds.map((playground) => (
             <Link
               key={playground.id}

@@ -16,6 +16,7 @@ import {
     ChevronDown,
     Lightbulb,
     Download,
+    Globe,
 } from 'lucide-react'
 import { BlocklyWorkspace } from 'react-blockly'
 import * as Blockly from 'blockly/core'
@@ -45,6 +46,8 @@ interface ArduinoSketch {
     modules?: ModuleInstance[]
     blocks_xml?: string
     updated_at?: string
+    published?: boolean
+    published_at?: string
 }
 
 interface Props {
@@ -67,6 +70,7 @@ export default function ArduinoPlaygroundIndex({ sketches, currentSketch }: Prop
     const [ledStates, setLedStates] = useState<Record<number, boolean>>({})
     const [servoAngles] = useState<Record<number, number>>({})
     const [isSaving, setIsSaving] = useState(false)
+    const [isPublishing, setIsPublishing] = useState(false)
     const [savedSketches, setSavedSketches] = useState<ArduinoSketch[]>(sketches)
 
     const [showSketchList, setShowSketchList] = useState(false)
@@ -269,6 +273,41 @@ export default function ArduinoPlaygroundIndex({ sketches, currentSketch }: Prop
         addConsoleLog(`📂 Loaded: ${sketch.name}`)
     }
 
+    // Publish sketch
+    const togglePublish = async () => {
+        if (!sketchId) {
+            addConsoleLog('⚠️ Please save the sketch first')
+            return
+        }
+
+        setIsPublishing(true)
+        try {
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content')
+            const currentSketch = savedSketches.find(s => s.id === sketchId)
+            const isPublished = currentSketch?.published
+
+            const endpoint = `/student/arduino_sketches/${sketchId}/${isPublished ? 'unpublish' : 'publish'}`
+
+            const response = await fetch(endpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': csrfToken || '' },
+            })
+
+            if (response.ok) {
+                const updated = await response.json()
+                setSavedSketches((prev) => prev.map((s) => (s.id === sketchId ? updated : s)))
+                addConsoleLog(isPublished ? '🔓 Unpublished sketch' : '🌍 Published to Community!')
+            } else {
+                throw new Error('Failed to update publish status')
+            }
+        } catch (error) {
+            console.error('Publish error:', error)
+            addConsoleLog('❌ Publish failed')
+        } finally {
+            setIsPublishing(false)
+        }
+    }
+
     // New sketch
     const newSketch = () => {
         const emptyTemplate = EXAMPLE_TEMPLATES.find((t) => t.id === 'empty')
@@ -400,6 +439,24 @@ export default function ArduinoPlaygroundIndex({ sketches, currentSketch }: Prop
                             >
                                 <Save className="w-4 h-4" />
                                 {isSaving ? t('arduino.saving', { defaultValue: 'Saving...' }) : t('arduino.save', { defaultValue: 'Save' })}
+                            </button>
+
+                            <button
+                                onClick={togglePublish}
+                                disabled={isPublishing || !sketchId}
+                                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold disabled:opacity-50 shadow-lg transition-all ${savedSketches.find(s => s.id === sketchId)?.published
+                                        ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-green-200 hover:from-green-600 hover:to-emerald-600'
+                                        : 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-50'
+                                    }`}
+                                title={!sketchId ? t('arduino.save_before_publish', { defaultValue: 'Save first to publish' }) : ''}
+                            >
+                                <Globe className="w-4 h-4" />
+                                {isPublishing
+                                    ? t('arduino.processing', { defaultValue: '...' })
+                                    : savedSketches.find(s => s.id === sketchId)?.published
+                                        ? t('arduino.published', { defaultValue: 'Published' })
+                                        : t('arduino.publish', { defaultValue: 'Publish' })
+                                }
                             </button>
 
                             <div className="relative">

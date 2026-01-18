@@ -98,3 +98,5 @@ group :test do
 end
 
 gem "database_cleaner", "~> 2.1", group: :test
+
+gem "kaminari", "~> 1.2"
