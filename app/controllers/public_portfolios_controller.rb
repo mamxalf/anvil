@@ -16,6 +16,5 @@ class PublicPortfoliosController < ApplicationController
         avatar: @student.avatar_url
       }
     }
-
   end
 end

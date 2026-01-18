@@ -35,6 +35,7 @@ Rails.application.routes.draw do
     resources :achievements, only: [ :index ]
     get "leaderboard", to: "leaderboard#index", as: :leaderboard
     get "playground", to: "playground#index", as: :playground
+    get "playground/maze", to: "playground#maze", as: :playground_maze
     post "maze_game/complete", to: "maze_game#complete"
     resources :scheduled_classes, only: [ :index, :show ] do
       member do
@@ -73,6 +74,10 @@ Rails.application.routes.draw do
 
     # AI Lab
     get "ai_lab", to: "ai_lab#index", as: :ai_lab
+
+    # Arduino Playground (under playground namespace)
+    get "playground/arduino", to: "arduino_playground#index", as: :playground_arduino
+    resources :arduino_sketches, only: [ :index, :show, :create, :update, :destroy ]
   end
 
   # ============================================

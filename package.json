@@ -43,6 +43,8 @@
     "@radix-ui/react-tabs": "^1.1.13",
     "@rails/actiontext": "^8.1.200",
     "@types/canvas-confetti": "^1.9.0",
+    "@wokwi/elements": "^1.9.1",
+    "avr8js": "^0.20.1",
     "blockly": "^12.3.1",
     "canvas-confetti": "^1.9.4",
     "class-variance-authority": "^0.7.1",

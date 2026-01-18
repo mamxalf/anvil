@@ -308,3 +308,103 @@ id:
       title: "Belum Ada Portfolio"
       description: "Buat portfolio pertamamu dan mulai tampilkan proyek dan skill keren kamu ke dunia!"
       button: "Buat Portfolio Pertamaku"
+
+  playground:
+    title: "Playground"
+    subtitle: "Pilih petualanganmu!"
+    hero_description: "Belajar coding dan robotika dengan cara yang menyenangkan!"
+    coming_soon: "Segera Hadir!"
+    coming_soon_desc: "Lebih banyak playground seru akan segera datang..."
+    maze_game:
+      title: "Game Labirin"
+      description: "Bantu kelinci mencapai tujuan dengan pemrograman blok"
+      badge: "Logika Koding"
+      play: "Main Sekarang"
+    arduino:
+      title: "Lab Arduino"
+      description: "Bangun rangkaian dan program Arduino dengan blok visual"
+      badge: "Robotika"
+      open: "Buka Lab"
+
+  arduino:
+    title: "Arduino Playground"
+    subtitle: "Pemrograman Blok Visual"
+    board: "Board"
+    pins: "pin"
+    blocks: "Blok"
+    code: "Kode"
+    run: "Jalankan"
+    stop: "Berhenti"
+    reset: "Reset"
+    save: "Simpan"
+    saving: "Menyimpan..."
+    open: "Buka"
+    new: "Baru"
+    examples: "Contoh"
+    example_projects: "Contoh Proyek"
+    choose_example: "Pilih contoh untuk memulai"
+    difficulty:
+      easy: "Mudah"
+      medium: "Sedang"
+      custom: "Kustom"
+    circuit: "Rangkaian"
+    add_component: "Tambah Komponen"
+    components: "Komponen"
+    serial_monitor: "Serial Monitor"
+    output_placeholder: "// Output akan muncul di sini..."
+    saved_sketches: "Sketch Tersimpan"
+    no_saved: "Belum ada sketch tersimpan"
+    console:
+      starting: "Memulai simulasi..."
+      running: "Simulasi berjalan!"
+      stopped: "Simulasi berhenti"
+      reset: "Reset selesai"
+      leds_on: "LED: NYALA"
+      leds_off: "LED: MATI"
+      added: "Ditambahkan"
+      removed: "Modul dihapus"
+      loaded: "Dimuat"
+      saved: "Disimpan"
+      created: "Dibuat"
+      save_failed: "Gagal menyimpan"
+    boards:
+      uno: "Arduino Uno"
+      nano: "Arduino Nano"
+      mega: "Arduino Mega"
+      esp32: "ESP32"
+    modules:
+      led: "LED"
+      rgb_led: "LED RGB"
+      button: "Tombol Tekan"
+      potentiometer: "Potensiometer"
+      servo: "Motor Servo"
+      buzzer: "Buzzer"
+      lcd: "LCD 16x2"
+      ultrasonic: "Sensor Ultrasonik"
+      photoresistor: "Sensor Cahaya"
+      dht11: "Sensor DHT11"
+    examples_list:
+      blink:
+        name: "LED Berkedip"
+        description: "LED berkedip setiap 1 detik"
+      traffic_light:
+        name: "Lampu Lalu Lintas"
+        description: "Simulasi lampu lalu lintas dengan 3 LED"
+      button_led:
+        name: "Kontrol LED Tombol"
+        description: "Nyalakan LED dengan tombol"
+      servo_sweep:
+        name: "Servo Sweep"
+        description: "Motor servo bergerak 0-180 derajat"
+      melody:
+        name: "Main Melodi"
+        description: "Mainkan melodi dengan buzzer"
+      distance_alarm:
+        name: "Alarm Jarak"
+        description: "Alarm jika objek terlalu dekat"
+      lcd_hello:
+        name: "LCD Hello World"
+        description: "Tampilkan teks di layar LCD"
+      empty:
+        name: "Proyek Kosong"
+        description: "Mulai dari awal dengan proyek kosong"

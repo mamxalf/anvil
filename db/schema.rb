@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_16_032559) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_18_031921) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -75,6 +75,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_16_032559) do
     t.datetime "updated_at", null: false
     t.index ["question_id", "position"], name: "index_answers_on_question_id_and_position"
     t.index ["question_id"], name: "index_answers_on_question_id"
+  end
+
+  create_table "arduino_sketches", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.text "blocks_xml"
+    t.string "board_type", default: "uno"
+    t.text "code"
+    t.datetime "created_at", null: false
+    t.jsonb "modules", default: []
+    t.string "name"
+    t.uuid "student_profile_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["student_profile_id"], name: "index_arduino_sketches_on_student_profile_id"
   end
 
   create_table "badges", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -173,6 +185,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_16_032559) do
     t.index ["slug"], name: "index_courses_on_slug", unique: true
     t.index ["status"], name: "index_courses_on_status"
     t.index ["subject"], name: "index_courses_on_subject"
+  end
+
+  create_table "holograms", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.text "config_json"
+    t.datetime "created_at", null: false
+    t.string "title"
+    t.datetime "updated_at", null: false
+    t.uuid "user_id", null: false
+    t.index ["user_id"], name: "index_holograms_on_user_id"
   end
 
   create_table "instructor_profiles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -404,6 +425,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_16_032559) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "answers", "questions"
+  add_foreign_key "arduino_sketches", "student_profiles"
   add_foreign_key "certificates", "course_enrollments"
   add_foreign_key "class_registrations", "scheduled_classes"
   add_foreign_key "class_registrations", "student_profiles"
@@ -414,6 +436,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_16_032559) do
   add_foreign_key "course_modules", "course_modules", column: "unlock_after_module_id"
   add_foreign_key "course_modules", "courses"
   add_foreign_key "courses", "instructor_profiles", column: "instructor_id"
+  add_foreign_key "holograms", "users"
   add_foreign_key "instructor_profiles", "users"
   add_foreign_key "lesson_progresses", "lessons"
   add_foreign_key "lesson_progresses", "student_profiles"

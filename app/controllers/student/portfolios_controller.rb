@@ -3,8 +3,8 @@
 class Student::PortfoliosController < ApplicationController
   before_action :authenticate_user!
   before_action :ensure_student!
-  before_action :set_portfolio, only: [:show, :update, :destroy]
-  before_action :check_portfolio_limit, only: [:create]
+  before_action :set_portfolio, only: [ :show, :update, :destroy ]
+  before_action :check_portfolio_limit, only: [ :create ]
 
   MAX_PORTFOLIOS = 3
 

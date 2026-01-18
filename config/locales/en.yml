@@ -307,3 +307,103 @@ en:
       title: "No Portfolios Yet"
       description: "Create your first portfolio and start showcasing your amazing projects and skills to the world!"
       button: "Create My First Portfolio"
+
+  playground:
+    title: "Playground"
+    subtitle: "Choose your adventure!"
+    hero_description: "Learn coding and robotics the fun way!"
+    coming_soon: "Coming Soon!"
+    coming_soon_desc: "More exciting playgrounds are on the way..."
+    maze_game:
+      title: "Maze Game"
+      description: "Help the rabbit reach the goal using block programming"
+      badge: "Coding Logic"
+      play: "Play Now"
+    arduino:
+      title: "Arduino Lab"
+      description: "Build circuits and program Arduino with visual blocks"
+      badge: "Robotics"
+      open: "Open Lab"
+
+  arduino:
+    title: "Arduino Playground"
+    subtitle: "Visual Block Programming"
+    board: "Board"
+    pins: "pins"
+    blocks: "Blocks"
+    code: "Code"
+    run: "Run"
+    stop: "Stop"
+    reset: "Reset"
+    save: "Save"
+    saving: "Saving..."
+    open: "Open"
+    new: "New"
+    examples: "Examples"
+    example_projects: "Example Projects"
+    choose_example: "Choose an example to get started"
+    difficulty:
+      easy: "Easy"
+      medium: "Medium"
+      custom: "Custom"
+    circuit: "Circuit"
+    add_component: "Add Component"
+    components: "Components"
+    serial_monitor: "Serial Monitor"
+    output_placeholder: "// Output will appear here..."
+    saved_sketches: "Saved Sketches"
+    no_saved: "No saved sketches"
+    console:
+      starting: "Starting simulation..."
+      running: "Simulation running!"
+      stopped: "Simulation stopped"
+      reset: "Reset complete"
+      leds_on: "LEDs: ON"
+      leds_off: "LEDs: OFF"
+      added: "Added"
+      removed: "Module removed"
+      loaded: "Loaded"
+      saved: "Saved"
+      created: "Created"
+      save_failed: "Save failed"
+    boards:
+      uno: "Arduino Uno"
+      nano: "Arduino Nano"
+      mega: "Arduino Mega"
+      esp32: "ESP32"
+    modules:
+      led: "LED"
+      rgb_led: "RGB LED"
+      button: "Push Button"
+      potentiometer: "Potentiometer"
+      servo: "Servo Motor"
+      buzzer: "Buzzer"
+      lcd: "LCD 16x2"
+      ultrasonic: "Ultrasonic Sensor"
+      photoresistor: "Light Sensor"
+      dht11: "DHT11 Sensor"
+    examples_list:
+      blink:
+        name: "Blink LED"
+        description: "LED blinks every 1 second"
+      traffic_light:
+        name: "Traffic Light"
+        description: "Traffic light simulation with 3 LEDs"
+      button_led:
+        name: "Button Control LED"
+        description: "Turn LED on with button"
+      servo_sweep:
+        name: "Servo Sweep"
+        description: "Servo motor moves 0-180 degrees"
+      melody:
+        name: "Play Melody"
+        description: "Play melody with buzzer"
+      distance_alarm:
+        name: "Distance Alarm"
+        description: "Alarm when object is too close"
+      lcd_hello:
+        name: "LCD Hello World"
+        description: "Display text on LCD screen"
+      empty:
+        name: "Blank Project"
+        description: "Start from scratch with empty project"

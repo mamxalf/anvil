@@ -15,6 +15,7 @@ class StudentProfile < ApplicationRecord
   has_many :lesson_progresses, dependent: :destroy
   has_many :class_registrations, dependent: :destroy
   has_many :portfolios, dependent: :destroy
+  has_many :arduino_sketches, dependent: :destroy
 
 
   # Validations
