@@ -1,4 +1,5 @@
-import '@/types/wokwi-elements.d.ts'
+/// <reference path="../../../types/wokwi-elements.d.ts" />
+// Reference required for custom element types to be picked up by TS
 import { Head } from '@inertiajs/react'
 import StudentLayout from '@/Layouts/StudentLayout'
 import { useState, useRef, useCallback } from 'react'
@@ -35,6 +36,7 @@ import {
     ModuleType,
     ModuleInstance,
     ExampleTemplate,
+    ArduinoSketch,
 } from '@/components/ArduinoBlockly/ArduinoConfig'
 
 // Import Wokwi elements (registers custom elements)
@@ -44,17 +46,7 @@ import '@wokwi/elements'
 defineArduinoBlocks()
 const generatorHelpers = configureArduinoGenerator()
 
-interface ArduinoSketch {
-    id: string | null
-    name: string
-    code: string
-    board_type?: string
-    modules?: ModuleInstance[]
-    blocks_xml?: string
-    updated_at?: string
-    published?: boolean
-    published_at?: string
-}
+
 
 interface Props {
     sketches: ArduinoSketch[]

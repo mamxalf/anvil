@@ -5,17 +5,17 @@ module Api
     skip_before_action :verify_authenticity_token
     before_action :authenticate_user!
 
-    COMPILER_URL = ENV.fetch('ARDUINO_COMPILER_URL', 'http://localhost:4567')
+    COMPILER_URL = ENV.fetch("ARDUINO_COMPILER_URL", "http://localhost:4567")
     SUPPORTED_BOARDS = %w[uno nano mega].freeze
 
     # POST /api/arduino/compile
     def compile
       code = params[:code]
-      board = params[:board] || 'uno'
+      board = params[:board] || "uno"
 
       # Validations
       if code.blank?
-        return render json: { error: 'Code is required' }, status: :bad_request
+        return render json: { error: "Code is required" }, status: :bad_request
       end
 
       unless SUPPORTED_BOARDS.include?(board)
@@ -25,9 +25,9 @@ module Api
       end
 
       # Check for basic Arduino structure
-      unless code.include?('void setup') && code.include?('void loop')
+      unless code.include?("void setup") && code.include?("void loop")
         return render json: {
-          error: 'Invalid Arduino sketch. Must contain void setup() and void loop() functions.'
+          error: "Invalid Arduino sketch. Must contain void setup() and void loop() functions."
         }, status: :unprocessable_entity
       end
 
@@ -48,7 +48,7 @@ module Api
           success: true,
           hex: result[:hex],
           board: board,
-          message: 'Compilation successful'
+          message: "Compilation successful"
         }
       else
         render json: {
@@ -61,7 +61,7 @@ module Api
       Rails.logger.error("Arduino compilation error: #{e.message}")
       render json: {
         success: false,
-        error: 'Compilation service unavailable',
+        error: "Compilation service unavailable",
         details: e.message
       }, status: :service_unavailable
     end
@@ -75,7 +75,7 @@ module Api
       http.read_timeout = 30
 
       request = Net::HTTP::Post.new(uri)
-      request['Content-Type'] = 'application/json'
+      request["Content-Type"] = "application/json"
       request.body = { code: code, board: board }.to_json
 
       response = http.request(request)
@@ -84,8 +84,8 @@ module Api
       {
         success: false,
         service_error: true,
-        error: 'Arduino compiler service is not running',
-        details: 'Please ensure docker-compose is running with the arduino-compiler service.'
+        error: "Arduino compiler service is not running",
+        details: "Please ensure docker-compose is running with the arduino-compiler service."
       }
     end
   end

@@ -17,7 +17,7 @@ Rails.application.routes.draw do
   # API Namespace Routes
   # ============================================
   namespace :api do
-    post 'arduino/compile', to: 'arduino_compiler#compile'
+    post "arduino/compile", to: "arduino_compiler#compile"
   end
 
   # ============================================
