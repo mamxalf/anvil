@@ -14,6 +14,13 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   # ============================================
+  # API Namespace Routes
+  # ============================================
+  namespace :api do
+    post 'arduino/compile', to: 'arduino_compiler#compile'
+  end
+
+  # ============================================
   # Student Namespace Routes
   # ============================================
   namespace :student do

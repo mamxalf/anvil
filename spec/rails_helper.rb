@@ -99,6 +99,9 @@ end
 require 'capybara/rails'
 require 'capybara-playwright-driver'
 require 'pundit/rspec'
+require 'webmock/rspec'
+
+WebMock.disable_net_connect!(allow_localhost: true)
 
 
 Capybara.register_driver(:playwright) do |app|

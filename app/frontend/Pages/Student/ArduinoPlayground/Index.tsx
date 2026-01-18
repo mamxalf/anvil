@@ -1,7 +1,9 @@
+import '@/types/wokwi-elements.d.ts'
 import { Head } from '@inertiajs/react'
 import StudentLayout from '@/Layouts/StudentLayout'
-import { useState, useRef, useEffect, useCallback } from 'react'
+import { useState, useRef, useCallback } from 'react'
 import { useTranslation } from '@/hooks/useTranslation'
+import { useArduinoSimulation } from '@/hooks/useArduinoSimulation'
 import {
     Play,
     Square,
@@ -17,6 +19,7 @@ import {
     Lightbulb,
     Download,
     Globe,
+    Loader2,
 } from 'lucide-react'
 import { BlocklyWorkspace } from 'react-blockly'
 import * as Blockly from 'blockly/core'
@@ -33,6 +36,9 @@ import {
     ModuleInstance,
     ExampleTemplate,
 } from '@/components/ArduinoBlockly/ArduinoConfig'
+
+// Import Wokwi elements (registers custom elements)
+import '@wokwi/elements'
 
 // Initialize Arduino blocks and generator
 defineArduinoBlocks()
@@ -57,6 +63,10 @@ interface Props {
 
 export default function ArduinoPlaygroundIndex({ sketches, currentSketch }: Props) {
     const { t } = useTranslation()
+
+    // Arduino simulation hook
+    const simulation = useArduinoSimulation()
+
     // State
     const [activeTab, setActiveTab] = useState<'blocks' | 'code'>('blocks')
     const [code, setCode] = useState(currentSketch.code)
@@ -66,9 +76,6 @@ export default function ArduinoPlaygroundIndex({ sketches, currentSketch }: Prop
     const [boardType, setBoardType] = useState<BoardType>((currentSketch.board_type as BoardType) || 'uno')
     const [modules, setModules] = useState<ModuleInstance[]>(currentSketch.modules || [])
 
-    const [isRunning, setIsRunning] = useState(false)
-    const [ledStates, setLedStates] = useState<Record<number, boolean>>({})
-    const [servoAngles] = useState<Record<number, number>>({})
     const [isSaving, setIsSaving] = useState(false)
     const [isPublishing, setIsPublishing] = useState(false)
     const [savedSketches, setSavedSketches] = useState<ArduinoSketch[]>(sketches)
@@ -77,16 +84,16 @@ export default function ArduinoPlaygroundIndex({ sketches, currentSketch }: Prop
     const [showBoardMenu, setShowBoardMenu] = useState(false)
     const [showModuleMenu, setShowModuleMenu] = useState(false)
     const [showExamples, setShowExamples] = useState(false)
-    const [consoleOutput, setConsoleOutput] = useState<string[]>([])
 
-    const runnerRef = useRef<number | null>(null)
     const workspaceRef = useRef<Blockly.WorkspaceSvg | null>(null)
 
     const board = ARDUINO_BOARDS[boardType]
 
-    const addConsoleLog = useCallback((message: string) => {
-        setConsoleOutput((prev) => [...prev.slice(-50), `[${new Date().toLocaleTimeString()}] ${message}`])
-    }, [])
+    // Derive states from simulation
+    const isRunning = simulation.state.isRunning
+    const isCompiling = simulation.state.isCompiling
+    const ledStates = simulation.state.pinStates
+    const consoleOutput = simulation.state.serialOutput
 
     // Blockly workspace configuration
     const workspaceConfiguration = {
@@ -121,74 +128,40 @@ export default function ArduinoPlaygroundIndex({ sketches, currentSketch }: Prop
         [generatorHelpers]
     )
 
-    // Simulation
-    const runSimulation = useCallback(() => {
-        if (isRunning) return
+    // Simulation using avr8js
+    const runSimulation = useCallback(async () => {
+        if (isRunning || isCompiling) return
 
-        setConsoleOutput([])
-        addConsoleLog('🚀 Starting simulation...')
-        addConsoleLog(`📟 Board: ${board.name}`)
-        addConsoleLog(`🔌 Modules: ${modules.length}`)
-
-        // Parse delay from code
-        const delayMatch = code.match(/delay\s*\(\s*(\d+)\s*\)/)
-        const delayMs = delayMatch ? parseInt(delayMatch[1], 10) : 1000
-
-        setIsRunning(true)
-        addConsoleLog('✅ Simulation running!')
-
-        // Simulate LED blink for all LED modules
-        const ledModules = modules.filter((m) => m.type === 'led' || m.type === 'rgb_led')
-        let ledState = false
-
-        const blinkInterval = setInterval(() => {
-            ledState = !ledState
-            const newStates: Record<number, boolean> = {}
-            ledModules.forEach((m) => {
-                newStates[m.pin as number] = ledState
-            })
-            // Also include pin 13 as default
-            newStates[13] = ledState
-            setLedStates(newStates)
-            addConsoleLog(`💡 LEDs: ${ledState ? 'ON' : 'OFF'}`)
-        }, delayMs)
-
-        runnerRef.current = blinkInterval as unknown as number
-    }, [isRunning, code, modules, board.name, addConsoleLog])
+        // Compile first, then run
+        const success = await simulation.compile(code, boardType)
+        if (success) {
+            simulation.run()
+        }
+    }, [isRunning, isCompiling, code, boardType, simulation])
 
     const stopSimulation = useCallback(() => {
-        if (runnerRef.current) {
-            clearInterval(runnerRef.current)
-            runnerRef.current = null
-        }
-        setIsRunning(false)
-        setLedStates({})
-        addConsoleLog('⏹️ Simulation stopped')
-    }, [addConsoleLog])
+        simulation.stop()
+    }, [simulation])
 
     const resetSimulation = useCallback(() => {
-        stopSimulation()
-        setConsoleOutput([])
-        addConsoleLog('🔄 Reset complete')
-    }, [stopSimulation, addConsoleLog])
+        simulation.reset()
+    }, [simulation])
 
     // Add module
     const addModule = (type: ModuleType) => {
         const moduleConfig = ARDUINO_MODULES[type]
         const newModule: ModuleInstance = {
-            id: `${type}_${Date.now()}`,
+            id: `${type}_${Date.now()} `,
             type,
             pin: moduleConfig.defaultPin,
             name: moduleConfig.name,
         }
         setModules([...modules, newModule])
         setShowModuleMenu(false)
-        addConsoleLog(`➕ Added ${moduleConfig.name}`)
     }
 
     const removeModule = (id: string) => {
         setModules(modules.filter((m) => m.id !== id))
-        addConsoleLog('➖ Module removed')
     }
 
     // Load example template
@@ -201,7 +174,6 @@ export default function ArduinoPlaygroundIndex({ sketches, currentSketch }: Prop
         setCode(template.code)
         setShowExamples(false)
         stopSimulation()
-        addConsoleLog(`📂 Loaded template: ${template.name}`)
 
         // Load blocks into workspace
         if (workspaceRef.current && template.blocksXml) {
@@ -229,7 +201,7 @@ export default function ArduinoPlaygroundIndex({ sketches, currentSketch }: Prop
             }
 
             if (sketchId) {
-                const response = await fetch(`/student/arduino_sketches/${sketchId}`, {
+                const response = await fetch(`/ student / arduino_sketches / ${sketchId} `, {
                     method: 'PATCH',
                     headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': csrfToken || '' },
                     body: JSON.stringify(payload),
@@ -237,7 +209,6 @@ export default function ArduinoPlaygroundIndex({ sketches, currentSketch }: Prop
                 if (response.ok) {
                     const updated = await response.json()
                     setSavedSketches((prev) => prev.map((s) => (s.id === sketchId ? updated : s)))
-                    addConsoleLog(`💾 Saved: ${sketchName}`)
                 }
             } else {
                 const response = await fetch('/student/arduino_sketches', {
@@ -249,12 +220,10 @@ export default function ArduinoPlaygroundIndex({ sketches, currentSketch }: Prop
                     const created = await response.json()
                     setSketchId(created.id)
                     setSavedSketches((prev) => [created, ...prev])
-                    addConsoleLog(`💾 Created: ${sketchName}`)
                 }
             }
         } catch (error) {
             console.error('Save error:', error)
-            addConsoleLog('❌ Save failed')
         } finally {
             setIsSaving(false)
         }
@@ -270,23 +239,19 @@ export default function ArduinoPlaygroundIndex({ sketches, currentSketch }: Prop
         setBlocksXml(sketch.blocks_xml || '')
         setShowSketchList(false)
         stopSimulation()
-        addConsoleLog(`📂 Loaded: ${sketch.name}`)
     }
 
     // Publish sketch
     const togglePublish = async () => {
-        if (!sketchId) {
-            addConsoleLog('⚠️ Please save the sketch first')
-            return
-        }
+        if (!sketchId) return
 
         setIsPublishing(true)
         try {
             const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content')
-            const currentSketch = savedSketches.find(s => s.id === sketchId)
-            const isPublished = currentSketch?.published
+            const currentSketchData = savedSketches.find(s => s.id === sketchId)
+            const isPublished = currentSketchData?.published
 
-            const endpoint = `/student/arduino_sketches/${sketchId}/${isPublished ? 'unpublish' : 'publish'}`
+            const endpoint = `/ student / arduino_sketches / ${sketchId}/${isPublished ? 'unpublish' : 'publish'}`
 
             const response = await fetch(endpoint, {
                 method: 'POST',
@@ -296,13 +261,11 @@ export default function ArduinoPlaygroundIndex({ sketches, currentSketch }: Prop
             if (response.ok) {
                 const updated = await response.json()
                 setSavedSketches((prev) => prev.map((s) => (s.id === sketchId ? updated : s)))
-                addConsoleLog(isPublished ? '🔓 Unpublished sketch' : '🌍 Published to Community!')
             } else {
                 throw new Error('Failed to update publish status')
             }
         } catch (error) {
             console.error('Publish error:', error)
-            addConsoleLog('❌ Publish failed')
         } finally {
             setIsPublishing(false)
         }
@@ -317,12 +280,8 @@ export default function ArduinoPlaygroundIndex({ sketches, currentSketch }: Prop
         setSketchName('New Sketch')
     }
 
-    // Cleanup
-    useEffect(() => {
-        return () => {
-            if (runnerRef.current) clearInterval(runnerRef.current)
-        }
-    }, [])
+    // Servo angles (placeholder for future implementation)
+    const servoAngles: Record<number, number> = {}
 
     return (
         <StudentLayout>
@@ -445,8 +404,8 @@ export default function ArduinoPlaygroundIndex({ sketches, currentSketch }: Prop
                                 onClick={togglePublish}
                                 disabled={isPublishing || !sketchId}
                                 className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold disabled:opacity-50 shadow-lg transition-all ${savedSketches.find(s => s.id === sketchId)?.published
-                                        ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-green-200 hover:from-green-600 hover:to-emerald-600'
-                                        : 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-50'
+                                    ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-green-200 hover:from-green-600 hover:to-emerald-600'
+                                    : 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-50'
                                     }`}
                                 title={!sketchId ? t('arduino.save_before_publish', { defaultValue: 'Save first to publish' }) : ''}
                             >
@@ -578,15 +537,24 @@ export default function ArduinoPlaygroundIndex({ sketches, currentSketch }: Prop
                                 <div className="flex gap-2">
                                     <button
                                         onClick={resetSimulation}
-                                        className="p-2 bg-white/20 hover:bg-white/30 rounded-lg"
+                                        className="p-2 bg-white/20 hover:bg-white/30 rounded-lg transition-colors"
                                         title="Reset"
+                                        disabled={isCompiling}
                                     >
                                         <RotateCcw className="w-4 h-4 text-white" />
                                     </button>
-                                    {!isRunning ? (
+                                    {isCompiling ? (
+                                        <button
+                                            disabled
+                                            className="flex items-center gap-2 px-4 py-2 bg-yellow-400 text-yellow-900 rounded-lg text-sm font-bold cursor-not-allowed"
+                                        >
+                                            <Loader2 className="w-4 h-4 animate-spin" />
+                                            {t('arduino.compiling', { defaultValue: 'Compiling...' })}
+                                        </button>
+                                    ) : !isRunning ? (
                                         <button
                                             onClick={runSimulation}
-                                            className="flex items-center gap-2 px-4 py-2 bg-white text-kodibot-orange hover:bg-orange-50 rounded-lg text-sm font-bold"
+                                            className="flex items-center gap-2 px-4 py-2 bg-white text-kodibot-orange hover:bg-orange-50 rounded-lg text-sm font-bold transition-colors shadow-lg hover:shadow-xl"
                                         >
                                             <Play className="w-4 h-4" />
                                             {t('arduino.run', { defaultValue: 'Run' })}
@@ -594,7 +562,7 @@ export default function ArduinoPlaygroundIndex({ sketches, currentSketch }: Prop
                                     ) : (
                                         <button
                                             onClick={stopSimulation}
-                                            className="flex items-center gap-2 px-4 py-2 bg-red-500 text-white hover:bg-red-600 rounded-lg text-sm font-bold"
+                                            className="flex items-center gap-2 px-4 py-2 bg-red-500 text-white hover:bg-red-600 rounded-lg text-sm font-bold transition-colors animate-pulse"
                                         >
                                             <Square className="w-4 h-4" />
                                             {t('arduino.stop', { defaultValue: 'Stop' })}
@@ -604,66 +572,72 @@ export default function ArduinoPlaygroundIndex({ sketches, currentSketch }: Prop
                             </div>
 
                             {/* Board Visualization */}
-                            <div className="flex-1 bg-gradient-to-br from-gray-100 to-gray-200 p-4 flex flex-col items-center justify-center gap-4 overflow-y-auto">
-                                {/* Arduino Board */}
-                                <div
-                                    className="bg-[#087A9A] rounded-lg p-3 shadow-xl relative"
-                                    style={{ width: '200px', height: '130px' }}
-                                >
-                                    <div className="flex gap-0.5 mb-2">
-                                        {[...Array(Math.min(board.digitalPins, 14))].map((_, i) => (
-                                            <div key={i} className="w-2 h-4 bg-gray-800 rounded-t" />
-                                        ))}
+                            <div className="flex-1 bg-gradient-to-br from-slate-800 to-slate-900 p-6 flex flex-col items-center justify-center gap-6 overflow-y-auto">
+                                {/* Wokwi Arduino Board */}
+                                <div className="relative">
+                                    <wokwi-arduino-uno
+                                        led13={ledStates[13] ? 'high' : 'low'}
+                                        ledPower="high"
+                                    />
+                                    {/* Status Indicator */}
+                                    <div className={`absolute -top-2 -right-2 px-2 py-1 rounded-full text-xs font-bold ${isRunning
+                                        ? 'bg-green-500 text-white animate-pulse'
+                                        : isCompiling
+                                            ? 'bg-yellow-500 text-yellow-900'
+                                            : 'bg-gray-600 text-gray-300'
+                                        }`}>
+                                        {isRunning ? '▶ Running' : isCompiling ? '⚙ Compiling' : '⏸ Stopped'}
                                     </div>
-                                    <div className="bg-gray-900 rounded mx-auto w-16 h-10 flex items-center justify-center">
-                                        <span className="text-white text-[8px] font-bold">ATmega</span>
-                                    </div>
-                                    <div className="flex justify-end gap-2 mt-2 pr-2">
-                                        <div className="flex flex-col items-center">
-                                            <div
-                                                className={`w-3 h-3 rounded-full transition-all ${ledStates[13] ? 'bg-yellow-400 shadow-[0_0_10px_rgba(250,204,21,0.8)]' : 'bg-gray-600'
-                                                    }`}
-                                            />
-                                            <span className="text-white text-[8px]">L</span>
-                                        </div>
-                                        <div className="flex flex-col items-center">
-                                            <div className="w-3 h-3 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]" />
-                                            <span className="text-white text-[8px]">ON</span>
-                                        </div>
-                                    </div>
-                                    <div className="absolute -left-1 top-1/2 -translate-y-1/2 w-4 h-8 bg-gray-400 rounded-l" />
                                 </div>
 
-                                {/* Connected Modules */}
+                                {/* Connected Modules with Wokwi Elements */}
                                 {modules.length > 0 && (
-                                    <div className="flex flex-wrap gap-2 justify-center">
+                                    <div className="flex flex-wrap gap-4 justify-center p-4 bg-slate-700/50 rounded-xl">
                                         {modules.map((module) => {
                                             const config = ARDUINO_MODULES[module.type]
                                             return (
                                                 <div
                                                     key={module.id}
-                                                    className="bg-white rounded-xl p-2 shadow-lg flex flex-col items-center min-w-[60px] relative group"
-                                                    style={{ borderTop: `3px solid ${config.color}` }}
+                                                    className="bg-slate-800 rounded-xl p-3 shadow-lg flex flex-col items-center min-w-[80px] relative group border border-slate-600"
                                                 >
-                                                    <span className="text-2xl">{config.icon}</span>
-                                                    <span className="text-[10px] font-bold text-gray-600">Pin {module.pin}</span>
+                                                    {/* Render Wokwi element based on module type */}
                                                     {module.type === 'led' && (
-                                                        <div
-                                                            className={`w-4 h-4 rounded-full mt-1 transition-all ${ledStates[module.pin as number]
-                                                                ? 'bg-yellow-400 shadow-[0_0_12px_rgba(250,204,21,0.8)]'
-                                                                : 'bg-gray-300'
-                                                                }`}
+                                                        <wokwi-led
+                                                            color="red"
+                                                            value={ledStates[module.pin as number] || false}
                                                         />
+                                                    )}
+                                                    {module.type === 'rgb_led' && (
+                                                        <wokwi-rgb-led r={0} g={0} b={0} />
                                                     )}
                                                     {module.type === 'servo' && (
-                                                        <div
-                                                            className="w-6 h-1 bg-gray-700 mt-1 origin-left transition-transform"
-                                                            style={{ transform: `rotate(${servoAngles[module.pin as number] || 90}deg)` }}
-                                                        />
+                                                        <wokwi-servo angle={servoAngles[module.pin as number] || 90} />
                                                     )}
+                                                    {module.type === 'button' && (
+                                                        <wokwi-pushbutton color="red" />
+                                                    )}
+                                                    {module.type === 'buzzer' && (
+                                                        <wokwi-buzzer hasSignal={false} />
+                                                    )}
+                                                    {module.type === 'potentiometer' && (
+                                                        <span className="text-3xl">🎛️</span>
+                                                    )}
+                                                    {module.type === 'lcd' && (
+                                                        <wokwi-lcd1602 text="Hello World!" backlight={true} />
+                                                    )}
+                                                    {module.type === 'ultrasonic' && (
+                                                        <span className="text-3xl">📡</span>
+                                                    )}
+                                                    {module.type === 'dht11' && (
+                                                        <span className="text-3xl">🌡️</span>
+                                                    )}
+
+                                                    <span className="text-xs font-bold text-slate-300 mt-2">Pin {module.pin}</span>
+                                                    <span className="text-[10px] text-slate-400">{config.name}</span>
+
                                                     <button
                                                         onClick={() => removeModule(module.id)}
-                                                        className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white rounded-full text-[10px] opacity-0 group-hover:opacity-100 transition-opacity"
+                                                        className="absolute -top-2 -right-2 w-5 h-5 bg-red-500 text-white rounded-full text-xs opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center hover:bg-red-600"
                                                     >
                                                         ×
                                                     </button>
@@ -677,25 +651,25 @@ export default function ArduinoPlaygroundIndex({ sketches, currentSketch }: Prop
                                 <div className="relative">
                                     <button
                                         onClick={() => setShowModuleMenu(!showModuleMenu)}
-                                        className="flex items-center gap-2 px-3 py-2 bg-white hover:bg-gray-50 rounded-lg text-sm font-medium shadow border border-dashed border-orange-300 text-orange-600"
+                                        className="flex items-center gap-2 px-4 py-3 bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 rounded-xl text-sm font-bold shadow-lg hover:shadow-xl transition-all text-white"
                                     >
-                                        <Plus className="w-4 h-4" />
+                                        <Plus className="w-5 h-5" />
                                         {t('arduino.add_component', { defaultValue: 'Add Component' })}
                                     </button>
                                     {showModuleMenu && (
-                                        <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-64 bg-white rounded-xl shadow-2xl border z-50 overflow-hidden">
-                                            <div className="p-2 bg-orange-50 border-b">
-                                                <p className="text-xs font-bold text-orange-600 uppercase">{t('arduino.components', { defaultValue: 'Components' })}</p>
+                                        <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-72 bg-slate-800 rounded-xl shadow-2xl border border-slate-600 z-50 overflow-hidden">
+                                            <div className="p-3 bg-gradient-to-r from-orange-500 to-yellow-500">
+                                                <p className="text-sm font-bold text-white">🔧 {t('arduino.components', { defaultValue: 'Components' })}</p>
                                             </div>
-                                            <div className="max-h-48 overflow-y-auto grid grid-cols-2 gap-1 p-2">
+                                            <div className="max-h-56 overflow-y-auto grid grid-cols-2 gap-2 p-3">
                                                 {Object.entries(ARDUINO_MODULES).map(([key, m]) => (
                                                     <button
                                                         key={key}
                                                         onClick={() => addModule(key as ModuleType)}
-                                                        className="flex items-center gap-2 p-2 hover:bg-gray-50 rounded-lg text-left"
+                                                        className="flex items-center gap-2 p-3 bg-slate-700 hover:bg-slate-600 rounded-lg text-left transition-colors"
                                                     >
-                                                        <span className="text-xl">{m.icon}</span>
-                                                        <span className="text-xs font-medium">{m.name}</span>
+                                                        <span className="text-2xl">{m.icon}</span>
+                                                        <span className="text-xs font-medium text-white">{m.name}</span>
                                                     </button>
                                                 ))}
                                             </div>
@@ -706,17 +680,29 @@ export default function ArduinoPlaygroundIndex({ sketches, currentSketch }: Prop
                         </div>
 
                         {/* Serial Monitor */}
-                        <div className="bg-gray-900 rounded-2xl overflow-hidden h-36 flex flex-col shadow-xl">
-                            <div className="bg-gray-800 px-4 py-2 flex items-center gap-2">
-                                <div className={`w-2 h-2 rounded-full ${isRunning ? 'bg-green-500 animate-pulse' : 'bg-gray-500'}`} />
-                                <span className="text-gray-400 text-sm font-mono">{t('arduino.serial_monitor', { defaultValue: 'Serial Monitor' })}</span>
+                        <div className="bg-slate-900 rounded-2xl overflow-hidden h-44 flex flex-col shadow-xl border border-slate-700">
+                            <div className="bg-gradient-to-r from-slate-800 to-slate-700 px-4 py-2 flex items-center justify-between">
+                                <div className="flex items-center gap-2">
+                                    <div className={`w-2.5 h-2.5 rounded-full ${isRunning ? 'bg-green-500 animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.6)]' : 'bg-gray-500'}`} />
+                                    <span className="text-slate-300 text-sm font-bold">📟 {t('arduino.serial_monitor', { defaultValue: 'Serial Monitor' })}</span>
+                                </div>
+                                <button
+                                    onClick={() => simulation.reset()}
+                                    className="px-3 py-1 text-xs bg-slate-600 hover:bg-slate-500 text-slate-200 rounded-lg transition-colors"
+                                >
+                                    🗑️ Clear
+                                </button>
                             </div>
-                            <div className="flex-1 p-3 font-mono text-xs text-green-400 overflow-y-auto">
+                            <div className="flex-1 p-4 font-mono text-sm text-green-400 overflow-y-auto bg-slate-950/50">
                                 {consoleOutput.length === 0 ? (
-                                    <span className="text-gray-600">{t('arduino.output_placeholder', { defaultValue: '// Output will appear here...' })}</span>
+                                    <div className="flex flex-col items-center justify-center h-full text-slate-600">
+                                        <span className="text-2xl mb-2">💬</span>
+                                        <span>{t('arduino.output_placeholder', { defaultValue: 'Output will appear here...' })}</span>
+                                    </div>
                                 ) : (
                                     consoleOutput.map((line, i) => (
-                                        <div key={i} className="leading-relaxed">
+                                        <div key={i} className="leading-relaxed py-0.5 border-b border-slate-800/50">
+                                            <span className="text-slate-500 text-xs mr-2">[{i + 1}]</span>
                                             {line}
                                         </div>
                                     ))

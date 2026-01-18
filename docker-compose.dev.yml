@@ -10,11 +10,22 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test:
-        ["CMD-SHELL", "pg_isready -U postgres -d postgres"]
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d postgres" ]
       interval: 5s
       timeout: 5s
       retries: 5
-      
+
+  arduino-compiler:
+    build:
+      context: .
+      dockerfile: Dockerfile.arduino-compiler
+    ports:
+      - "4567:4567"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:4567/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
 volumes:
   postgres_data:

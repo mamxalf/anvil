@@ -1,0 +1,41 @@
+FROM ruby:3.4.1-slim
+
+# Install dependencies
+RUN apt-get update && apt-get install -y \
+    curl \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install arduino-cli directly (avoid rate-limited install script)
+# Using a specific version for stability
+ARG ARDUINO_CLI_VERSION=1.1.1
+ARG TARGETARCH
+
+RUN ARCH=$(case ${TARGETARCH:-$(dpkg --print-architecture)} in \
+    amd64) echo "64bit" ;; \
+    arm64) echo "ARM64" ;; \
+    *) echo "64bit" ;; \
+    esac) && \
+    curl -fsSL "https://downloads.arduino.cc/arduino-cli/arduino-cli_${ARDUINO_CLI_VERSION}_Linux_${ARCH}.tar.gz" \
+    -o /tmp/arduino-cli.tar.gz && \
+    tar -xzf /tmp/arduino-cli.tar.gz -C /usr/local/bin arduino-cli && \
+    rm /tmp/arduino-cli.tar.gz && \
+    chmod +x /usr/local/bin/arduino-cli
+
+# Initialize arduino-cli and install AVR core
+RUN arduino-cli config init && \
+    arduino-cli core update-index && \
+    arduino-cli core install arduino:avr
+
+# Create working directory for sketches
+WORKDIR /sketches
+
+# Install webrick (not bundled by default in Ruby 3.4)
+RUN gem install webrick
+
+# Create a simple HTTP server script for compilation
+COPY arduino-compiler-server.rb /app/arduino-compiler-server.rb
+
+EXPOSE 4567
+
+CMD ["ruby", "/app/arduino-compiler-server.rb"]
