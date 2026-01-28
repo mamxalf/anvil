@@ -82,6 +82,25 @@ export default function Learn({ course, modules, currentLesson }: LearnProps) {
     )
   }
 
+  // Get next lesson ID from all lessons across modules
+  const getNextLessonId = (): string | null => {
+    if (!currentLesson) return null
+    const allLessons = modules.flatMap((mod: any) => mod.lessons)
+    const currentIndex = allLessons.findIndex((l: any) => l.id === currentLesson.id)
+    if (currentIndex >= 0 && currentIndex < allLessons.length - 1) {
+      return allLessons[currentIndex + 1].id
+    }
+    return null
+  }
+
+  const handleNextLesson = () => {
+    const nextId = getNextLessonId()
+    if (nextId) {
+      handleLessonSelect(nextId)
+    }
+  }
+
+
   const SidebarContent = () => (
     <div className="h-full overflow-y-auto bg-white">
       <div className="p-6 border-b border-gray-100 bg-gradient-to-r from-orange-500 via-kodibot-orange to-yellow-500 text-white">
@@ -275,6 +294,7 @@ export default function Learn({ course, modules, currentLesson }: LearnProps) {
                           })
                           console.log('Maze completed with stars:', stars)
                         }}
+                        onNextLesson={getNextLessonId() ? handleNextLesson : undefined}
                       />
                     </div>
                   </Suspense>

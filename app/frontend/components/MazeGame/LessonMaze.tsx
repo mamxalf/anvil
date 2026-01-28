@@ -47,7 +47,9 @@ interface LessonMazeProps {
     lessonContent: string
     videoUrl?: string
     onComplete: (stars: number) => void
+    onNextLesson?: () => void
 }
+
 
 
 export function LessonMaze({
@@ -55,7 +57,8 @@ export function LessonMaze({
     activityConfig,
     lessonContent,
     videoUrl,
-    onComplete
+    onComplete,
+    onNextLesson
 }: LessonMazeProps) {
     const { t } = useTranslation()
 
@@ -133,7 +136,20 @@ export function LessonMaze({
         setIsRunning(false)
 
         if (resultType === ResultType.SUCCESS) {
-            // Always show completion modal
+            // Calculate stars based on block efficiency
+            const calculateStars = (): number => {
+                const maxBlocks = levelConfig.maxBlocks || Infinity
+                if (maxBlocks === Infinity || blockCount <= maxBlocks) return 3
+                if (blockCount <= maxBlocks * 1.5) return 2
+                return 1
+            }
+
+            const stars = calculateStars()
+            const xp = stars * 50  // 50 XP per star
+
+            // Set stars first, then show modal
+            setEarnedStars(stars)
+            setEarnedXp(xp)
             setShowCompletion(true)
 
             // Try to sync and complete attempt if available
@@ -145,21 +161,21 @@ export function LessonMaze({
                         time_elapsed_seconds: 0
                     })
 
-                    setEarnedStars(response.attempt.stars_earned)
-                    setEarnedXp(response.xp_earned)
-                    onComplete(response.attempt.stars_earned)
+                    // Update with server response if different
+                    if (response.attempt.stars_earned) {
+                        setEarnedStars(response.attempt.stars_earned)
+                        setEarnedXp(response.xp_earned)
+                        onComplete(response.attempt.stars_earned)
+                    } else {
+                        onComplete(stars)
+                    }
                 } catch (err) {
                     console.error('Complete attempt error:', err)
-                    // Still show completion with default values
-                    setEarnedStars(1)
-                    setEarnedXp(50)
-                    onComplete(1)
+                    onComplete(stars)
                 }
             } else {
-                // No attempt tracking, show default completion
-                setEarnedStars(1)
-                setEarnedXp(50)
-                onComplete(1)
+                // No attempt tracking
+                onComplete(stars)
             }
         } else if (resultType === ResultType.FAILURE || resultType === ResultType.CRASH) {
             setError(resultType === ResultType.CRASH
@@ -173,7 +189,7 @@ export function LessonMaze({
                 await immediateSync()
             }
         }
-    }, [attempt, blockCount, immediateSync, onComplete, updateAttempt])
+    }, [attempt, blockCount, immediateSync, onComplete, updateAttempt, levelConfig])
 
     // Initialize engine
     useEffect(() => {
@@ -351,6 +367,7 @@ export function LessonMaze({
                     stars={earnedStars}
                     xp={earnedXp}
                     onClose={handleModalClose}
+                    onNext={onNextLesson}
                 />
             )}
         </div>

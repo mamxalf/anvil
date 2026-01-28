@@ -38,7 +38,7 @@ export function CompletionModal({ stars, xp, onClose, onNext }: CompletionModalP
 
   return (
     <Dialog open={true} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md z-[9999]">
         <DialogHeader>
           <button
             onClick={onClose}
