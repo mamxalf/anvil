@@ -465,4 +465,3 @@ puts "   - Module 3 (Kondisional): Levels 6-8"
 puts "   - Module 4 (Logika Lanjutan): Levels 9-10"
 
 puts "Seed completed!"
-
