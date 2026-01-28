@@ -4,14 +4,15 @@ import type { PlatformerLevelConfig } from './PlatformerTypes'
 
 // Level 1: Movement basics - straight line to goal
 // Player starts at x=50, needs 9 "move_right" blocks to reach goal at x=500
+// Platform at y=370, player height=32, so spawn/goal Y = 370-32 = 338
 export const level1: PlatformerLevelConfig = {
     level: 1,
     worldWidth: 600,
     worldHeight: 400,
     spawnX: 50,
-    spawnY: 320,
+    spawnY: 338, // 370 (platform) - 32 (player height)
     goalX: 500, // 50 + (9 * 50) = 500 → exactly 9 steps
-    goalY: 320,
+    goalY: 338,
     platforms: [
         [0, 370, 600, 30], // Single floor
     ],
@@ -28,17 +29,17 @@ export const level2: PlatformerLevelConfig = {
     worldWidth: 700,
     worldHeight: 400,
     spawnX: 50,
-    spawnY: 320,
-    goalX: 620,
-    goalY: 320,
+    spawnY: 338, // 370 - 32
+    goalX: 600,
+    goalY: 338,
     platforms: [
-        [0, 370, 250, 30], // Start platform
-        [350, 370, 350, 30], // Goal platform (100px gap)
+        [0, 370, 250, 30], // Start platform (ends at x=250)
+        [350, 370, 350, 30], // Goal platform (100px gap from 250 to 350)
     ],
     obstacles: [],
     collectibles: [[300, 330, 'coin']], // Coin in air above gap
-    availableBlocks: ['move_right', 'jump'],
-    maxBlocks: 6,
+    availableBlocks: ['move_right', 'jump_right'],
+    maxBlocks: 8,
     requiredCollectibles: 0,
 }
 
@@ -48,9 +49,9 @@ export const level3: PlatformerLevelConfig = {
     worldWidth: 800,
     worldHeight: 400,
     spawnX: 50,
-    spawnY: 320,
-    goalX: 720,
-    goalY: 320,
+    spawnY: 338, // 370 - 32
+    goalX: 700,
+    goalY: 338,
     platforms: [
         [0, 370, 200, 30], // Start
         [250, 320, 100, 30], // Higher platform
@@ -60,20 +61,20 @@ export const level3: PlatformerLevelConfig = {
     ],
     obstacles: [],
     collectibles: [],
-    availableBlocks: ['move_right', 'move_left', 'jump'],
-    maxBlocks: 12,
+    availableBlocks: ['move_right', 'move_left', 'jump', 'jump_right'],
+    maxBlocks: 15,
     requiredCollectibles: 0,
 }
 
-// Level 4: Use repeat to cross repeated platforms
+// Level 4: Use repeat to cross repeated platforms (20px gaps)
 export const level4: PlatformerLevelConfig = {
     level: 4,
     worldWidth: 700,
     worldHeight: 400,
     spawnX: 50,
-    spawnY: 320,
-    goalX: 620,
-    goalY: 320,
+    spawnY: 338,
+    goalX: 650,
+    goalY: 338,
     platforms: [
         [0, 370, 100, 30],
         [120, 370, 100, 30],
@@ -84,7 +85,7 @@ export const level4: PlatformerLevelConfig = {
     ],
     obstacles: [],
     collectibles: [],
-    availableBlocks: ['move_right', 'jump', 'jump_right', 'repeat'],
+    availableBlocks: ['move_right', 'jump_right', 'repeat'],
     maxBlocks: 5, // Force use of repeat
     requiredCollectibles: 0,
 }
@@ -95,9 +96,9 @@ export const level5: PlatformerLevelConfig = {
     worldWidth: 800,
     worldHeight: 400,
     spawnX: 50,
-    spawnY: 320,
-    goalX: 720,
-    goalY: 320,
+    spawnY: 338,
+    goalX: 700,
+    goalY: 338,
     platforms: [
         [0, 370, 100, 30],
         [120, 300, 100, 30], // Up
@@ -112,7 +113,7 @@ export const level5: PlatformerLevelConfig = {
         [420, 260, 'coin'],
     ],
     availableBlocks: ['move_right', 'jump', 'jump_right', 'jump_left', 'repeat'],
-    maxBlocks: 8,
+    maxBlocks: 10,
     requiredCollectibles: 0,
 }
 
@@ -122,20 +123,20 @@ export const level6: PlatformerLevelConfig = {
     worldWidth: 900,
     worldHeight: 400,
     spawnX: 50,
-    spawnY: 320,
-    goalX: 820,
-    goalY: 320,
+    spawnY: 338,
+    goalX: 800,
+    goalY: 338,
     platforms: [
         [0, 370, 900, 30], // Long floor
     ],
     obstacles: [],
     collectibles: [
-        [150, 330, 'coin'],
-        [250, 330, 'coin'],
-        [350, 330, 'coin'],
-        [450, 330, 'coin'],
-        [550, 330, 'coin'],
-        [650, 330, 'coin'],
+        [150, 340, 'coin'],
+        [250, 340, 'coin'],
+        [350, 340, 'coin'],
+        [450, 340, 'coin'],
+        [550, 340, 'coin'],
+        [650, 340, 'coin'],
     ],
     availableBlocks: ['move_right', 'jump', 'repeat'],
     maxBlocks: 6,
@@ -148,14 +149,14 @@ export const level7: PlatformerLevelConfig = {
     worldWidth: 700,
     worldHeight: 400,
     spawnX: 50,
-    spawnY: 320,
-    goalX: 620,
-    goalY: 320,
+    spawnY: 338,
+    goalX: 600,
+    goalY: 338,
     platforms: [[0, 370, 700, 30]],
     obstacles: [
-        [200, 340, 30, 30, 'spike'], // Spike on ground
-        [350, 340, 30, 30, 'spike'], // Another spike
-        [500, 340, 30, 30, 'spike'], // Third spike
+        [200, 350, 30, 20, 'spike'], // Spike on ground
+        [350, 350, 30, 20, 'spike'], // Another spike
+        [500, 350, 30, 20, 'spike'], // Third spike
     ],
     collectibles: [],
     availableBlocks: ['move_right', 'jump', 'if_spike_ahead', 'repeat'],
@@ -169,9 +170,9 @@ export const level8: PlatformerLevelConfig = {
     worldWidth: 800,
     worldHeight: 400,
     spawnX: 50,
-    spawnY: 320,
-    goalX: 720,
-    goalY: 320,
+    spawnY: 338,
+    goalX: 700,
+    goalY: 338,
     platforms: [
         [0, 370, 200, 30], // Start
         [300, 370, 100, 30], // After gap 1
@@ -183,8 +184,8 @@ export const level8: PlatformerLevelConfig = {
         [250, 280, 'coin'],
         [450, 280, 'coin'],
     ],
-    availableBlocks: ['move_right', 'jump', 'jump_right', 'if_gap_ahead', 'repeat'],
-    maxBlocks: 10,
+    availableBlocks: ['move_right', 'jump_right', 'if_gap_ahead', 'repeat'],
+    maxBlocks: 12,
     requiredCollectibles: 0,
 }
 
@@ -194,9 +195,9 @@ export const level9: PlatformerLevelConfig = {
     worldWidth: 1000,
     worldHeight: 400,
     spawnX: 50,
-    spawnY: 350,
-    goalX: 920,
-    goalY: 350,
+    spawnY: 338,
+    goalX: 900,
+    goalY: 338,
     platforms: [
         [0, 370, 150, 30],
         [200, 320, 100, 30],
@@ -206,15 +207,15 @@ export const level9: PlatformerLevelConfig = {
         [850, 370, 150, 30],
     ],
     obstacles: [
-        [400, 340, 30, 30, 'spike'],
-        [700, 340, 30, 30, 'spike'],
-        [780, 340, 30, 30, 'spike'],
+        [400, 350, 30, 20, 'spike'],
+        [700, 350, 30, 20, 'spike'],
+        [780, 350, 30, 20, 'spike'],
     ],
     collectibles: [
         [250, 280, 'coin'],
         [400, 260, 'coin'],
         [550, 260, 'coin'],
-        [750, 330, 'coin'],
+        [750, 340, 'coin'],
     ],
     availableBlocks: [
         'move_right',
@@ -226,7 +227,7 @@ export const level9: PlatformerLevelConfig = {
         'if_gap_ahead',
         'repeat',
     ],
-    maxBlocks: 15,
+    maxBlocks: 18,
     requiredCollectibles: 3,
 }
 
@@ -236,9 +237,9 @@ export const level10: PlatformerLevelConfig = {
     worldWidth: 1200,
     worldHeight: 450,
     spawnX: 50,
-    spawnY: 350,
+    spawnY: 368, // 400 - 32
     goalX: 1100,
-    goalY: 350,
+    goalY: 368,
     platforms: [
         [0, 400, 150, 30],
         [180, 350, 80, 30],
@@ -251,10 +252,10 @@ export const level10: PlatformerLevelConfig = {
         [1050, 400, 150, 30],
     ],
     obstacles: [
-        [230, 320, 30, 30, 'spike'],
-        [580, 370, 30, 30, 'spike'],
-        [620, 370, 30, 30, 'spike'],
-        [880, 320, 30, 30, 'spike'],
+        [230, 330, 30, 20, 'spike'],
+        [580, 380, 30, 20, 'spike'],
+        [620, 380, 30, 20, 'spike'],
+        [880, 330, 30, 20, 'spike'],
     ],
     collectibles: [
         [220, 260, 'gem'],
@@ -275,7 +276,7 @@ export const level10: PlatformerLevelConfig = {
         'if_gap_ahead',
         'repeat',
     ],
-    maxBlocks: 20,
+    maxBlocks: 25,
     requiredCollectibles: 5,
 }
 

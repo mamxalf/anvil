@@ -41,6 +41,43 @@ A specialized STEM Learning Management System (LMS) designed for children, built
 - ✅ UUID primary keys for all models
 - ✅ Responsive UI with Tailwind CSS and Shadcn UI
 - ✅ Maze game integration with Code.org-style learning
+- ✅ Platformer game for visual programming learning
+
+## Future Features Roadmap
+
+### 🎮 Interactive Learning Games
+
+| Feature | Description | Concepts Taught |
+|---------|-------------|-----------------|
+| **🐢 Turtle Graphics** | Draw shapes with commands like `maju`, `belok kanan 90°` | Geometry, angles, loops |
+| **📊 Sorting Visualizer** | Visual animations of bubble sort, selection sort | Algorithms, complexity |
+| **🧩 Pattern Recognition** | Guess the next pattern (numbers, colors, shapes) | Logic, sequences |
+| **🧊 3D Voxel Builder** | Build 3D models with blocks, export to .obj | Spatial reasoning, 3D coordinates |
+
+### ⚡ STEM Simulations
+
+| Feature | Description | Concepts Taught |
+|---------|-------------|-----------------|
+| **🔌 Circuit Builder** | Drag-and-drop components: battery, lamp, switch, resistor | Electricity, series vs parallel |
+| **🔬 Physics Sandbox** | Simulate gravity, projectiles, friction | Physics fundamentals |
+| **🧬 Simple Biology** | Interactive cell/ecosystem simulations | Life sciences |
+
+### 🤖 Arduino & IoT Extensions
+
+| Feature | Description |
+|---------|-------------|
+| **Mission-Based Challenges** | Guided tasks with real sensors and actuators |
+| **Virtual Robot Simulator** | Program a virtual robot before real hardware |
+| **IoT Dashboard** | Real-time sensor monitoring and data visualization |
+
+### 📚 Learning Enhancements
+
+| Feature | Description |
+|---------|-------------|
+| **Adaptive Difficulty** | AI-powered level adjustment based on student progress |
+| **Collaborative Coding** | Real-time pair programming for students |
+| **Parent Dashboard** | Progress reports and learning analytics for parents |
+| **Offline Mode** | Download lessons for offline learning |
 
 ## Maze Game Integration
 

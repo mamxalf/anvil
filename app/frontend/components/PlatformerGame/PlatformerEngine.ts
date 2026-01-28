@@ -305,7 +305,7 @@ export class PlatformerEngine {
         await this.animateJump(targetX)
     }
 
-    // Animate horizontal movement to target X
+    // Animate horizontal movement to target X (with gravity!)
     private async animateToPosition(targetX: number | null, _targetY: number | null): Promise<void> {
         return new Promise<void>((resolve) => {
             const startX = this.player.position.x
@@ -314,29 +314,46 @@ export class PlatformerEngine {
             let currentFrame = 0
 
             const animate = () => {
-                if (currentFrame >= frames || this.result !== ResultType.UNSET) {
-                    if (targetX !== null) {
-                        this.player.position.x = targetX
-                    }
-                    this.player.velocity.x = 0
-                    this.render()
+                if (this.result !== ResultType.UNSET) {
                     resolve()
                     return
                 }
 
-                // Ease-out interpolation
-                const progress = currentFrame / frames
-                const eased = 1 - Math.pow(1 - progress, 2)
+                // Apply gravity continuously (even during horizontal movement)
+                if (!this.player.onGround) {
+                    this.player.velocity.y += GRAVITY
+                    if (this.player.velocity.y > TERMINAL_VELOCITY) {
+                        this.player.velocity.y = TERMINAL_VELOCITY
+                    }
+                    this.player.position.y += this.player.velocity.y
+                }
 
-                if (targetX !== null) {
+                // Horizontal movement with easing
+                if (currentFrame < frames && targetX !== null) {
+                    const progress = (currentFrame + 1) / frames
+                    const eased = 1 - Math.pow(1 - progress, 2)
                     this.player.position.x = startX + deltaX * eased
                 }
 
+                this.checkWorldBounds()
                 this.checkCollisions()
                 this.render()
 
                 currentFrame++
-                this.animationFrameId = requestAnimationFrame(animate)
+
+                // Continue animation if still moving horizontally OR still falling
+                if (currentFrame < frames || !this.player.onGround) {
+                    this.animationFrameId = requestAnimationFrame(animate)
+                } else {
+                    // Done: snap to target and resolve
+                    if (targetX !== null) {
+                        this.player.position.x = targetX
+                    }
+                    this.player.velocity.x = 0
+                    this.player.velocity.y = 0
+                    this.render()
+                    resolve()
+                }
             }
 
             animate()
