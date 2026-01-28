@@ -18,6 +18,21 @@ Rails.application.routes.draw do
   # ============================================
   namespace :api do
     post "arduino/compile", to: "arduino_compiler#compile"
+
+    resources :maze_attempts, only: [ :create, :show, :update ] do
+      member do
+        post :complete
+        post :sync
+      end
+
+      collection do
+        get :active
+      end
+    end
+
+    resources :lessons, only: [] do
+      resources :hints, only: [ :index ], controller: "lesson_hints"
+    end
   end
 
   # ============================================

@@ -69,3 +69,26 @@ export const GRID_ROWS = 10
 export const SQUARE_SIZE = MAZE_WIDTH / GRID_COLS
 export const SPRITE_WIDTH = 150
 export const MAX_LEVEL = 10
+
+// Activity Config Types for Lesson Integration
+export interface MazeLevelConfig {
+  maze_level: number
+  grid_size: [number, number] // [width, height]
+  start_pos: [number, number] // [x, y]
+  goal_pos: [number, number] // [x, y]
+  obstacles: [number, number][] // Array of [x, y] positions
+  optimal_blocks: number
+  optimal_time_seconds: number
+  available_blocks: string[]
+  initial_blocks?: unknown[] // Optional pre-placed blocks
+  required_blocks?: string[] // Blocks that must be used
+  character?: string // Character type
+  goal_item?: string // Goal item type
+}
+
+export interface ExecutionResult {
+  success: boolean
+  duration: number // milliseconds
+  blocks_executed: number
+  error?: string
+}

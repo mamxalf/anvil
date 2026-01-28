@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, lazy, Suspense } from 'react'
 import { Link, router } from '@inertiajs/react'
 import confetti from 'canvas-confetti'
 import StudentLayout from '@/Layouts/StudentLayout'
@@ -13,12 +13,18 @@ import {
   BookOpen,
   Trophy,
   HelpCircle,
+  PanelLeftClose,
+  PanelLeftOpen,
 } from 'lucide-react'
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/sheet'
 import { cn } from '@/lib/utils'
 import { useTranslation } from '@/hooks/useTranslation'
 import { Course } from '@/types'
 import QuizPlayer from '@/components/Quiz/QuizPlayer'
+import { LoadingSpinner } from '@/components/ui/loading-spinner'
+
+// Lazy load LessonMaze component for better performance (maze activity)
+const LessonMaze = lazy(() => import('@/components/MazeGame/LessonMaze'))
 
 interface LearnProps {
   course: Course
@@ -29,8 +35,24 @@ interface LearnProps {
 export default function Learn({ course, modules, currentLesson }: LearnProps) {
   const { t } = useTranslation()
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [isExpanded, setIsExpanded] = useState(false)
+
+  const isMazeActivity = currentLesson?.activity_type === 'maze'
+
+  // Debug logging
+  React.useEffect(() => {
+    if (currentLesson) {
+      console.log('Current Lesson:', {
+        id: currentLesson.id,
+        title: currentLesson.title,
+        activity_type: currentLesson.activity_type,
+        activity_config: currentLesson.activity_config,
+        isMazeActivity
+      })
+    }
+  }, [currentLesson, isMazeActivity])
 
   const handleLessonSelect = (lessonId: string) => {
     if (isLoading) return
@@ -198,150 +220,195 @@ export default function Learn({ course, modules, currentLesson }: LearnProps) {
       </header>
 
       <div className="flex-1 flex overflow-hidden">
-        {/* Desktop Sidebar */}
-        <aside className="w-96 bg-white border-r border-gray-100 hidden lg:block overflow-hidden flex-shrink-0 shadow-[4px_0_24px_-12px_rgba(0,0,0,0.1)] z-10">
-          <SidebarContent />
+        {/* Desktop Sidebar - Collapsible */}
+        <aside className={cn(
+          "bg-white border-r border-gray-100 hidden lg:flex flex-col overflow-hidden flex-shrink-0 shadow-[4px_0_24px_-12px_rgba(0,0,0,0.1)] z-10 transition-all duration-300",
+          sidebarCollapsed ? "w-16" : "w-96"
+        )}>
+          <div className="flex-1 overflow-hidden flex flex-col">
+            {!sidebarCollapsed && <SidebarContent />}
+          </div>
+
+          {/* Collapse Toggle */}
+          <button
+            onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+            className="h-12 flex items-center justify-center border-t border-gray-100 hover:bg-gray-50 transition-colors shrink-0 text-gray-500 hover:text-gray-900"
+            aria-label={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+          >
+            {sidebarCollapsed ? (
+              <PanelLeftOpen className="w-5 h-5" />
+            ) : (
+              <div className="flex items-center gap-2 font-medium text-sm">
+                <PanelLeftClose className="w-4 h-4" />
+                <span>Sembunyikan Sidebar</span>
+              </div>
+            )}
+          </button>
         </aside>
 
         {/* Main Content */}
-        <main className="flex-1 overflow-y-auto bg-gray-50/50 p-4 md:p-8">
-          <div className="max-w-5xl mx-auto space-y-6">
+        <main className={cn(
+          "flex-1 overflow-y-auto bg-gray-50/50",
+          isMazeActivity ? "p-0" : "p-4 md:p-8"
+        )}>
+          <div className={cn(
+            "mx-auto space-y-6",
+            isMazeActivity ? "max-w-full h-full" : "max-w-5xl"
+          )}>
             {currentLesson ? (
               <>
-                {/* Video Player */}
-                <div className="rounded-[2rem] overflow-hidden shadow-2xl shadow-orange-100 ring-1 ring-black/5 bg-black">
-                  <div className="aspect-video relative group">
-                    {currentLesson.video_url ? (
-                      <iframe
-                        src={currentLesson.video_url}
-                        className="w-full h-full"
-                        allowFullScreen
-                        title={currentLesson.title}
+                {isMazeActivity ? (
+                  // Maze Activity: Show unified LessonMaze component (3-column layout)
+                  <Suspense fallback={<LoadingSpinner message="Memuat maze..." />}>
+                    <div className="h-full">
+                      <LessonMaze
+                        lessonId={currentLesson.id}
+                        activityConfig={currentLesson.activity_config}
+                        lessonContent={currentLesson.content || ''}
+                        videoUrl={currentLesson.video_url}
+                        onComplete={(stars: number) => {
+                          confetti({
+                            particleCount: 100,
+                            spread: 70,
+                            origin: { y: 0.6 },
+                            colors: ['#E18914', '#1D8536', '#F9DB2B'],
+                          })
+                          console.log('Maze completed with stars:', stars)
+                        }}
                       />
-                    ) : (
-                      <div className="absolute inset-0 flex items-center justify-center text-white bg-gradient-to-br from-kodibot-orange to-kodibot-yellow">
-                        <div className="text-center p-8">
-                          <div className="w-20 h-20 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center mx-auto mb-6">
-                            <PlayCircle className="w-10 h-10 text-white" />
-                          </div>
-                          <h3 className="text-2xl font-black mb-2">No video content</h3>
-                          <p className="font-medium text-white/80">
-                            This lesson relies on the reading completion.
-                          </p>
+                    </div>
+                  </Suspense>
+                ) : (
+                  // Regular Activity: Show video player + content
+                  <>
+                    {/* Video Player - Only show if video_url exists */}
+                    {currentLesson.video_url && (
+                      <div className="rounded-[2rem] overflow-hidden shadow-2xl shadow-orange-100 ring-1 ring-black/5 bg-black">
+                        <div className="aspect-video relative group">
+                          <iframe
+                            src={currentLesson.video_url}
+                            className="w-full h-full"
+                            allowFullScreen
+                            title={currentLesson.title}
+                          />
                         </div>
                       </div>
                     )}
-                  </div>
-                </div>
 
-                {/* Content Card */}
-                <div className="bg-white rounded-[2rem] shadow-sm border border-gray-100 p-8 md:p-12">
-                  <div className="flex items-start justify-between gap-4 mb-8 pb-8 border-b border-gray-100">
-                    <div>
-                      <h1 className="text-3xl md:text-4xl font-black text-gray-900 mb-2">
-                        {currentLesson.title}
-                      </h1>
-                      <p className="text-gray-500 font-medium">Lesson Content & Instructions</p>
-                    </div>
-                    <div className="hidden sm:block">
-                      <div className="px-4 py-2 bg-emerald-50 text-emerald-600 rounded-xl text-sm font-bold border border-emerald-100">
-                        {currentLesson.xp_reward || 10} XP
+                    {/* Content Card */}
+                    <div className="bg-white rounded-[2rem] shadow-sm border border-gray-100 p-8 md:p-12">
+                      <div className="flex items-start justify-between gap-4 mb-8 pb-8 border-b border-gray-100">
+                        <div>
+                          <h1 className="text-3xl md:text-4xl font-black text-gray-900 mb-2">
+                            {currentLesson.title}
+                          </h1>
+                          <p className="text-gray-500 font-medium">Lesson Content & Instructions</p>
+                        </div>
+                        <div className="hidden sm:block">
+                          <div className="px-4 py-2 bg-emerald-50 text-emerald-600 rounded-xl text-sm font-bold border border-emerald-100">
+                            {currentLesson.xp_reward || 10} XP
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
 
-                  <div className="relative">
-                    <div
-                      className={cn(
-                        'prose prose-lg prose-orange max-w-none text-gray-600 transition-all duration-500 ease-in-out',
-                        !isExpanded && 'max-h-[300px] overflow-hidden'
-                      )}
-                    >
-                      <div dangerouslySetInnerHTML={{ __html: currentLesson.content }} />
-                    </div>
+                      <div className="relative">
+                        <div
+                          className={cn(
+                            'prose prose-lg prose-orange max-w-none text-gray-600 transition-all duration-500 ease-in-out',
+                            !isExpanded && 'max-h-[300px] overflow-hidden'
+                          )}
+                        >
+                          <div dangerouslySetInnerHTML={{ __html: currentLesson.content }} />
+                        </div>
 
-                    {!isExpanded && (
-                      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-white to-transparent pointer-events-none" />
-                    )}
-
-                    <div
-                      className={cn(
-                        'text-center',
-                        !isExpanded ? 'mt-4 absolute bottom-0 left-0 w-full z-10' : 'mt-8'
-                      )}
-                    >
-                      <Button
-                        onClick={() => setIsExpanded(!isExpanded)}
-                        variant="ghost"
-                        className="rounded-full bg-white/80 hover:bg-orange-50 text-kodibot-orange font-bold border border-orange-100 shadow-sm backdrop-blur-sm"
-                      >
-                        {isExpanded ? (
-                          <>
-                            <ChevronLeft className="w-4 h-4 mr-2 rotate-90" />
-                            Read Less
-                          </>
-                        ) : (
-                          <>
-                            Read More
-                            <ChevronRight className="w-4 h-4 ml-2 rotate-90" />
-                          </>
+                        {!isExpanded && (
+                          <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-white to-transparent pointer-events-none" />
                         )}
-                      </Button>
-                    </div>
-                  </div>
-                </div>
 
-                {/* Quiz Section */}
-                {currentLesson.quiz && (
-                  <div className="mt-6">
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="w-10 h-10 bg-gradient-to-br from-purple-100 to-pink-100 rounded-full flex items-center justify-center">
-                        <HelpCircle className="w-5 h-5 text-purple-600" />
-                      </div>
-                      <div>
-                        <h3 className="text-lg font-bold text-gray-900">
-                          {t('quiz.title', { defaultValue: 'Quiz' })}
-                        </h3>
-                        <p className="text-sm text-gray-500">
-                          {t('quiz.complete_lesson_first', { defaultValue: 'Test your knowledge' })}
-                        </p>
+                        <div
+                          className={cn(
+                            'text-center',
+                            !isExpanded ? 'mt-4 absolute bottom-0 left-0 w-full z-10' : 'mt-8'
+                          )}
+                        >
+                          <Button
+                            onClick={() => setIsExpanded(!isExpanded)}
+                            variant="ghost"
+                            className="rounded-full bg-white/80 hover:bg-orange-50 text-kodibot-orange font-bold border border-orange-100 shadow-sm backdrop-blur-sm"
+                          >
+                            {isExpanded ? (
+                              <>
+                                <ChevronLeft className="w-4 h-4 mr-2 rotate-90" />
+                                Read Less
+                              </>
+                            ) : (
+                              <>
+                                Read More
+                                <ChevronRight className="w-4 h-4 ml-2 rotate-90" />
+                              </>
+                            )}
+                          </Button>
+                        </div>
                       </div>
                     </div>
-                    <QuizPlayer
-                      quiz={currentLesson.quiz}
-                      lessonId={currentLesson.id}
-                      courseId={course.id}
-                    />
-                  </div>
+                  </>
                 )}
 
-                {/* Navigation Buttons */}
-                <div className="flex flex-col sm:flex-row justify-between items-center gap-4 pt-4 pb-12">
-                  <Button
-                    variant="outline"
-                    size="lg"
-                    className="w-full sm:w-auto rounded-2xl h-14 font-bold border-2 border-gray-200 text-gray-600 hover:border-gray-300 hover:bg-gray-50"
-                  >
-                    <ChevronLeft className="w-5 h-5 mr-2" />
-                    Previous Lesson
-                  </Button>
+                {/* Quiz Section - Only show for non-maze activities */}
+                {!isMazeActivity && (
+                  <>
+                    {currentLesson.quiz && (
+                      <div className="mt-6">
+                        <div className="flex items-center gap-3 mb-4">
+                          <div className="w-10 h-10 bg-gradient-to-br from-purple-100 to-pink-100 rounded-full flex items-center justify-center">
+                            <HelpCircle className="w-5 h-5 text-purple-600" />
+                          </div>
+                          <div>
+                            <h3 className="text-lg font-bold text-gray-900">
+                              {t('quiz.title', { defaultValue: 'Quiz' })}
+                            </h3>
+                            <p className="text-sm text-gray-500">
+                              {t('quiz.complete_lesson_first', { defaultValue: 'Test your knowledge' })}
+                            </p>
+                          </div>
+                        </div>
+                        <QuizPlayer
+                          quiz={currentLesson.quiz}
+                          lessonId={currentLesson.id}
+                          courseId={course.id}
+                        />
+                      </div>
+                    )}
 
-                  <Button
-                    onClick={handleComplete}
-                    disabled={isLoading}
-                    size="lg"
-                    className="w-full sm:w-auto h-14 bg-gradient-to-r from-emerald-400 to-emerald-600 hover:from-emerald-500 hover:to-emerald-700 text-white font-bold px-8 rounded-2xl shadow-lg shadow-emerald-200 hover:shadow-emerald-300 hover:scale-[1.02] transition-all"
-                  >
-                    {isLoading
-                      ? 'Saving...'
-                      : modules[modules.length - 1]?.lessons[
+                    {/* Navigation Buttons */}
+                    <div className="flex flex-col sm:flex-row justify-between items-center gap-4 pt-4 pb-12">
+                      <Button
+                        variant="outline"
+                        size="lg"
+                        className="w-full sm:w-auto rounded-2xl h-14 font-bold border-2 border-gray-200 text-gray-600 hover:border-gray-300 hover:bg-gray-50"
+                      >
+                        <ChevronLeft className="w-5 h-5 mr-2" />
+                        Previous Lesson
+                      </Button>
+
+                      <Button
+                        onClick={handleComplete}
+                        disabled={isLoading}
+                        size="lg"
+                        className="w-full sm:w-auto h-14 bg-gradient-to-r from-emerald-400 to-emerald-600 hover:from-emerald-500 hover:to-emerald-700 text-white font-bold px-8 rounded-2xl shadow-lg shadow-emerald-200 hover:shadow-emerald-300 hover:scale-[1.02] transition-all"
+                      >
+                        {isLoading
+                          ? 'Saving...'
+                          : modules[modules.length - 1]?.lessons[
                             modules[modules.length - 1].lessons.length - 1
                           ]?.id === currentLesson.id
-                        ? t('courses.done', { defaultValue: 'Done' })
-                        : t('courses.complete_continue', { defaultValue: 'Complete & Continue' })}
-                    {!isLoading && <ChevronRight className="w-5 h-5 ml-2" />}
-                  </Button>
-                </div>
+                            ? t('courses.done', { defaultValue: 'Done' })
+                            : t('courses.complete_continue', { defaultValue: 'Complete & Continue' })}
+                        {!isLoading && <ChevronRight className="w-5 h-5 ml-2" />}
+                      </Button>
+                    </div>
+                  </>
+                )}
               </>
             ) : (
               <div className="min-h-[60vh] flex flex-col items-center justify-center text-center p-8">
@@ -375,4 +442,4 @@ export default function Learn({ course, modules, currentLesson }: LearnProps) {
   )
 }
 
-Learn.layout = (page: React.ReactNode) => <StudentLayout children={page} />
+Learn.layout = (page: React.ReactNode) => <StudentLayout children={page} fullWidth={true} />

@@ -20,9 +20,10 @@ configureGenerator()
 
 interface MazeGameProps {
   initialLevel?: number
+  onComplete?: (resultType: ResultType) => void
 }
 
-const MazeGame: React.FC<MazeGameProps> = ({ initialLevel = 1 }) => {
+const MazeGame: React.FC<MazeGameProps> = ({ initialLevel = 1, onComplete }) => {
   const { t } = useTranslation()
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const engineRef = useRef<MazeEngine | null>(null)
@@ -62,6 +63,11 @@ const MazeGame: React.FC<MazeGameProps> = ({ initialLevel = 1 }) => {
   const handleGameComplete = async (resultType: ResultType) => {
     setResult(resultType)
     setIsRunning(false)
+
+    // Call custom onComplete callback if provided
+    if (onComplete) {
+      onComplete(resultType)
+    }
 
     if (resultType === ResultType.SUCCESS) {
       // Call API to award points
