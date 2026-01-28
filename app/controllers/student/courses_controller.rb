@@ -165,6 +165,8 @@ class Student::CoursesController < ApplicationController
       video_url: lesson.youtube_embed_url,
       content: lesson.content.to_s,
       xp_reward: lesson.xp_reward,
+      activity_type: lesson.activity_type,
+      activity_config: lesson.activity_config,
       quiz: quiz ? {
         id: quiz.id,
         title: quiz.title,

@@ -33,5 +33,21 @@ FactoryBot.define do
     xp_reward { 10 }
     content { Faker::Lorem.paragraphs.join("\n\n") }
     video_url { "https://www.youtube.com/embed/dQw4w9WgXcQ" }
+
+    trait :maze_activity do
+      activity_type { :maze }
+      activity_config do
+        {
+          maze_level: 1,
+          grid_size: [ 5, 5 ],
+          start_pos: [ 0, 0 ],
+          goal_pos: [ 4, 4 ],
+          obstacles: [],
+          optimal_blocks: 5,
+          optimal_time_seconds: 30,
+          available_blocks: %w[forward turn_left turn_right repeat]
+        }
+      end
+    end
   end
 end

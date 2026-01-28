@@ -40,6 +40,105 @@ A specialized STEM Learning Management System (LMS) designed for children, built
 - ✅ Error tracking with Sentry
 - ✅ UUID primary keys for all models
 - ✅ Responsive UI with Tailwind CSS and Shadcn UI
+- ✅ Maze game integration with Code.org-style learning
+
+## Maze Game Integration
+
+### Overview
+
+KodiLearn includes a Code.org-style maze game integration for interactive coding lessons. Students learn programming concepts by solving maze puzzles with visual block programming.
+
+### Features
+
+- **Tabbed Learning Interface** - Separate Materi (content) and Praktik (practice) tabs
+- **Smart Hints System** - Multi-tier hints (beginner, intermediate, advanced) that appear based on student progress
+- **3-Star Completion** - Gamified completion with 1-3 stars based on performance (blocks used, time elapsed)
+- **Real-time Feedback** - Immediate feedback on code execution with celebration confetti
+- **XP Awards** - Experience points multiplied by stars earned (1x, 1.5x, 2x)
+
+### For Students
+
+**How to complete a maze lesson:**
+
+1. Navigate to a maze lesson in your course
+2. Read the learning material in the "📚 Materi" tab
+3. Scroll through the content to unlock the "🎮 Praktik" tab
+4. Switch to Praktik tab (unlocks after reading material)
+5. Drag programming blocks to build your solution
+6. Click "Run" to execute your program
+7. Earn stars based on your efficiency:
+   - ⭐ Complete the maze
+   - ⭐⭐ Use optimal or fewer blocks
+   - ⭐⭐⭐ Complete within optimal time
+
+**Scoring:**
+- **Blocks Used**: Fewer blocks = better score
+- **Time Elapsed**: Faster completion = better score
+- **Stars Earned**: 1-3 stars based on performance
+
+### For Teachers/Admins
+
+**Creating Maze Lessons:**
+
+1. Navigate to `/avo` (admin panel)
+2. Go to Lessons and create/edit a lesson
+3. Set "Activity Type" to "Maze"
+4. Configure "Activity Config" with JSON:
+
+```json
+{
+  "maze_level": 1,
+  "grid_size": [5, 5],
+  "start_pos": [0, 0],
+  "goal_pos": [4, 4],
+  "obstacles": [[2, 2], [2, 3]],
+  "optimal_blocks": 5,
+  "optimal_time_seconds": 30,
+  "available_blocks": ["forward", "turn_left", "turn_right"],
+  "character": "rabbit",
+  "goal_item": "carrot"
+}
+```
+
+**Configuring Hints:**
+
+1. In the Lesson detail view, go to "Hints" section
+2. Create hints for each tier (beginner, intermediate, advanced)
+3. Set trigger conditions:
+   - `failed_runs_threshold`: Show after N failed attempts (default: 3)
+   - `time_threshold_seconds`: Show after N seconds (default: 120)
+   - `show_immediately`: Show on maze start (default: false)
+
+**Viewing Student Progress:**
+
+1. Navigate to `/avo` → "Maze Attempts"
+2. View all student attempts with:
+   - Blocks used, time elapsed, failed runs
+   - Stars earned
+   - Attempt status (in_progress, completed)
+
+### Technical Details
+
+**Backend Architecture:**
+- **Models**: `LessonHint`, `MazeAttempt` with UUID primary keys
+- **API Endpoints**: `/api/maze_attempts`, `/api/lessons/:lesson_id/hints`
+- **Star Calculation**: Automatic based on optimal blocks and time
+- **XP Multipliers**: 1x (1 star), 1.5x (2 stars), 2x (3 stars)
+
+**Frontend Components:**
+- **TabNav**: Tab navigation with lock/unlock states
+- **MazePractice**: Container for maze game with progress tracking
+- **HintTooltip**: Smart hint display with tier indicators
+- **CompletionModal**: Trophy celebration with star display
+- **useMazeTracker**: Auto-sync attempt progress to backend
+- **useSmartHints**: Trigger-based hint display system
+
+**Blockly Integration:**
+- Custom Arduino blocks for maze movements
+- Visual block-to-code generation
+- JavaScript maze interpreter for execution
+
+**See also:** [CLAUDE.md](CLAUDE.md) for detailed architecture documentation
 
 ## Prerequisites
 

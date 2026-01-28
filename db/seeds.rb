@@ -2,6 +2,19 @@
 # development, test). The code here should be idempotent so that it can be executed at any point in every environment.
 # The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
 
+# ============================================
+# Helper Methods
+# ============================================
+
+def create_maze_hints(lesson, hints_data)
+  hints_data.each do |hint_data|
+    lesson.lesson_hints.find_or_create_by!(tier: hint_data[:tier]) do |hint|
+      hint.content = hint_data[:content]
+      hint.trigger_config = hint_data[:trigger_config]
+    end
+  end
+end
+
 # ===========================================
 # Default Badges for Gamification
 # ===========================================
@@ -253,4 +266,203 @@ if Rails.env.development?
   end
 end
 
+# ============================================
+# Maze Course with 10 Levels (matching MazeLevels.ts)
+# ============================================
+puts "Creating Maze Programming course with 10 levels..."
+
+maze_course = Course.find_or_create_by!(slug: 'maze-programming-101') do |course|
+  course.instructor = instructor.instructor_profile
+  course.title = "Petualangan Kodibot: Belajar Coding dengan Maze"
+  course.description = "Belajar logika pemrograman sambil bermain maze! Bantu kelinci mencapai wortel dengan memprogram jalurnya."
+  course.level = :beginner
+  course.subject = :coding
+  course.status = :published
+  course.enrollment_type = :free
+  course.min_age = 6
+  course.max_age = 12
+  course.estimated_hours = 5
+end
+
+# Module 1: Basic Movement (Levels 1-3)
+module1 = maze_course.course_modules.find_or_create_by!(position: 1) do |m|
+  m.title = "Module 1: Gerakan Dasar"
+  m.description = "Pelajari cara menggerakkan karakter dengan blok maju dan belok"
+end
+
+# Level 1: Simple straight path
+lesson_1 = module1.lessons.find_or_create_by!(position: 1) do |lesson|
+  lesson.title = "Level 1: Jalan Lurus"
+  lesson.position = 1
+  lesson.duration_minutes = 5
+  lesson.xp_reward = 50
+  lesson.activity_type = :maze
+  lesson.activity_config = { maze_level: 1 }
+  lesson.content = '<h1>Selamat Datang! 🐰</h1><p>Gunakan blok <strong>Maju Ke Depan</strong> untuk membantu kelinci mencapai wortelnya!</p>'
+end
+
+create_maze_hints(lesson_1, [
+  { tier: :beginner, content: "💡 Kelinci perlu maju 3 langkah ke kanan!", trigger_config: { failed_runs_threshold: 2, time_threshold_seconds: 60, show_immediately: false } }
+])
+
+# Level 2: L-shaped path
+lesson_2 = module1.lessons.find_or_create_by!(position: 2) do |lesson|
+  lesson.title = "Level 2: Belok Pertama"
+  lesson.position = 2
+  lesson.duration_minutes = 10
+  lesson.xp_reward = 75
+  lesson.activity_type = :maze
+  lesson.activity_config = { maze_level: 2 }
+  lesson.content = '<h1>Saatnya Berbelok! 🔄</h1><p>Gunakan blok <strong>Belok Kanan</strong> untuk mengubah arah!</p>'
+end
+
+create_maze_hints(lesson_2, [
+  { tier: :beginner, content: "💡 Arah awal ke UTARA. Maju ke atas dulu, lalu belok.", trigger_config: { failed_runs_threshold: 3, time_threshold_seconds: 90, show_immediately: false } }
+])
+
+# Level 3: Path with collectible
+lesson_3 = module1.lessons.find_or_create_by!(position: 3) do |lesson|
+  lesson.title = "Level 3: Kumpulkan Wortel"
+  lesson.position = 3
+  lesson.duration_minutes = 10
+  lesson.xp_reward = 100
+  lesson.activity_type = :maze
+  lesson.activity_config = { maze_level: 3 }
+  lesson.content = '<h1>Wortel Bonus! 🥕</h1><p>Gunakan blok <strong>Kumpulkan</strong> untuk mengambil wortel!</p>'
+end
+
+create_maze_hints(lesson_3, [
+  { tier: :beginner, content: "💡 Jangan lupa kumpulkan wortel saat berdiri di atasnya!", trigger_config: { failed_runs_threshold: 3, time_threshold_seconds: 90, show_immediately: false } }
+])
+
+# Module 2: Loops (Levels 4-5)
+module2 = maze_course.course_modules.find_or_create_by!(position: 2) do |m|
+  m.title = "Module 2: Perulangan"
+  m.description = "Belajar menggunakan loop untuk mengulangi perintah"
+end
+
+# Level 4: Loop path
+lesson_4 = module2.lessons.find_or_create_by!(position: 1) do |lesson|
+  lesson.title = "Level 4: Repeat Block"
+  lesson.position = 1
+  lesson.duration_minutes = 15
+  lesson.xp_reward = 125
+  lesson.activity_type = :maze
+  lesson.activity_config = { maze_level: 4 }
+  lesson.content = '<h1>Kekuatan Repeat! 🔁</h1><p>Gunakan <strong>Repeat</strong> untuk mengulangi perintah!</p><p>⚠️ Batas blok: 6</p>'
+end
+
+create_maze_hints(lesson_4, [
+  { tier: :beginner, content: "💡 Letakkan blok maju di dalam repeat.", trigger_config: { failed_runs_threshold: 4, time_threshold_seconds: 120, show_immediately: false } }
+])
+
+# Level 5: Multiple collectibles
+lesson_5 = module2.lessons.find_or_create_by!(position: 2) do |lesson|
+  lesson.title = "Level 5: Banyak Wortel"
+  lesson.position = 2
+  lesson.duration_minutes = 15
+  lesson.xp_reward = 150
+  lesson.activity_type = :maze
+  lesson.activity_config = { maze_level: 5 }
+  lesson.content = '<h1>Kumpulkan Semua! 🥕🥕🥕🥕</h1><p>4 wortel harus dikumpulkan!</p>'
+end
+
+create_maze_hints(lesson_5, [
+  { tier: :beginner, content: "💡 Pola maju-belok-kumpulkan bisa diulang.", trigger_config: { failed_runs_threshold: 4, time_threshold_seconds: 120, show_immediately: false } }
+])
+
+# Module 3: Conditionals (Levels 6-8)
+module3 = maze_course.course_modules.find_or_create_by!(position: 3) do |m|
+  m.title = "Module 3: Kondisional"
+  m.description = "Belajar menggunakan if untuk membuat keputusan"
+end
+
+# Level 6
+lesson_6 = module3.lessons.find_or_create_by!(position: 1) do |lesson|
+  lesson.title = "Level 6: If Path Ahead"
+  lesson.position = 1
+  lesson.duration_minutes = 20
+  lesson.xp_reward = 175
+  lesson.activity_type = :maze
+  lesson.activity_config = { maze_level: 6 }
+  lesson.content = '<h1>Blok IF! 🤔</h1><p>Gunakan <strong>Jika jalur di depan</strong> untuk cek apakah bisa maju.</p><p>⚠️ Batas blok: 4</p>'
+end
+
+create_maze_hints(lesson_6, [
+  { tier: :beginner, content: "💡 Repeat + if path ahead = kelinci maju otomatis.", trigger_config: { failed_runs_threshold: 5, time_threshold_seconds: 150, show_immediately: false } }
+])
+
+# Level 7
+lesson_7 = module3.lessons.find_or_create_by!(position: 2) do |lesson|
+  lesson.title = "Level 7: Maze Kompleks"
+  lesson.position = 2
+  lesson.duration_minutes = 20
+  lesson.xp_reward = 200
+  lesson.activity_type = :maze
+  lesson.activity_config = { maze_level: 7 }
+  lesson.content = '<h1>Labirin Rumit! 🌀</h1><p>Kombinasi repeat dan if yang cerdik.</p><p>⚠️ Batas blok: 4</p>'
+end
+
+create_maze_hints(lesson_7, [
+  { tier: :beginner, content: "💡 Repeat -> if path kanan then belok kanan, else maju.", trigger_config: { failed_runs_threshold: 5, time_threshold_seconds: 180, show_immediately: false } }
+])
+
+# Level 8
+lesson_8 = module3.lessons.find_or_create_by!(position: 3) do |lesson|
+  lesson.title = "Level 8: Kombinasi IF"
+  lesson.position = 3
+  lesson.duration_minutes = 25
+  lesson.xp_reward = 225
+  lesson.activity_type = :maze
+  lesson.activity_config = { maze_level: 8 }
+  lesson.content = '<h1>Master Kondisional! ⚡</h1><p>Kombinasi if path dan belok.</p><p>⚠️ Batas blok: 6</p>'
+end
+
+create_maze_hints(lesson_8, [
+  { tier: :beginner, content: "💡 Cek jalur di kanan DAN kiri.", trigger_config: { failed_runs_threshold: 6, time_threshold_seconds: 180, show_immediately: false } }
+])
+
+# Module 4: Advanced Logic (Levels 9-10)
+module4 = maze_course.course_modules.find_or_create_by!(position: 4) do |m|
+  m.title = "Module 4: Logika Lanjutan"
+  m.description = "Tantangan akhir dengan if-else"
+end
+
+# Level 9
+lesson_9 = module4.lessons.find_or_create_by!(position: 1) do |lesson|
+  lesson.title = "Level 9: If-Else"
+  lesson.position = 1
+  lesson.duration_minutes = 25
+  lesson.xp_reward = 250
+  lesson.activity_type = :maze
+  lesson.activity_config = { maze_level: 9 }
+  lesson.content = '<h1>If-Else! 🎯</h1><p><strong>If-Else</strong> untuk memilih dua aksi berbeda.</p><p>⚠️ Batas blok: 4</p>'
+end
+
+create_maze_hints(lesson_9, [
+  { tier: :beginner, content: "💡 If path kiri -> belok kiri, else if path kanan -> belok kanan.", trigger_config: { failed_runs_threshold: 6, time_threshold_seconds: 200, show_immediately: false } }
+])
+
+# Level 10
+lesson_10 = module4.lessons.find_or_create_by!(position: 2) do |lesson|
+  lesson.title = "Level 10: Tantangan Akhir!"
+  lesson.position = 2
+  lesson.duration_minutes = 30
+  lesson.xp_reward = 300
+  lesson.activity_type = :maze
+  lesson.activity_config = { maze_level: 10 }
+  lesson.content = '<h1>BOSS LEVEL! 🏆</h1><p>Gunakan semua yang kamu pelajari!</p><p>🌟 Tidak ada batas blok!</p>'
+end
+
+create_maze_hints(lesson_10, [
+  { tier: :beginner, content: "💡 Kombinasikan repeat, if-else, dan belok. Kamu bisa!", trigger_config: { failed_runs_threshold: 7, time_threshold_seconds: 240, show_immediately: false } }
+])
+
+puts "✅ Created Maze Programming course with 10 levels"
+puts "   - Module 1 (Gerakan Dasar): Levels 1-3"
+puts "   - Module 2 (Perulangan): Levels 4-5"
+puts "   - Module 3 (Kondisional): Levels 6-8"
+puts "   - Module 4 (Logika Lanjutan): Levels 9-10"
+
 puts "Seed completed!"
+

@@ -40,21 +40,30 @@ export class MazeEngine {
   private onStateChange?: (state: MazeState) => void
   private onComplete?: (result: ResultType) => void
 
-  constructor(level = 1) {
-    this.levelConfig = getLevelConfig(level)
-    this.state = this.createInitialState(level)
+  constructor(levelOrConfig: number | LevelConfig = 1) {
+    if (typeof levelOrConfig === 'number') {
+      this.levelConfig = getLevelConfig(levelOrConfig)
+      this.state = this.createInitialState(levelOrConfig)
+    } else {
+      this.levelConfig = levelOrConfig
+      this.state = this.createInitialStateFromConfig(levelOrConfig)
+    }
   }
 
   private createInitialState(level: number): MazeState {
     const config = getLevelConfig(level)
+    return this.createInitialStateFromConfig(config, level)
+  }
+
+  private createInitialStateFromConfig(config: LevelConfig, level: number = 0): MazeState {
     this.levelConfig = config
 
     // Find start position
     for (let i = 0; i < GRID_ROWS; i++) {
       for (let j = 0; j < GRID_COLS; j++) {
-        if (config.map[i][j] === PathType.START) {
+        if (config.map[i] && config.map[i][j] === PathType.START) {
           this.startPosition = { x: j * SQUARE_SIZE, y: i * SQUARE_SIZE }
-        } else if (config.map[i][j] === PathType.FINISH) {
+        } else if (config.map[i] && config.map[i][j] === PathType.FINISH) {
           this.finishPosition = { x: j * SQUARE_SIZE, y: i * SQUARE_SIZE }
         }
       }
@@ -63,7 +72,7 @@ export class MazeEngine {
     const sx = this.getDirectionSx(config.initialDirection)
 
     return {
-      level,
+      level: config.level || level,
       role: {
         position: { ...this.startPosition },
         direction: config.initialDirection,
@@ -76,6 +85,7 @@ export class MazeEngine {
       isRunning: false,
     }
   }
+
 
   private getDirectionSx(direction: DirectionType): number {
     switch (direction) {

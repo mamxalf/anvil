@@ -1,18 +1,20 @@
 import React, { useState } from 'react'
 import { Link, usePage } from '@inertiajs/react'
 import { PageProps } from '@/types'
-import { LayoutDashboard, BookOpen, Trophy, Medal, Menu, X, LogOut, Bell, Gamepad2, Palette } from 'lucide-react'
+import { LayoutDashboard, BookOpen, Trophy, Medal, Menu, X, LogOut, Bell, Gamepad2, Palette, PanelLeftClose, PanelLeftOpen } from 'lucide-react'
 import { useTranslation } from '@/hooks/useTranslation'
 import LanguageSwitcher from '@/components/LanguageSwitcher'
 
 interface StudentLayoutProps {
   children: React.ReactNode
+  fullWidth?: boolean
 }
 
-export default function StudentLayout({ children }: StudentLayoutProps) {
+export default function StudentLayout({ children, fullWidth = false }: StudentLayoutProps) {
   const { auth } = usePage<PageProps>().props
   const { t } = useTranslation()
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false) // Mobile toggle
+  const [isCollapsed, setIsCollapsed] = useState(false) // Desktop collapse
   const { url } = usePage()
   const currentPath = url
 
@@ -69,11 +71,11 @@ export default function StudentLayout({ children }: StudentLayoutProps) {
 
       {/* Sidebar */}
       <aside
-        className={`fixed lg:sticky top-0 left-0 z-50 h-screen w-72 bg-white shadow-2xl shadow-orange-100/50 transition-transform duration-300 ease-in-out lg:translate-x-0 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-          } flex flex-col`}
+        className={`fixed lg:sticky top-0 left-0 z-50 h-screen bg-white shadow-2xl shadow-orange-100/50 transition-all duration-300 ease-in-out lg:translate-x-0 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
+          } ${isCollapsed ? 'w-20' : 'w-72'} flex flex-col`}
       >
         {/* Logo Area */}
-        <div className="p-6 flex items-center justify-between">
+        <div className={`p-6 flex items-center ${isCollapsed ? 'justify-center' : 'justify-between'}`}>
           <Link href="/student/dashboard" className="flex items-center gap-3 group">
             <div className="bg-gradient-to-br from-kodibot-orange to-kodibot-yellow p-2 rounded-xl shadow-lg shadow-orange-200 group-hover:scale-105 transition-transform">
               <img
@@ -82,14 +84,16 @@ export default function StudentLayout({ children }: StudentLayoutProps) {
                 className="w-8 h-8 object-contain"
               />
             </div>
-            <div className="flex flex-col">
-              <span className="text-2xl font-black text-gray-900 tracking-tight leading-none">
-                Kodi<span className="text-kodibot-orange">learn</span>
-              </span>
-              <span className="text-[10px] font-bold text-gray-400 tracking-widest uppercase">
-                Student Area
-              </span>
-            </div>
+            {!isCollapsed && (
+              <div className="flex flex-col">
+                <span className="text-2xl font-black text-gray-900 tracking-tight leading-none">
+                  Kodi<span className="text-kodibot-orange">learn</span>
+                </span>
+                <span className="text-[10px] font-bold text-gray-400 tracking-widest uppercase">
+                  Student Area
+                </span>
+              </div>
+            )}
           </Link>
           <button
             onClick={() => setIsSidebarOpen(false)}
@@ -105,18 +109,19 @@ export default function StudentLayout({ children }: StudentLayoutProps) {
             <Link
               key={item.href}
               href={item.href}
-              className={`flex items-center gap-3 px-4 py-3.5 rounded-2xl transition-all duration-200 group relative ${item.active
+              className={`flex items-center ${isCollapsed ? 'justify-center px-0' : 'px-4'} py-3.5 rounded-2xl transition-all duration-200 group relative ${item.active
                 ? 'bg-gradient-to-r from-orange-500 via-kodibot-orange to-yellow-500 text-white shadow-lg shadow-orange-200 font-bold'
                 : 'text-gray-600 hover:bg-orange-50 hover:text-kodibot-orange font-medium'
                 }`}
+              title={isCollapsed ? item.name : ''}
             >
               <div
                 className={`${item.active ? 'text-white' : 'text-gray-400 group-hover:text-kodibot-orange'} transition-colors`}
               >
                 {item.icon}
               </div>
-              <span className="tracking-wide">{item.name}</span>
-              {item.active && (
+              {!isCollapsed && <span className="tracking-wide ml-3">{item.name}</span>}
+              {!isCollapsed && item.active && (
                 <div className="absolute right-4 w-1.5 h-1.5 bg-white rounded-full animate-pulse shadow-[0_0_8px_rgba(255,255,255,0.8)]" />
               )}
             </Link>
@@ -125,7 +130,7 @@ export default function StudentLayout({ children }: StudentLayoutProps) {
 
         {/* User Profile / Footer */}
         <div className="p-4 border-t border-gray-100 space-y-2">
-          <div className="bg-gray-50 rounded-2xl p-3 flex items-center gap-3 hover:bg-gray-100 transition-colors cursor-pointer group">
+          <div className={`bg-gray-50 rounded-2xl p-3 flex items-center ${isCollapsed ? 'justify-center' : 'gap-3'} hover:bg-gray-100 transition-colors cursor-pointer group`}>
             <div className="w-10 h-10 rounded-full border-2 border-white shadow-sm overflow-hidden bg-white shrink-0">
               <img
                 src={
@@ -136,23 +141,52 @@ export default function StudentLayout({ children }: StudentLayoutProps) {
                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
               />
             </div>
-            <div className="min-w-0 flex-1">
-              <p className="text-sm font-bold text-gray-900 truncate">{auth.user?.name}</p>
-              <p className="text-xs text-gray-500 font-medium truncate">
-                Level {(auth.user as any)?.student_profile?.level || 1} Student
-              </p>
-            </div>
+            {!isCollapsed && (
+              <div className="min-w-0 flex-1">
+                <p className="text-sm font-bold text-gray-900 truncate">{auth.user?.name}</p>
+                <p className="text-xs text-gray-500 font-medium truncate">
+                  Level {(auth.user as any)?.student_profile?.level || 1} Student
+                </p>
+              </div>
+            )}
           </div>
 
-          <Link
-            href="/users/sign_out"
-            method="delete"
-            as="button"
-            className="w-full flex items-center justify-center gap-2 p-3 text-red-500 hover:bg-red-50 rounded-xl text-sm font-bold transition-colors"
+          {!isCollapsed ? (
+            <Link
+              href="/users/sign_out"
+              method="delete"
+              as="button"
+              className="w-full flex items-center justify-center gap-2 p-3 text-red-500 hover:bg-red-50 rounded-xl text-sm font-bold transition-colors"
+            >
+              <LogOut className="w-4 h-4" />
+              {t('auth.sign_out', { defaultValue: 'Sign Out' })}
+            </Link>
+          ) : (
+            <Link
+              href="/users/sign_out"
+              method="delete"
+              as="button"
+              className="w-full flex items-center justify-center p-3 text-red-500 hover:bg-red-50 rounded-xl transition-colors"
+              title={t('auth.sign_out', { defaultValue: 'Sign Out' })}
+            >
+              <LogOut className="w-5 h-5" />
+            </Link>
+          )}
+
+          {/* Desktop Collapse Toggle */}
+          <button
+            onClick={() => setIsCollapsed(!isCollapsed)}
+            className="hidden lg:flex w-full items-center justify-center p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-50 rounded-xl transition-colors mt-2"
           >
-            <LogOut className="w-4 h-4" />
-            {t('auth.sign_out', { defaultValue: 'Sign Out' })}
-          </Link>
+            {isCollapsed ? (
+              <PanelLeftOpen className="w-5 h-5" />
+            ) : (
+              <div className="flex items-center gap-2 text-xs font-medium uppercase tracking-wider">
+                <PanelLeftClose className="w-4 h-4" />
+                <span>Collapse Sidebar</span>
+              </div>
+            )}
+          </button>
         </div>
       </aside>
 
@@ -190,8 +224,8 @@ export default function StudentLayout({ children }: StudentLayoutProps) {
         </header>
 
         {/* Page Content */}
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-x-hidden">
-          <div className="max-w-7xl mx-auto space-y-6 animate-in fade-in duration-500">
+        <main className={`flex-1 overflow-x-hidden ${fullWidth ? 'p-0' : 'p-4 sm:p-6 lg:p-8'}`}>
+          <div className={`${fullWidth ? '' : 'max-w-7xl mx-auto space-y-6'} animate-in fade-in duration-500`}>
             {children}
           </div>
         </main>

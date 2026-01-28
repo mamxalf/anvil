@@ -7,6 +7,13 @@ class Lesson < ApplicationRecord
   has_many :resources, dependent: :destroy
   has_many :lesson_progresses, dependent: :destroy
 
+  # Activity system associations
+  has_many :lesson_hints, dependent: :destroy
+  has_many :maze_attempts, dependent: :destroy
+
+  # Activity type enum
+  enum :activity_type, { standard: 0, maze: 1, arduino: 2, project: 3 }
+
   # Validations
   validates :title, presence: true
   validates :position, numericality: { greater_than_or_equal_to: 0 }
@@ -14,6 +21,7 @@ class Lesson < ApplicationRecord
 
   # Scopes
   scope :ordered, -> { order(:position) }
+  scope :maze_activities, -> { where(activity_type: :maze) }
 
   # Delegate course access
   delegate :course, to: :course_module
