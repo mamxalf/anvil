@@ -431,3 +431,35 @@ en:
     no_results_desc: "Try adjusting your search terms"
     no_projects_desc: "Be the first one to publish a project!"
     create_project: "Create Project"
+
+  platformer:
+    title: "Dungeon Platformer"
+    subtitle: "Help the adventurer reach the goal!"
+    level: "Level %{level}/%{total}"
+    reset: "Reset"
+    run: "Run"
+    running: "Running..."
+    generated_code: "GENERATED CODE"
+    block_limit: "Block limit"
+    instructions:
+      title: "📋 Instructions"
+      step1: "1. Drag blocks to create a program"
+      step2: "2. Click Run to execute"
+      step3: "3. Guide the adventurer 🧙 to the goal 🚩"
+      collect: "🪙 Collect %{count} item(s)!"
+    success:
+      title: "🎉 Congratulations!"
+      message: "You completed Level %{level}!"
+      xp_earned: "+%{points} XP Earned!"
+      close: "Close"
+      next_level: "Next Level →"
+    failure:
+      title: "😢 Try Again!"
+      crash: "You hit a spike!"
+      fell: "You fell into the abyss!"
+      not_enough_items: "Collect more items first!"
+      try_again: "Try Again"
+    blocks:
+      movement: "Movement"
+      loops: "Loops"
+      logic: "Logic"

@@ -6,4 +6,8 @@ class Student::PlaygroundController < ApplicationController
   def maze
     render inertia: "Student/Playground/Maze"
   end
+
+  def platformer
+    render inertia: "Student/Playground/Platformer"
+  end
 end

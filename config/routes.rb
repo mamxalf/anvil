@@ -58,6 +58,7 @@ Rails.application.routes.draw do
     get "leaderboard", to: "leaderboard#index", as: :leaderboard
     get "playground", to: "playground#index", as: :playground
     get "playground/maze", to: "playground#maze", as: :playground_maze
+    get "playground/platformer", to: "playground#platformer", as: :playground_platformer
     post "maze_game/complete", to: "maze_game#complete"
     resources :scheduled_classes, only: [ :index, :show ] do
       member do

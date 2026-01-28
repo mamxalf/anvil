@@ -429,3 +429,35 @@ id:
     no_results_desc: "Coba ubah kata kuncimu"
     no_projects_desc: "Jadilah yang pertama menerbitkan proyek!"
     create_project: "Buat Proyek"
+
+  platformer:
+    title: "Dungeon Platformer"
+    subtitle: "Bantu petualang mencapai tujuan!"
+    level: "Level %{level}/%{total}"
+    reset: "Reset"
+    run: "Jalankan"
+    running: "Menjalankan..."
+    generated_code: "KODE PROGRAM"
+    block_limit: "Batas blok"
+    instructions:
+      title: "📋 Instruksi"
+      step1: "1. Tarik blok untuk membuat program"
+      step2: "2. Klik Jalankan untuk eksekusi"
+      step3: "3. Pandu petualang 🧙 ke tujuan 🚩"
+      collect: "🪙 Kumpulkan %{count} item!"
+    success:
+      title: "🎉 Selamat!"
+      message: "Kamu menyelesaikan Level %{level}!"
+      xp_earned: "+%{points} XP Didapat!"
+      close: "Tutup"
+      next_level: "Level Berikutnya →"
+    failure:
+      title: "😢 Coba Lagi!"
+      crash: "Kamu menabrak duri!"
+      fell: "Kamu jatuh ke jurang!"
+      not_enough_items: "Kumpulkan lebih banyak item dulu!"
+      try_again: "Coba Lagi"
+    blocks:
+      movement: "Pergerakan"
+      loops: "Perulangan"
+      logic: "Logika"
