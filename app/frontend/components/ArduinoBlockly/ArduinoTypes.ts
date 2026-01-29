@@ -9,6 +9,11 @@ export interface ArduinoSketch {
     updated_at?: string
     published?: boolean
     published_at?: string
+    circuit_data?: {
+        arduino?: { x: number; y: number }
+        modules?: unknown[]
+        wires?: unknown[]
+    }
 }
 
 export interface BoardConfig {
