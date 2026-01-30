@@ -3,7 +3,8 @@ import { BoardConfig, ModuleConfig } from './ArduinoTypes'
 
 // Re-export types and examples for backward compatibility
 export * from './ArduinoTypes'
-export * from './ArduinoExamples'
+export * from './ArduinoTypes'
+
 
 /**
  * Arduino Board Configurations

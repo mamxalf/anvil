@@ -65,4 +65,22 @@ export interface ExampleTemplate {
     modules: ModuleInstance[]
     blocksXml: string
     code: string
+    circuitData?: {
+        arduino: { x: number; y: number }
+        modules: Array<{
+            id: string
+            type: 'led' | 'button' | 'buzzer' | 'lcd'
+            position: { x: number; y: number }
+            properties: Record<string, unknown>
+        }>
+        wires: Array<{
+            id: string
+            fromComponent: string
+            fromPin: string
+            toComponent: string
+            toPin: string
+            color: string
+        }>
+    }
 }
+

@@ -1,15 +1,15 @@
 import { ExampleTemplate } from './ArduinoTypes'
 
 export const EXAMPLE_TEMPLATES: ExampleTemplate[] = [
-    {
-        id: 'blink',
-        name: 'Blink LED',
-        description: 'Lampu LED berkedip setiap 1 detik',
-        difficulty: 'easy',
-        icon: '💡',
-        board: 'uno',
-        modules: [{ id: 'led1', type: 'led', pin: 13, name: 'LED 1' }],
-        blocksXml: `<xml xmlns="https://developers.google.com/blockly/xml">
+  {
+    id: 'blink',
+    name: 'Blink LED',
+    description: 'Lampu LED berkedip setiap 1 detik',
+    difficulty: 'easy',
+    icon: '💡',
+    board: 'uno',
+    modules: [{ id: 'led1', type: 'led', pin: 13, name: 'LED 1' }],
+    blocksXml: `<xml xmlns="https://developers.google.com/blockly/xml">
   <block type="arduino_setup" x="20" y="20">
     <statement name="SETUP_CODE">
       <block type="pin_mode">
@@ -27,7 +27,7 @@ export const EXAMPLE_TEMPLATES: ExampleTemplate[] = [
     </statement>
   </block>
 </xml>`,
-        code: `// Blink LED Example
+    code: `// Blink LED Example
 void setup() {
   pinMode(13, OUTPUT);
 }
@@ -38,20 +38,49 @@ void loop() {
   digitalWrite(13, LOW);
   delay(1000);
 }`,
-    },
-    {
-        id: 'traffic_light',
-        name: 'Traffic Light',
-        description: 'Simulasi lampu lalu lintas dengan 3 LED',
-        difficulty: 'easy',
-        icon: '🚦',
-        board: 'uno',
-        modules: [
-            { id: 'red', type: 'led', pin: 13, name: 'Red LED' },
-            { id: 'yellow', type: 'led', pin: 12, name: 'Yellow LED' },
-            { id: 'green', type: 'led', pin: 11, name: 'Green LED' },
-        ],
-        blocksXml: `<xml xmlns="https://developers.google.com/blockly/xml">
+    circuitData: {
+      arduino: { x: 50, y: 80 },
+      modules: [
+        {
+          id: 'led_1',
+          type: 'led',
+          position: { x: 380, y: 120 },
+          properties: { color: 'red' }
+        }
+      ],
+      wires: [
+        {
+          id: 'wire_led_signal',
+          fromComponent: 'arduino',
+          fromPin: 'D13',
+          toComponent: 'led_1',
+          toPin: 'anode',
+          color: '#ef4444'
+        },
+        {
+          id: 'wire_led_gnd',
+          fromComponent: 'arduino',
+          fromPin: 'GND_D',
+          toComponent: 'led_1',
+          toPin: 'cathode',
+          color: '#000000'
+        }
+      ]
+    }
+  },
+  {
+    id: 'traffic_light',
+    name: 'Traffic Light',
+    description: 'Simulasi lampu lalu lintas dengan 3 LED',
+    difficulty: 'easy',
+    icon: '🚦',
+    board: 'uno',
+    modules: [
+      { id: 'red', type: 'led', pin: 13, name: 'Red LED' },
+      { id: 'yellow', type: 'led', pin: 12, name: 'Yellow LED' },
+      { id: 'green', type: 'led', pin: 11, name: 'Green LED' },
+    ],
+    blocksXml: `<xml xmlns="https://developers.google.com/blockly/xml">
   <block type="arduino_setup" x="20" y="20">
     <statement name="SETUP_CODE">
       <block type="pin_mode">
@@ -126,7 +155,7 @@ void loop() {
     </statement>
   </block>
 </xml>`,
-        code: `// Traffic Light Example
+    code: `// Traffic Light Example
 void setup() {
   pinMode(13, OUTPUT); // Red
   pinMode(12, OUTPUT); // Yellow
@@ -149,19 +178,53 @@ void loop() {
   delay(3000);
   digitalWrite(11, LOW);
 }`,
-    },
-    {
-        id: 'button_led',
-        name: 'Button Control LED',
-        description: 'Nyalakan LED dengan tombol',
-        difficulty: 'easy',
-        icon: '🔘',
-        board: 'uno',
-        modules: [
-            { id: 'led1', type: 'led', pin: 13, name: 'LED' },
-            { id: 'btn1', type: 'button', pin: 2, name: 'Button' },
-        ],
-        blocksXml: `<xml xmlns="https://developers.google.com/blockly/xml">
+    circuitData: {
+      arduino: { x: 50, y: 100 },
+      modules: [
+        {
+          id: 'led_red',
+          type: 'led',
+          position: { x: 380, y: 60 },
+          properties: { color: 'red' }
+        },
+        {
+          id: 'led_yellow',
+          type: 'led',
+          position: { x: 380, y: 160 },
+          properties: { color: 'yellow' }
+        },
+        {
+          id: 'led_green',
+          type: 'led',
+          position: { x: 380, y: 260 },
+          properties: { color: 'green' }
+        }
+      ],
+      wires: [
+        // Red LED
+        { id: 'wire_red_sig', fromComponent: 'arduino', fromPin: 'D13', toComponent: 'led_red', toPin: 'anode', color: '#ef4444' },
+        { id: 'wire_red_gnd', fromComponent: 'arduino', fromPin: 'GND_D', toComponent: 'led_red', toPin: 'cathode', color: '#000000' },
+        // Yellow LED
+        { id: 'wire_yellow_sig', fromComponent: 'arduino', fromPin: 'D12', toComponent: 'led_yellow', toPin: 'anode', color: '#eab308' },
+        { id: 'wire_yellow_gnd', fromComponent: 'arduino', fromPin: 'GND1', toComponent: 'led_yellow', toPin: 'cathode', color: '#6b7280' },
+        // Green LED
+        { id: 'wire_green_sig', fromComponent: 'arduino', fromPin: 'D11', toComponent: 'led_green', toPin: 'anode', color: '#22c55e' },
+        { id: 'wire_green_gnd', fromComponent: 'arduino', fromPin: 'GND2', toComponent: 'led_green', toPin: 'cathode', color: '#374151' }
+      ]
+    }
+  },
+  {
+    id: 'button_led',
+    name: 'Button Control LED',
+    description: 'Nyalakan LED dengan tombol',
+    difficulty: 'easy',
+    icon: '🔘',
+    board: 'uno',
+    modules: [
+      { id: 'led1', type: 'led', pin: 13, name: 'LED' },
+      { id: 'btn1', type: 'button', pin: 2, name: 'Button' },
+    ],
+    blocksXml: `<xml xmlns="https://developers.google.com/blockly/xml">
   <block type="arduino_setup" x="20" y="20">
     <statement name="SETUP_CODE">
       <block type="pin_mode">
@@ -194,7 +257,7 @@ void loop() {
     </statement>
   </block>
 </xml>`,
-        code: `// Button Control LED
+    code: `// Button Control LED
 void setup() {
   pinMode(13, OUTPUT);
   pinMode(2, INPUT_PULLUP);
@@ -207,16 +270,41 @@ void loop() {
     digitalWrite(13, LOW);
   }
 }`,
-    },
-    {
-        id: 'servo_sweep',
-        name: 'Servo Sweep',
-        description: 'Motor servo bergerak 0-180 derajat',
-        difficulty: 'medium',
-        icon: '🔧',
-        board: 'uno',
-        modules: [{ id: 'servo1', type: 'servo', pin: 9, name: 'Servo' }],
-        blocksXml: `<xml xmlns="https://developers.google.com/blockly/xml">
+    circuitData: {
+      arduino: { x: 50, y: 80 },
+      modules: [
+        {
+          id: 'led_1',
+          type: 'led',
+          position: { x: 400, y: 80 },
+          properties: { color: 'green' }
+        },
+        {
+          id: 'button_1',
+          type: 'button',
+          position: { x: 400, y: 200 },
+          properties: { color: 'red' }
+        }
+      ],
+      wires: [
+        // LED wires
+        { id: 'wire_led_sig', fromComponent: 'arduino', fromPin: 'D13', toComponent: 'led_1', toPin: 'anode', color: '#22c55e' },
+        { id: 'wire_led_gnd', fromComponent: 'arduino', fromPin: 'GND_D', toComponent: 'led_1', toPin: 'cathode', color: '#000000' },
+        // Button wires
+        { id: 'wire_btn_sig', fromComponent: 'arduino', fromPin: 'D2', toComponent: 'button_1', toPin: 'terminal1a', color: '#3b82f6' },
+        { id: 'wire_btn_gnd', fromComponent: 'arduino', fromPin: 'GND1', toComponent: 'button_1', toPin: 'terminal1b', color: '#6b7280' }
+      ]
+    }
+  },
+  {
+    id: 'servo_sweep',
+    name: 'Servo Sweep',
+    description: 'Motor servo bergerak 0-180 derajat',
+    difficulty: 'medium',
+    icon: '🔧',
+    board: 'uno',
+    modules: [{ id: 'servo1', type: 'servo', pin: 9, name: 'Servo' }],
+    blocksXml: `<xml xmlns="https://developers.google.com/blockly/xml">
   <block type="arduino_setup" x="20" y="20">
     <statement name="SETUP_CODE">
       <block type="servo_attach">
@@ -260,7 +348,7 @@ void loop() {
     </statement>
   </block>
 </xml>`,
-        code: `// Servo Sweep Example
+    code: `// Servo Sweep Example
 #include <Servo.h>
 
 Servo servo_9;
@@ -277,16 +365,16 @@ void loop() {
   servo_9.write(180);
   delay(1000);
 }`,
-    },
-    {
-        id: 'melody',
-        name: 'Play Melody',
-        description: 'Mainkan melodi dengan buzzer',
-        difficulty: 'medium',
-        icon: '🎵',
-        board: 'uno',
-        modules: [{ id: 'buzzer1', type: 'buzzer', pin: 8, name: 'Buzzer' }],
-        blocksXml: `<xml xmlns="https://developers.google.com/blockly/xml">
+  },
+  {
+    id: 'melody',
+    name: 'Play Melody',
+    description: 'Mainkan melodi dengan buzzer',
+    difficulty: 'medium',
+    icon: '🎵',
+    board: 'uno',
+    modules: [{ id: 'buzzer1', type: 'buzzer', pin: 8, name: 'Buzzer' }],
+    blocksXml: `<xml xmlns="https://developers.google.com/blockly/xml">
   <block type="arduino_setup" x="20" y="20">
     <statement name="SETUP_CODE">
       <block type="pin_mode">
@@ -341,7 +429,7 @@ void loop() {
     </statement>
   </block>
 </xml>`,
-        code: `// Play Melody Example
+    code: `// Play Melody Example
 void setup() {
   pinMode(8, OUTPUT);
 }
@@ -356,20 +444,35 @@ void loop() {
   noTone(8);
   delay(1000);
 }`,
-    },
-    {
-        id: 'distance_sensor',
-        name: 'Distance Alarm',
-        description: 'Alarm jika objek terlalu dekat',
-        difficulty: 'medium',
-        icon: '📏',
-        board: 'uno',
-        modules: [
-            { id: 'ultrasonic1', type: 'ultrasonic', pin: 9, name: 'Ultrasonic' },
-            { id: 'led1', type: 'led', pin: 13, name: 'Warning LED' },
-            { id: 'buzzer1', type: 'buzzer', pin: 8, name: 'Buzzer' },
-        ],
-        blocksXml: `<xml xmlns="https://developers.google.com/blockly/xml">
+    circuitData: {
+      arduino: { x: 50, y: 80 },
+      modules: [
+        {
+          id: 'buzzer_1',
+          type: 'buzzer',
+          position: { x: 400, y: 140 },
+          properties: {}
+        }
+      ],
+      wires: [
+        { id: 'wire_buzzer_sig', fromComponent: 'arduino', fromPin: 'D8', toComponent: 'buzzer_1', toPin: 'positive', color: '#f97316' },
+        { id: 'wire_buzzer_gnd', fromComponent: 'arduino', fromPin: 'GND_D', toComponent: 'buzzer_1', toPin: 'negative', color: '#000000' }
+      ]
+    }
+  },
+  {
+    id: 'distance_sensor',
+    name: 'Distance Alarm',
+    description: 'Alarm jika objek terlalu dekat',
+    difficulty: 'medium',
+    icon: '📏',
+    board: 'uno',
+    modules: [
+      { id: 'ultrasonic1', type: 'ultrasonic', pin: 9, name: 'Ultrasonic' },
+      { id: 'led1', type: 'led', pin: 13, name: 'Warning LED' },
+      { id: 'buzzer1', type: 'buzzer', pin: 8, name: 'Buzzer' },
+    ],
+    blocksXml: `<xml xmlns="https://developers.google.com/blockly/xml">
   <block type="arduino_setup" x="20" y="20">
     <statement name="SETUP_CODE">
       <block type="pin_mode">
@@ -451,7 +554,7 @@ void loop() {
     </statement>
   </block>
 </xml>`,
-        code: `// Distance Alarm Example
+    code: `// Distance Alarm Example
 int distance;
 
 long readUltrasonic_9_10() {
@@ -484,16 +587,16 @@ void loop() {
   
   delay(100);
 }`,
-    },
-    {
-        id: 'lcd_hello',
-        name: 'LCD Hello World',
-        description: 'Tampilkan teks di layar LCD',
-        difficulty: 'medium',
-        icon: '📺',
-        board: 'uno',
-        modules: [{ id: 'lcd1', type: 'lcd', pin: 'I2C', name: 'LCD 16x2' }],
-        blocksXml: `<xml xmlns="https://developers.google.com/blockly/xml">
+  },
+  {
+    id: 'lcd_hello',
+    name: 'LCD Hello World',
+    description: 'Tampilkan teks di layar LCD',
+    difficulty: 'medium',
+    icon: '📺',
+    board: 'uno',
+    modules: [{ id: 'lcd1', type: 'lcd', pin: 'I2C', name: 'LCD 16x2' }],
+    blocksXml: `<xml xmlns="https://developers.google.com/blockly/xml">
   <block type="arduino_setup" x="20" y="20">
     <statement name="SETUP_CODE">
       <block type="lcd_init">
@@ -529,7 +632,7 @@ void loop() {
   <block type="arduino_loop" x="20" y="300">
   </block>
 </xml>`,
-        code: `// LCD Hello World Example
+    code: `// LCD Hello World Example
 #include <LiquidCrystal_I2C.h>
 
 LiquidCrystal_I2C lcd(0x27, 16, 2);
@@ -545,22 +648,22 @@ void setup() {
 void loop() {
   // Nothing to do here
 }`,
-    },
-    {
-        id: 'empty',
-        name: 'Blank Project',
-        description: 'Mulai dari awal dengan proyek kosong',
-        difficulty: 'custom',
-        icon: '📝',
-        board: 'uno',
-        modules: [],
-        blocksXml: `<xml xmlns="https://developers.google.com/blockly/xml">
+  },
+  {
+    id: 'empty',
+    name: 'Blank Project',
+    description: 'Mulai dari awal dengan proyek kosong',
+    difficulty: 'custom',
+    icon: '📝',
+    board: 'uno',
+    modules: [],
+    blocksXml: `<xml xmlns="https://developers.google.com/blockly/xml">
   <block type="arduino_setup" x="20" y="20">
   </block>
   <block type="arduino_loop" x="20" y="120">
   </block>
 </xml>`,
-        code: `// Arduino Sketch
+    code: `// Arduino Sketch
 
 void setup() {
   // Setup code here
@@ -569,5 +672,5 @@ void setup() {
 void loop() {
   // Loop code here
 }`,
-    },
+  },
 ]

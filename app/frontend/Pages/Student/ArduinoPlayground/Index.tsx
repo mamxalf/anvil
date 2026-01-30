@@ -30,10 +30,10 @@ import { configureArduinoGenerator } from '@/components/ArduinoBlockly/ArduinoGe
 import { arduinoToolbox } from '@/components/ArduinoBlockly/ArduinoToolbox'
 import {
     ARDUINO_BOARDS,
-    EXAMPLE_TEMPLATES,
     BoardType,
     ArduinoSketch,
 } from '@/components/ArduinoBlockly/ArduinoConfig'
+import { EXAMPLE_TEMPLATES } from '@/components/ArduinoPlayground/Examples'
 import { WiringCanvas, ComponentPalette, PropertiesPanel, ModuleType, STARTER_CIRCUITS } from '@/components/ArduinoPlayground'
 
 // Initialize Arduino blocks and generator
@@ -60,6 +60,12 @@ export default function ArduinoPlaygroundIndex({ sketches, currentSketch }: Prop
     const [viewMode, setViewMode] = useState<ViewMode>('split')
     const [activeTab, setActiveTab] = useState<'blocks' | 'code'>('blocks')
     const [code, setCode] = useState(currentSketch.code)
+    const codeRef = useRef(code)
+
+    useEffect(() => {
+        codeRef.current = code
+    }, [code])
+
     const [sketchName, setSketchName] = useState(currentSketch.name)
     const [sketchId, setSketchId] = useState<string | null>(currentSketch.id)
     const [blocksXml, setBlocksXml] = useState(currentSketch.blocks_xml || '')
@@ -127,11 +133,12 @@ export default function ArduinoPlaygroundIndex({ sketches, currentSketch }: Prop
     // Simulation
     const runSimulation = useCallback(async () => {
         if (isRunning || isCompiling) return
-        const success = await simulation.compile(code, boardType)
+        const currentCode = codeRef.current
+        const success = await simulation.compile(currentCode, boardType)
         if (success) {
             simulation.run()
         }
-    }, [isRunning, isCompiling, code, boardType, simulation])
+    }, [isRunning, isCompiling, boardType, simulation])
 
     const stopSimulation = useCallback(() => {
         simulation.stop()
@@ -405,7 +412,7 @@ export default function ArduinoPlaygroundIndex({ sketches, currentSketch }: Prop
                                     Examples
                                 </button>
                                 {showExamples && (
-                                    <div className="absolute right-0 mt-2 w-72 bg-white rounded-xl shadow-2xl border z-50 overflow-hidden">
+                                    <div className="absolute right-0 mt-2 w-72 bg-white rounded-xl shadow-2xl border z-[100] overflow-hidden">
                                         <div className="p-2.5 bg-orange-50 border-b">
                                             <p className="font-bold text-orange-800 text-sm">📚 Example Projects</p>
                                         </div>
@@ -421,6 +428,13 @@ export default function ArduinoPlaygroundIndex({ sketches, currentSketch }: Prop
                                                         setCode(template.code)
                                                         setShowExamples(false)
                                                         stopSimulation()
+
+                                                        // Load circuit if available
+                                                        if (template.circuitData) {
+                                                            circuit.importCircuit(JSON.stringify(template.circuitData))
+                                                        } else {
+                                                            circuit.clearCircuit()
+                                                        }
                                                     }}
                                                     className="w-full p-2.5 text-left hover:bg-gray-50 border-b last:border-0 flex items-center gap-2"
                                                 >

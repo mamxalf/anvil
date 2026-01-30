@@ -56,10 +56,53 @@ export interface ModuleProperties {
     value?: number          // Potentiometer value, servo angle
     text?: string           // LCD text
     pressed?: boolean       // Button state
+    angle?: number          // Servo angle
 }
 
+
 // Module types available
-export type ModuleType = 'led' | 'button' | 'buzzer' | 'lcd'
+// Module types available
+export type ModuleType = 'led' | 'button' | 'buzzer' | 'lcd' | 'servo' | 'ultrasonic' | 'potentiometer' | 'rgb_led' | 'photoresistor' | 'dht11'
+
+export type BoardType = 'uno' | 'nano' | 'mega' | 'esp32'
+
+export interface ExampleModuleInstance {
+    id: string
+    type: ModuleType
+    pin: number | string
+    name: string
+}
+
+export interface ExampleTemplate {
+    id: string
+    name: string
+    description: string
+    difficulty: 'easy' | 'medium' | 'hard' | 'custom'
+    icon: string
+    board: BoardType
+    modules: ExampleModuleInstance[]
+    blocksXml: string
+    code: string
+    circuitData?: {
+        version: number
+        arduino: { x: number; y: number }
+        modules: Array<{
+            id: string
+            type: ModuleType
+            position: { x: number; y: number }
+            properties: Record<string, unknown>
+        }>
+        wires: Array<{
+            id: string
+            fromComponent: string
+            fromPin: string
+            toComponent: string
+            toPin: string
+            color: string
+        }>
+    }
+}
+
 
 // Full circuit state
 export interface CircuitState {
@@ -128,7 +171,8 @@ export const ARDUINO_UNO_PINS: ArduinoPin[] = [
 ]
 
 // Module configurations
-export const MODULE_CONFIGS: Record<ModuleType, ModuleConfig> = {
+// Module configurations
+export const MODULE_CONFIGS: Partial<Record<ModuleType, ModuleConfig>> = {
     led: {
         type: 'led',
         name: 'LED',
@@ -163,8 +207,8 @@ export const MODULE_CONFIGS: Record<ModuleType, ModuleConfig> = {
         icon: '🔊',
         description: 'Piezo speaker',
         pins: [
-            { id: 'signal', label: '+', type: 'input', x: 20, y: 5 },
-            { id: 'gnd', label: '-', type: 'ground', x: 40, y: 5 },
+            { id: 'positive', label: '+', type: 'input', x: 20, y: 5 },
+            { id: 'negative', label: '-', type: 'ground', x: 40, y: 5 },
         ],
         defaultProperties: {},
         width: 60,
@@ -185,7 +229,37 @@ export const MODULE_CONFIGS: Record<ModuleType, ModuleConfig> = {
         width: 180,
         height: 80,
     },
+    servo: {
+        type: 'servo',
+        name: 'Servo Motor',
+        icon: '🔧',
+        description: 'Angular actuator',
+        pins: [
+            { id: 'gnd', label: 'GND', type: 'ground', x: 10, y: 5 },
+            { id: 'vcc', label: 'VCC', type: 'power', x: 30, y: 5 },
+            { id: 'pwm', label: 'PWM', type: 'input', x: 50, y: 5 },
+        ],
+        defaultProperties: { angle: 0 },
+        width: 80,
+        height: 60,
+    },
+    ultrasonic: {
+        type: 'ultrasonic',
+        name: 'Ultrasonic',
+        icon: '📏',
+        description: 'Distance sensor',
+        pins: [
+            { id: 'vcc', label: 'VCC', type: 'power', x: 10, y: 5 },
+            { id: 'trig', label: 'TRIG', type: 'input', x: 30, y: 5 },
+            { id: 'echo', label: 'ECHO', type: 'output', x: 50, y: 5 },
+            { id: 'gnd', label: 'GND', type: 'ground', x: 70, y: 5 },
+        ],
+        defaultProperties: {},
+        width: 90,
+        height: 50,
+    },
 }
+
 
 // Wire color palette
 export const WIRE_COLORS = [
