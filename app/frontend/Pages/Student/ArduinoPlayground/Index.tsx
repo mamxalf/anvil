@@ -4,7 +4,6 @@ import StudentLayout from '@/Layouts/StudentLayout'
 import { useState, useRef, useCallback, useEffect } from 'react'
 import { useTranslation } from '@/hooks/useTranslation'
 import { useArduinoSimulation } from '@/hooks/useArduinoSimulation'
-import { useCircuitState } from '@/hooks/useCircuitState'
 import {
     Play,
     Square,
@@ -34,7 +33,10 @@ import {
     ArduinoSketch,
 } from '@/components/ArduinoBlockly/ArduinoConfig'
 import { EXAMPLE_TEMPLATES } from '@/components/ArduinoPlayground/Examples'
-import { WiringCanvas, ComponentPalette, PropertiesPanel, ModuleType, STARTER_CIRCUITS } from '@/components/ArduinoPlayground'
+import { ComponentPalette, PropertiesPanel, ModuleType, STARTER_CIRCUITS } from '@/components/ArduinoPlayground'
+import { usePlaygroundController } from '@/components/ArduinoPlayground/hooks/usePlaygroundController'
+import { PlaygroundCanvas } from '@/components/ArduinoPlayground/Canvas/PlaygroundCanvas'
+
 
 // Initialize Arduino blocks and generator
 defineArduinoBlocks()
@@ -54,7 +56,17 @@ export default function ArduinoPlaygroundIndex({ sketches, currentSketch }: Prop
     const simulation = useArduinoSimulation()
 
     // Circuit state hook
-    const circuit = useCircuitState()
+    // Controller for the new Playground Canvas
+    const partRefs = useRef(new Map<string, HTMLElement>());
+    const containerRef = useRef<HTMLDivElement | null>(null);
+
+    const controller = usePlaygroundController({
+        partRefs,
+        containerRef,
+        pinStates: simulation.state.pinStates
+    });
+
+    const circuitState = controller.circuitState;
 
     // State
     const [viewMode, setViewMode] = useState<ViewMode>('split')
@@ -86,18 +98,17 @@ export default function ArduinoPlaygroundIndex({ sketches, currentSketch }: Prop
     // Derive states from simulation
     const isRunning = simulation.state.isRunning
     const isCompiling = simulation.state.isCompiling
-    const pinStates = simulation.state.pinStates
     const consoleOutput = simulation.state.serialOutput
 
     // Determine selected item type
     const getSelectedType = useCallback((): 'arduino' | 'module' | 'wire' | null => {
-        if (!circuit.state.selectedId) return null
-        if (circuit.state.selectedId === 'arduino') return 'arduino'
-        if (circuit.state.selectedId.startsWith('wire_')) return 'wire'
+        if (!circuitState.selectedId) return null
+        if (circuitState.selectedId === 'arduino') return 'arduino'
+        if (circuitState.selectedId.startsWith('wire_')) return 'wire'
         return 'module'
-    }, [circuit.state.selectedId])
+    }, [circuitState.selectedId])
 
-    const selectedModule = circuit.state.modules.find(m => m.id === circuit.state.selectedId)
+    const selectedModule = circuitState.modules.find(m => m.id === circuitState.selectedId)
 
     // Blockly workspace configuration
     const workspaceConfiguration = {
@@ -158,9 +169,9 @@ export default function ArduinoPlaygroundIndex({ sketches, currentSketch }: Prop
 
             // Include circuit data in save
             const circuitData = {
-                arduino: circuit.state.arduino,
-                modules: circuit.state.modules,
-                wires: circuit.state.wires,
+                arduino: circuitState.arduino,
+                modules: circuitState.modules,
+                wires: circuitState.wires,
             }
 
             const payload = {
@@ -168,7 +179,7 @@ export default function ArduinoPlaygroundIndex({ sketches, currentSketch }: Prop
                     name: sketchName,
                     code,
                     board_type: boardType,
-                    modules: circuit.state.modules.map(m => ({
+                    modules: circuitState.modules.map(m => ({
                         id: m.id,
                         type: m.type,
                         pin: null,
@@ -220,12 +231,12 @@ export default function ArduinoPlaygroundIndex({ sketches, currentSketch }: Prop
 
         // Load circuit data if available
         if (sketch.circuit_data) {
-            circuit.importCircuit(JSON.stringify({
+            controller.importCircuit(JSON.stringify({
                 version: 1,
                 ...sketch.circuit_data,
             }))
         } else {
-            circuit.clearCircuit()
+            controller.clearCircuit()
         }
     }
 
@@ -263,13 +274,13 @@ export default function ArduinoPlaygroundIndex({ sketches, currentSketch }: Prop
         setSketchId(null)
         setCode('// New Arduino Sketch\n\nvoid setup() {\n  // Setup code here\n}\n\nvoid loop() {\n  // Loop code here\n}')
         setBlocksXml('')
-        circuit.clearCircuit()
+        controller.clearCircuit()
         stopSimulation()
     }
 
     // Export circuit
     const exportCircuit = () => {
-        const data = circuit.exportCircuit()
+        const data = controller.exportCircuit()
         const blob = new Blob([data], { type: 'application/json' })
         const url = URL.createObjectURL(blob)
         const a = document.createElement('a')
@@ -290,7 +301,7 @@ export default function ArduinoPlaygroundIndex({ sketches, currentSketch }: Prop
                 const reader = new FileReader()
                 reader.onload = (e) => {
                     const content = e.target?.result as string
-                    circuit.importCircuit(content)
+                    controller.importCircuit(content)
                 }
                 reader.readAsText(file)
             }
@@ -302,9 +313,9 @@ export default function ArduinoPlaygroundIndex({ sketches, currentSketch }: Prop
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.key === 'Delete' || e.key === 'Backspace') {
-                if (circuit.state.selectedId && circuit.state.selectedId !== 'arduino') {
+                if (circuitState.selectedId && circuitState.selectedId !== 'arduino') {
                     e.preventDefault()
-                    circuit.deleteSelected()
+                    controller.deleteSelected()
                 }
             }
             if ((e.metaKey || e.ctrlKey) && e.key === 's') {
@@ -315,7 +326,7 @@ export default function ArduinoPlaygroundIndex({ sketches, currentSketch }: Prop
 
         window.addEventListener('keydown', handleKeyDown)
         return () => window.removeEventListener('keydown', handleKeyDown)
-    }, [circuit.state.selectedId, circuit])
+    }, [circuitState.selectedId, controller])
 
     return (
         <StudentLayout>
@@ -431,9 +442,9 @@ export default function ArduinoPlaygroundIndex({ sketches, currentSketch }: Prop
 
                                                         // Load circuit if available
                                                         if (template.circuitData) {
-                                                            circuit.importCircuit(JSON.stringify(template.circuitData))
+                                                            controller.importCircuit(JSON.stringify(template.circuitData))
                                                         } else {
-                                                            circuit.clearCircuit()
+                                                            controller.clearCircuit()
                                                         }
                                                     }}
                                                     className="w-full p-2.5 text-left hover:bg-gray-50 border-b last:border-0 flex items-center gap-2"
@@ -545,18 +556,25 @@ export default function ArduinoPlaygroundIndex({ sketches, currentSketch }: Prop
                             {/* Circuit Canvas (70%) */}
                             <div className="flex-[7] flex flex-col gap-3 min-w-0">
                                 <div className="flex-1 rounded-xl overflow-hidden shadow-lg relative">
-                                    <WiringCanvas
-                                        circuitState={circuit.state}
-                                        pinStates={pinStates}
-                                        onMoveArduino={circuit.moveArduino}
-                                        onMoveModule={circuit.moveModule}
-                                        onSelectItem={circuit.selectItem}
-                                        onStartWiring={circuit.startWiring}
-                                        onUpdateWiringPosition={circuit.updateWiringPosition}
-                                        onCompleteWiring={circuit.completeWiring}
-                                        onCancelWiring={circuit.cancelWiring}
-                                        onRemoveWire={circuit.removeWire}
-                                    />
+                                    <div
+                                        className="h-full w-full relative bg-slate-500 overflow-hidden"
+                                        onMouseMove={controller.handleCanvasMouseMove}
+                                    >
+                                        <PlaygroundCanvas
+                                            containerRef={containerRef}
+                                            wires={controller.wires}
+                                            isWiringMode={!!circuitState.wiringMode}
+                                            pins={controller.pins}
+                                            activePin={controller.activePin}
+                                            onPinClick={controller.handlePinClick}
+                                            parts={controller.parts}
+                                            partRefs={partRefs}
+                                            selectedPartId={circuitState.selectedId} // Using circuitState directly if needed or controller passthrough
+                                            selectedWireId={circuitState.selectedId?.startsWith('wire_') ? circuitState.selectedId : null}
+                                            onWireClick={controller.selectItem}
+                                            onPartPointerDown={controller.handlePartPointerDown}
+                                        />
+                                    </div>
 
                                     {/* Simulation controls overlay */}
                                     <div className="absolute bottom-3 left-3 flex gap-2">
@@ -598,7 +616,7 @@ export default function ArduinoPlaygroundIndex({ sketches, currentSketch }: Prop
                                         <button
                                             onClick={() => {
                                                 const starterCircuit = STARTER_CIRCUITS.ledBlink
-                                                circuit.importCircuit(JSON.stringify({
+                                                controller.importCircuit(JSON.stringify({
                                                     version: 1,
                                                     ...starterCircuit
                                                 }))
@@ -646,28 +664,40 @@ export default function ArduinoPlaygroundIndex({ sketches, currentSketch }: Prop
                             <div className="flex-[3] flex flex-col gap-3 min-w-[240px]">
                                 <div className="flex-1 overflow-hidden">
                                     <ComponentPalette
-                                        onAddModule={(type: ModuleType) => circuit.addModule(type)}
-                                        selectedId={circuit.state.selectedId}
-                                        onDeleteSelected={circuit.deleteSelected}
+                                        onAddModule={(type: ModuleType) => controller.addModule(type)}
+                                        selectedId={circuitState.selectedId}
+                                        onDeleteSelected={controller.deleteSelected}
                                     />
                                 </div>
                                 <div className="h-[280px]">
                                     <PropertiesPanel
-                                        selectedId={circuit.state.selectedId}
+                                        selectedId={circuitState.selectedId}
                                         selectedType={getSelectedType()}
                                         moduleType={selectedModule?.type}
                                         properties={selectedModule?.properties as Record<string, unknown> | undefined}
                                         onUpdateProperties={(props) => {
                                             if (selectedModule) {
-                                                circuit.updateModuleProperties(selectedModule.id, props)
+                                                controller.updateModuleProperties(selectedModule.id, props)
                                             }
                                         }}
                                         onRemoveWire={() => {
-                                            if (circuit.state.selectedId?.startsWith('wire_')) {
-                                                circuit.removeWire(circuit.state.selectedId)
+                                            if (circuitState.selectedId?.startsWith('wire_')) {
+                                                controller.removeWire(circuitState.selectedId)
                                             }
                                         }}
                                     />
+                                    {/* Component Actions */}
+                                    {circuitState.selectedId && !circuitState.selectedId.startsWith('wire_') && (
+                                        <div className="px-4 py-2 bg-white border-t border-gray-100">
+                                            <button
+                                                onClick={() => controller.rotateComponent(circuitState.selectedId!)}
+                                                className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-lg text-sm font-bold transition-colors"
+                                            >
+                                                <RotateCcw className="w-4 h-4" />
+                                                Rotate Component
+                                            </button>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         </>
@@ -679,18 +709,25 @@ export default function ArduinoPlaygroundIndex({ sketches, currentSketch }: Prop
                             {/* Left: Circuit Canvas (50%) */}
                             <div className="flex-1 flex flex-col gap-3 min-w-0">
                                 <div className="flex-1 rounded-xl overflow-hidden shadow-lg relative">
-                                    <WiringCanvas
-                                        circuitState={circuit.state}
-                                        pinStates={pinStates}
-                                        onMoveArduino={circuit.moveArduino}
-                                        onMoveModule={circuit.moveModule}
-                                        onSelectItem={circuit.selectItem}
-                                        onStartWiring={circuit.startWiring}
-                                        onUpdateWiringPosition={circuit.updateWiringPosition}
-                                        onCompleteWiring={circuit.completeWiring}
-                                        onCancelWiring={circuit.cancelWiring}
-                                        onRemoveWire={circuit.removeWire}
-                                    />
+                                    <div
+                                        className="h-full w-full relative bg-slate-500 overflow-hidden"
+                                        onMouseMove={controller.handleCanvasMouseMove}
+                                    >
+                                        <PlaygroundCanvas
+                                            containerRef={containerRef}
+                                            wires={controller.wires}
+                                            isWiringMode={!!circuitState.wiringMode}
+                                            pins={controller.pins}
+                                            activePin={controller.activePin}
+                                            onPinClick={controller.handlePinClick}
+                                            parts={controller.parts}
+                                            partRefs={partRefs}
+                                            selectedPartId={circuitState.selectedId}
+                                            selectedWireId={circuitState.selectedId?.startsWith('wire_') ? circuitState.selectedId : null}
+                                            onWireClick={controller.selectItem}
+                                            onPartPointerDown={controller.handlePartPointerDown}
+                                        />
+                                    </div>
 
                                     {/* Simulation controls overlay */}
                                     <div className="absolute bottom-3 left-3 flex gap-2">

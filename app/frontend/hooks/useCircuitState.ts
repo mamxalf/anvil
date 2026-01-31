@@ -28,6 +28,7 @@ export interface UseCircuitStateReturn {
     addModule: (type: ModuleType, x?: number, y?: number) => void
     removeModule: (id: string) => void
     moveModule: (id: string, x: number, y: number) => void
+    rotateComponent: (id: string) => void
     updateModuleProperties: (id: string, properties: Record<string, unknown>) => void
 
     // Wire actions
@@ -76,10 +77,12 @@ export function useCircuitState(initial?: Partial<CircuitState>): UseCircuitStat
     // Module actions
     const addModule = useCallback((type: ModuleType, x = 400, y = 200) => {
         const config = MODULE_CONFIGS[type]
+        if (!config) return
+
         const newModule: CircuitModule = {
             id: `${type}_${generateId()}`,
             type,
-            position: { x: snapToGrid(x), y: snapToGrid(y) },
+            position: { x: snapToGrid(x), y: snapToGrid(y), rotation: 0 },
             properties: { ...config.defaultProperties },
         }
 
@@ -108,6 +111,28 @@ export function useCircuitState(initial?: Partial<CircuitState>): UseCircuitStat
                     : m
             ),
         }))
+    }, [])
+
+    const rotateComponent = useCallback((id: string) => {
+        setState(prev => {
+            // Check if it's Arduino
+            if (id === 'arduino') {
+                return {
+                    ...prev,
+                    arduino: { ...prev.arduino, rotation: (prev.arduino.rotation || 0) + 90 }
+                }
+            }
+
+            // Check modules
+            return {
+                ...prev,
+                modules: prev.modules.map(m =>
+                    m.id === id
+                        ? { ...m, position: { ...m.position, rotation: ((m.position.rotation || 0) + 90) % 360 } }
+                        : m
+                ),
+            }
+        })
     }, [])
 
     const updateModuleProperties = useCallback((id: string, properties: Record<string, unknown>) => {
@@ -330,6 +355,7 @@ export function useCircuitState(initial?: Partial<CircuitState>): UseCircuitStat
         addModule,
         removeModule,
         moveModule,
+        rotateComponent,
         updateModuleProperties,
         startWiring,
         updateWiringPosition,

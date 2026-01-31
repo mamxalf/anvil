@@ -124,6 +124,7 @@ export function LEDModule({
     onDragStart,
 }: BaseModuleProps) {
     const config = MODULE_CONFIGS.led
+    if (!config) return null
     const { x, y } = module.position
     const color = (module.properties.color as string) || 'red'
 
@@ -163,29 +164,31 @@ export function LEDModule({
                 }}
             />
 
-            {/* Wokwi LED element */}
-            <foreignObject x={x + 5} y={y + 5} width={50} height={60}>
-                <div>
-                    <wokwi-led
-                        color={color}
-                        value={isOn}
-                        brightness={isOn ? 1.0 : 0.1}
-                        label=""
-                    />
-                </div>
-            </foreignObject>
+            <g transform={`rotate(${module.position.rotation || 0}, ${x + config.width / 2}, ${y + config.height / 2})`} style={{ pointerEvents: 'none' }}>
+                {/* Wokwi LED element */}
+                <foreignObject x={x + 5} y={y + 5} width={50} height={60}>
+                    <div>
+                        <wokwi-led
+                            color={color}
+                            value={isOn}
+                            brightness={isOn ? 1.0 : 0.1}
+                            label=""
+                        />
+                    </div>
+                </foreignObject>
 
-            {/* Label */}
-            <text
-                x={x + config.width / 2}
-                y={y + config.height - 8}
-                fill="#fff"
-                fontSize={10}
-                fontWeight="bold"
-                textAnchor="middle"
-            >
-                LED
-            </text>
+                {/* Label */}
+                <text
+                    x={x + config.width / 2}
+                    y={y + config.height - 8}
+                    fill="#fff"
+                    fontSize={10}
+                    fontWeight="bold"
+                    textAnchor="middle"
+                >
+                    LED
+                </text>
+            </g>
 
             {/* Pins */}
             {config.pins.map(pin => (
@@ -220,6 +223,7 @@ export function ButtonModule({
     onButtonPress,
 }: BaseModuleProps) {
     const config = MODULE_CONFIGS.button
+    if (!config) return null
     const { x, y } = module.position
     const color = (module.properties.color as string) || 'red'
     const [isPressed, setIsPressed] = useState(false)
@@ -279,27 +283,29 @@ export function ButtonModule({
                 }}
             />
 
-            <foreignObject x={x + 5} y={y + 10} width={50} height={50}>
-                <div onMouseDown={handlePress} onMouseUp={handleRelease}>
-                    <wokwi-pushbutton
-                        ref={buttonRef}
-                        color={color}
-                        pressed={isPressed}
-                        label=""
-                    />
-                </div>
-            </foreignObject>
+            <g transform={`rotate(${module.position.rotation || 0}, ${x + config.width / 2}, ${y + config.height / 2})`} style={{ pointerEvents: 'none' }}>
+                <foreignObject x={x + 5} y={y + 10} width={50} height={50}>
+                    <div style={{ pointerEvents: 'auto' }} onMouseDown={handlePress} onMouseUp={handleRelease}>
+                        <wokwi-pushbutton
+                            ref={buttonRef}
+                            color={color}
+                            pressed={isPressed}
+                            label=""
+                        />
+                    </div>
+                </foreignObject>
 
-            <text
-                x={x + config.width / 2}
-                y={y + config.height - 5}
-                fill="#fff"
-                fontSize={10}
-                fontWeight="bold"
-                textAnchor="middle"
-            >
-                BTN
-            </text>
+                <text
+                    x={x + config.width / 2}
+                    y={y + config.height - 5}
+                    fill="#fff"
+                    fontSize={10}
+                    fontWeight="bold"
+                    textAnchor="middle"
+                >
+                    BTN
+                </text>
+            </g>
 
             {config.pins.map(pin => (
                 <ModulePinSlot
@@ -333,6 +339,7 @@ export function BuzzerModule({
     onDragStart,
 }: BaseModuleProps) {
     const config = MODULE_CONFIGS.buzzer
+    if (!config) return null
     const { x, y } = module.position
     const audioContextRef = useRef<AudioContext | null>(null)
     const oscillatorRef = useRef<OscillatorNode | null>(null)
@@ -401,22 +408,24 @@ export function BuzzerModule({
                 }}
             />
 
-            <foreignObject x={x + 5} y={y + 5} width={50} height={50}>
-                <div>
-                    <wokwi-buzzer hasSignal={isActive} />
-                </div>
-            </foreignObject>
+            <g transform={`rotate(${module.position.rotation || 0}, ${x + config.width / 2}, ${y + config.height / 2})`} style={{ pointerEvents: 'none' }}>
+                <foreignObject x={x + 5} y={y + 5} width={50} height={50}>
+                    <div>
+                        <wokwi-buzzer hasSignal={isActive} />
+                    </div>
+                </foreignObject>
 
-            <text
-                x={x + config.width / 2}
-                y={y + config.height - 5}
-                fill="#fff"
-                fontSize={10}
-                fontWeight="bold"
-                textAnchor="middle"
-            >
-                BUZZ
-            </text>
+                <text
+                    x={x + config.width / 2}
+                    y={y + config.height - 5}
+                    fill="#fff"
+                    fontSize={10}
+                    fontWeight="bold"
+                    textAnchor="middle"
+                >
+                    BUZZ
+                </text>
+            </g>
 
             {config.pins.map(pin => (
                 <ModulePinSlot
@@ -449,6 +458,7 @@ export function LCDModule({
     onDragStart,
 }: BaseModuleProps) {
     const config = MODULE_CONFIGS.lcd
+    if (!config) return null
     const { x, y } = module.position
     const text = (module.properties.text as string) || 'Hello World!'
 
@@ -483,15 +493,17 @@ export function LCDModule({
                 }}
             />
 
-            <foreignObject x={x + 5} y={y + 5} width={175} height={65}>
-                <div>
-                    <wokwi-lcd1602
-                        text={text}
-                        backlight={true}
-                        color="green"
-                    />
-                </div>
-            </foreignObject>
+            <g transform={`rotate(${module.position.rotation || 0}, ${x + config.width / 2}, ${y + config.height / 2})`} style={{ pointerEvents: 'none' }}>
+                <foreignObject x={x + 5} y={y + 5} width={175} height={65}>
+                    <div>
+                        <wokwi-lcd1602
+                            text={text}
+                            backlight={true}
+                            color="green"
+                        />
+                    </div>
+                </foreignObject>
+            </g>
 
             {config.pins.map(pin => (
                 <ModulePinSlot

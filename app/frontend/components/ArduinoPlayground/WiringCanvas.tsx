@@ -145,14 +145,18 @@ export function WiringCanvas({
         }
     }, [onSelectItem])
 
-    // Handle middle mouse button for panning
+    // Handle mouse down for panning (middle click or left click on background)
     const handleMouseDown = useCallback((e: React.MouseEvent) => {
-        if (e.button === 1) { // Middle mouse button
+        // Allow panning with middle click OR left click on background (if not holding other keys)
+        if (e.button === 1 || (e.button === 0 && e.target === svgRef.current)) {
+            // If wiring mode, don't pan on left click
+            if (circuitState.wiringMode && e.button === 0) return
+
             e.preventDefault()
             setIsPanning(true)
             setPanStart({ x: e.clientX, y: e.clientY })
         }
-    }, [])
+    }, [circuitState.wiringMode])
 
     // Handle wheel for zoom
     const handleWheel = useCallback((e: React.WheelEvent) => {
@@ -161,8 +165,8 @@ export function WiringCanvas({
         const { x, y } = screenToSVG(e.clientX, e.clientY)
 
         setViewBox(prev => {
-            const newWidth = Math.min(Math.max(prev.width * scaleFactor, 400), 2400)
-            const newHeight = Math.min(Math.max(prev.height * scaleFactor, 300), 1200)
+            const newWidth = Math.min(Math.max(prev.width * scaleFactor, 200), 5000)
+            const newHeight = Math.min(Math.max(prev.height * scaleFactor, 150), 5000)
             const scaleX = newWidth / prev.width
             const scaleY = newHeight / prev.height
 
@@ -262,8 +266,8 @@ export function WiringCanvas({
                 <button
                     onClick={() => setViewBox(prev => ({
                         ...prev,
-                        width: Math.min(prev.width * 1.1, 2400),
-                        height: Math.min(prev.height * 1.1, 1200),
+                        width: Math.min(prev.width * 1.1, 5000),
+                        height: Math.min(prev.height * 1.1, 5000),
                     }))}
                     className="w-8 h-8 bg-slate-700 hover:bg-slate-600 text-white rounded-lg flex items-center justify-center text-lg font-bold"
                 >
@@ -294,7 +298,7 @@ export function WiringCanvas({
                 onMouseDown={handleMouseDown}
                 onClick={handleCanvasClick}
                 onWheel={handleWheel}
-                style={{ cursor: isPanning ? 'grabbing' : circuitState.wiringMode ? 'crosshair' : 'default' }}
+                style={{ cursor: isPanning ? 'grabbing' : circuitState.wiringMode ? 'crosshair' : 'grab' }}
             >
                 {/* Grid pattern */}
                 <defs>

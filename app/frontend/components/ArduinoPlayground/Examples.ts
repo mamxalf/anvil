@@ -677,4 +677,164 @@ void loop() {
   // Loop code here
 }`,
   },
+  {
+    id: 'mini_piano',
+    name: 'Mini Piano',
+    description: 'Piano 8 nada menggunakan tombol (1-8)',
+    difficulty: 'medium',
+    icon: '🎹',
+    board: 'uno',
+    modules: [
+      { id: 'buzzer1', type: 'buzzer', pin: 8, name: 'Buzzer' },
+      { id: 'btn_c', type: 'button', pin: 12, name: 'Note C' },
+      { id: 'btn_d', type: 'button', pin: 11, name: 'Note D' },
+      { id: 'btn_e', type: 'button', pin: 10, name: 'Note E' },
+      { id: 'btn_f', type: 'button', pin: 9, name: 'Note F' },
+      { id: 'btn_g', type: 'button', pin: 7, name: 'Note G' },
+      { id: 'btn_a', type: 'button', pin: 6, name: 'Note A' },
+      { id: 'btn_b', type: 'button', pin: 5, name: 'Note B' },
+      { id: 'btn_c2', type: 'button', pin: 4, name: 'Note C5' },
+    ],
+    blocksXml: `<xml xmlns="https://developers.google.com/blockly/xml">
+  <block type="arduino_setup" x="20" y="20">
+    <statement name="SETUP_CODE">
+      <block type="pin_mode">
+        <field name="PIN">8</field>
+        <field name="MODE">OUTPUT</field>
+        <next>
+          <block type="pin_mode">
+            <field name="PIN">12</field>
+            <field name="MODE">INPUT_PULLUP</field>
+            <next>
+              <block type="pin_mode">
+                <field name="PIN">11</field>
+                <field name="MODE">INPUT_PULLUP</field>
+                <next>
+                   <block type="pin_mode">
+                    <field name="PIN">10</field>
+                    <field name="MODE">INPUT_PULLUP</field>
+                     <next>
+                      <block type="pin_mode">
+                        <field name="PIN">9</field>
+                        <field name="MODE">INPUT_PULLUP</field>
+                        <next>
+                           <block type="pin_mode">
+                            <field name="PIN">7</field>
+                            <field name="MODE">INPUT_PULLUP</field>
+                             <next>
+                              <block type="pin_mode">
+                                <field name="PIN">6</field>
+                                <field name="MODE">INPUT_PULLUP</field>
+                                <next>
+                                   <block type="pin_mode">
+                                    <field name="PIN">5</field>
+                                    <field name="MODE">INPUT_PULLUP</field>
+                                     <next>
+                                      <block type="pin_mode">
+                                        <field name="PIN">4</field>
+                                        <field name="MODE">INPUT_PULLUP</field>
+                                      </block>
+                                    </next>
+                                  </block>
+                                </next>
+                              </block>
+                            </next>
+                          </block>
+                        </next>
+                      </block>
+                    </next>
+                  </block>
+                </next>
+              </block>
+            </next>
+          </block>
+        </next>
+      </block>
+    </statement>
+  </block>
+  <block type="arduino_loop" x="20" y="300">
+    <statement name="LOOP_CODE">
+       
+    </statement>
+  </block>
+</xml>`,
+    code: `// Mini Piano Example
+#include "pitches.h"
+#define NOTE_C4  262
+#define NOTE_D4  294
+#define NOTE_E4  330
+#define NOTE_F4  349
+#define NOTE_G4  392
+#define NOTE_A4  440
+#define NOTE_B4  494
+#define NOTE_C5  523
+
+const int buttonPins[] = { 12, 11, 10, 9, 7, 6, 5, 4 };
+const int tones[] = { NOTE_C4, NOTE_D4, NOTE_E4, NOTE_F4, NOTE_G4, NOTE_A4, NOTE_B4, NOTE_C5 };
+const int numTones = 8;
+
+void setup() {
+  for (int i = 0; i < numTones; i++) {
+    pinMode(buttonPins[i], INPUT_PULLUP);
+  }
+  pinMode(8, OUTPUT);
+}
+
+void loop() {
+  int pitch = 0;
+  for (int i = 0; i < numTones; i++) {
+    if (digitalRead(buttonPins[i]) == LOW) {
+      pitch = tones[i];
+      break; 
+    }
+  }
+  
+  if (pitch > 0) {
+    tone(8, pitch);
+  } else {
+    noTone(8);
+  }
+  delay(10);
+}`,
+    circuitData: {
+      version: 1,
+      arduino: { x: 50, y: 150 },
+      modules: [
+        { id: 'buzzer1', type: 'buzzer', position: { x: 380, y: 180 }, properties: {} },
+        { id: 'btn_c', type: 'button', position: { x: 300, y: 40 }, properties: { color: 'red' } },
+        { id: 'btn_d', type: 'button', position: { x: 350, y: 40 }, properties: { color: 'orange' } },
+        { id: 'btn_e', type: 'button', position: { x: 400, y: 40 }, properties: { color: 'yellow' } },
+        { id: 'btn_f', type: 'button', position: { x: 450, y: 40 }, properties: { color: 'green' } },
+        { id: 'btn_g', type: 'button', position: { x: 500, y: 40 }, properties: { color: 'cyan' } },
+        { id: 'btn_a', type: 'button', position: { x: 550, y: 40 }, properties: { color: 'blue' } },
+        { id: 'btn_b', type: 'button', position: { x: 600, y: 40 }, properties: { color: 'purple' } },
+        { id: 'btn_c2', type: 'button', position: { x: 650, y: 40 }, properties: { color: 'red' } },
+      ],
+      wires: [
+        // Buzzer
+        { id: 'bsig', fromComponent: 'arduino', fromPin: 'D8', toComponent: 'buzzer1', toPin: 'positive', color: 'orange' },
+        { id: 'bgnd', fromComponent: 'arduino', fromPin: 'GND_D', toComponent: 'buzzer1', toPin: 'negative', color: 'black' },
+
+        // Buttons Common GND (daisy chain for simplicity in this view)
+        { id: 'g0', fromComponent: 'arduino', fromPin: 'GND1', toComponent: 'btn_c', toPin: 'terminal1b', color: 'black' },
+        { id: 'g1', fromComponent: 'btn_c', fromPin: 'terminal1b', toComponent: 'btn_d', toPin: 'terminal1b', color: 'black' },
+        { id: 'g2', fromComponent: 'btn_d', fromPin: 'terminal1b', toComponent: 'btn_e', toPin: 'terminal1b', color: 'black' },
+        { id: 'g3', fromComponent: 'btn_e', fromPin: 'terminal1b', toComponent: 'btn_f', toPin: 'terminal1b', color: 'black' },
+        { id: 'g4', fromComponent: 'btn_f', fromPin: 'terminal1b', toComponent: 'btn_g', toPin: 'terminal1b', color: 'black' },
+        { id: 'g5', fromComponent: 'btn_g', fromPin: 'terminal1b', toComponent: 'btn_a', toPin: 'terminal1b', color: 'black' },
+        { id: 'g6', fromComponent: 'btn_a', fromPin: 'terminal1b', toComponent: 'btn_b', toPin: 'terminal1b', color: 'black' },
+        { id: 'g7', fromComponent: 'btn_b', fromPin: 'terminal1b', toComponent: 'btn_c2', toPin: 'terminal1b', color: 'black' },
+
+        // Button Signals
+        { id: 's1', fromComponent: 'arduino', fromPin: 'D12', toComponent: 'btn_c', toPin: 'terminal1a', color: 'red' },
+        { id: 's2', fromComponent: 'arduino', fromPin: 'D11', toComponent: 'btn_d', toPin: 'terminal1a', color: 'orange' },
+        { id: 's3', fromComponent: 'arduino', fromPin: 'D10', toComponent: 'btn_e', toPin: 'terminal1a', color: 'yellow' },
+        { id: 's4', fromComponent: 'arduino', fromPin: 'D9', toComponent: 'btn_f', toPin: 'terminal1a', color: 'green' },
+        { id: 's5', fromComponent: 'arduino', fromPin: 'D7', toComponent: 'btn_g', toPin: 'terminal1a', color: 'cyan' },
+        { id: 's6', fromComponent: 'arduino', fromPin: 'D6', toComponent: 'btn_a', toPin: 'terminal1a', color: 'blue' },
+        { id: 's7', fromComponent: 'arduino', fromPin: 'D5', toComponent: 'btn_b', toPin: 'terminal1a', color: 'purple' },
+        { id: 's8', fromComponent: 'arduino', fromPin: 'D4', toComponent: 'btn_c2', toPin: 'terminal1a', color: 'red' },
+      ]
+    }
+  },
 ]

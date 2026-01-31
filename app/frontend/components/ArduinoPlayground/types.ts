@@ -136,38 +136,40 @@ export interface ModuleConfig {
 // Arduino Uno pin definitions
 export const ARDUINO_UNO_PINS: ArduinoPin[] = [
     // Digital pins (right side, top to bottom)
-    { id: 'D0', label: '0', type: 'digital', number: 0, x: 268, y: 32 },
-    { id: 'D1', label: '1', type: 'digital', number: 1, x: 268, y: 42 },
-    { id: 'D2', label: '2', type: 'digital', number: 2, x: 268, y: 52 },
-    { id: 'D3', label: '3~', type: 'pwm', number: 3, isPWM: true, x: 268, y: 62 },
-    { id: 'D4', label: '4', type: 'digital', number: 4, x: 268, y: 72 },
-    { id: 'D5', label: '5~', type: 'pwm', number: 5, isPWM: true, x: 268, y: 82 },
-    { id: 'D6', label: '6~', type: 'pwm', number: 6, isPWM: true, x: 268, y: 92 },
-    { id: 'D7', label: '7', type: 'digital', number: 7, x: 268, y: 102 },
-    { id: 'D8', label: '8', type: 'digital', number: 8, x: 268, y: 122 },
-    { id: 'D9', label: '9~', type: 'pwm', number: 9, isPWM: true, x: 268, y: 132 },
-    { id: 'D10', label: '10~', type: 'pwm', number: 10, isPWM: true, x: 268, y: 142 },
-    { id: 'D11', label: '11~', type: 'pwm', number: 11, isPWM: true, x: 268, y: 152 },
-    { id: 'D12', label: '12', type: 'digital', number: 12, x: 268, y: 162 },
-    { id: 'D13', label: '13', type: 'digital', number: 13, x: 268, y: 172 },
-    { id: 'GND_D', label: 'GND', type: 'ground', x: 268, y: 182 },
-    { id: 'AREF', label: 'AREF', type: 'digital', x: 268, y: 192 },
+    // Scale approx 0.55x relative to Wokwi native coords
+    { id: 'D0', label: '0', type: 'digital', number: 0, x: 254, y: 26 },
+    { id: 'D1', label: '1', type: 'digital', number: 1, x: 246, y: 26 },
+    { id: 'D2', label: '2', type: 'digital', number: 2, x: 238, y: 26 },
+    { id: 'D3', label: '3~', type: 'pwm', number: 3, isPWM: true, x: 230, y: 26 },
+    { id: 'D4', label: '4', type: 'digital', number: 4, x: 222, y: 26 },
+    { id: 'D5', label: '5~', type: 'pwm', number: 5, isPWM: true, x: 214, y: 26 },
+    { id: 'D6', label: '6~', type: 'pwm', number: 6, isPWM: true, x: 206, y: 26 },
+    { id: 'D7', label: '7', type: 'digital', number: 7, x: 198, y: 26 },
 
-    // Analog pins (left side, bottom to top)
-    { id: 'A0', label: 'A0', type: 'analog', number: 0, x: 10, y: 172 },
-    { id: 'A1', label: 'A1', type: 'analog', number: 1, x: 10, y: 162 },
-    { id: 'A2', label: 'A2', type: 'analog', number: 2, x: 10, y: 152 },
-    { id: 'A3', label: 'A3', type: 'analog', number: 3, x: 10, y: 142 },
-    { id: 'A4', label: 'A4', type: 'analog', number: 4, x: 10, y: 132 },
-    { id: 'A5', label: 'A5', type: 'analog', number: 5, x: 10, y: 122 },
+    { id: 'D8', label: '8', type: 'digital', number: 8, x: 184, y: 26 },
+    { id: 'D9', label: '9~', type: 'pwm', number: 9, isPWM: true, x: 176, y: 26 },
+    { id: 'D10', label: '10~', type: 'pwm', number: 10, isPWM: true, x: 168, y: 26 },
+    { id: 'D11', label: '11~', type: 'pwm', number: 11, isPWM: true, x: 160, y: 26 },
+    { id: 'D12', label: '12', type: 'digital', number: 12, x: 152, y: 26 },
+    { id: 'D13', label: '13', type: 'digital', number: 13, x: 144, y: 26 },
+    { id: 'GND_D', label: 'GND', type: 'ground', x: 136, y: 26 },
+    { id: 'AREF', label: 'AREF', type: 'digital', x: 128, y: 26 },
 
-    // Power pins (left side, top)
-    { id: 'VIN', label: 'VIN', type: 'power', x: 10, y: 32 },
-    { id: 'GND1', label: 'GND', type: 'ground', x: 10, y: 42 },
-    { id: 'GND2', label: 'GND', type: 'ground', x: 10, y: 52 },
-    { id: '5V', label: '5V', type: 'power', x: 10, y: 62 },
-    { id: '3.3V', label: '3.3V', type: 'power', x: 10, y: 72 },
-    { id: 'RESET', label: 'RST', type: 'digital', x: 10, y: 82 },
+    // Analog pins (right side bottom, left to right)
+    { id: 'A0', label: 'A0', type: 'analog', number: 0, x: 155, y: 205 },
+    { id: 'A1', label: 'A1', type: 'analog', number: 1, x: 163, y: 205 },
+    { id: 'A2', label: 'A2', type: 'analog', number: 2, x: 171, y: 205 },
+    { id: 'A3', label: 'A3', type: 'analog', number: 3, x: 179, y: 205 },
+    { id: 'A4', label: 'A4', type: 'analog', number: 4, x: 187, y: 205 },
+    { id: 'A5', label: 'A5', type: 'analog', number: 5, x: 195, y: 205 },
+
+    // Power pins (left side bottom, left to right)
+    { id: 'VIN', label: 'VIN', type: 'power', x: 125, y: 205 },
+    { id: 'GND1', label: 'GND', type: 'ground', x: 117, y: 205 },
+    { id: 'GND2', label: 'GND', type: 'ground', x: 109, y: 205 },
+    { id: '5V', label: '5V', type: 'power', x: 101, y: 205 },
+    { id: '3.3V', label: '3.3V', type: 'power', x: 93, y: 205 },
+    { id: 'RESET', label: 'RST', type: 'digital', x: 85, y: 205 },
 ]
 
 // Module configurations
